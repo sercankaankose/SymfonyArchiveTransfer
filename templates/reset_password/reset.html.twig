@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6" style="text-align: center">
+                <h1>Reset your password</h1>
+                <div class="card" style="background-color: #f2f2f2; max-height: 700px; height:300px; width: 100%;">
+                    <div class="card-body">
+                        <form method="post">
+                            {{ form_start(resetForm) }}
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {{ form_label(resetForm.plainPassword.first, 'Yeni Şifre', {'label_attr': {'class': 'form-label text-end'}}) }}
+                                        {{ form_widget(resetForm.plainPassword.first, {'attr': {'class': 'form-control' ~ (form_errors(resetForm.plainPassword.first)|length > 0 ? ' is-invalid' : '')}}) }}
+                                        {% if form_errors(resetForm.plainPassword.first)|length > 0 %}
+                                            <span class="invalid-feedback">
+                                            {{ form_errors(resetForm.plainPassword.first) }}
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {{ form_label(resetForm.plainPassword.second, 'Tekrar', {'label_attr': {'class': 'form-label text-end'}}) }}
+                                        {{ form_widget(resetForm.plainPassword.second, {'attr': {'class': 'form-control' ~ (form_errors(resetForm.plainPassword.second)|length > 0 ? ' is-invalid' : '')}}) }}
+                                        {% if form_errors(resetForm.plainPassword.second)|length > 0 %}
+                                            <span class="invalid-feedback">
+                                            {{ form_errors(resetForm.plainPassword.second) }}
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <button class="btn btn-primary">Reset password</button>
+                            {{ form_end(resetForm) }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Yeni Kullanıcı{% endblock %}
+{% block body %}
+    <style>
+        .card {
+            max-height: none;
+            overflow: auto;
+        }
+
+        header {
+            background-color: #f3f3f3;
+        }
+
+    </style>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div style="text-align: right;">
+
+                    <h1 class="text-center ">Yeni Kullanıcı</h1>
+                </div>
+                {% for message in app.flashes('succes') %}
+
+
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <div class="card d-flex"
+                     style="background-color: #f2f2f2; max-height: 700px; height:650px; width: 100%; ">
+
+                    <div class="card-body">
+
+
+                        {{ form_start(form) }}
+
+                        <div class="mb-3">
+                            {{ form_label(form.name, 'İsim', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.surname, 'Surname', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.surname, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.surname) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.email, 'E-posta', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.plainPassword, 'Şifre', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control', 'rows': 6}}) }}
+                            {{ form_errors(form.plainPassword) }}
+                        </div>
+                        <br>
+                        <div style="text-align: right">
+                            <button type="submit" class="btn btn-primary">Yeni Kullanıcı Ekle</button>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

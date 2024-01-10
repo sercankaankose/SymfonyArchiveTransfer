@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+ {% block title %}Dergi Sayıları{% endblock %}
+ {% block stylesheets %}
+     <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+     <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+
+ {% endblock %}
+
+    {% block body %}
+        <style>
+            .card {
+                max-height: none;
+                overflow: auto;
+            }
+
+            header {
+                background-color: #f3f3f3;
+            }
+
+            #deleteIssueModal {
+                margin-top: 150px;
+            }
+
+        </style>
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>{{ journal.name }} Sayıları</h1>
+                {#                <div class="m-3"> #}
+                {#                    <a href="{{ path('journal_issue_add',{'id': journal.id}) }}" class="btn btn-lg btn-dark">Yeni Makale Ekl ----e</a> #}
+                {#                </div> #}
+
+            </div>
+            <div class="card shadow-lg " style="font-size: 20px;">
+                <div class="card-body">
+
+                    <div class="container_table " style="overflow: hidden;">
+                        <table class="table" id="myTable">
+                            <thead>
+                            <tr>
+                                <th>Makale Başlığı</th>
+                                <th>Doi</th>
+                                <th>Dil</th>
+                                <th>Sayfalar</th>
+                                <th>Durum</th>
+                                <th style="text-align: right; "></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for article in articles %}
+                                <tr>
+                                    {% if article.translations.first.title %}
+                                        <td>{{ article.translations.first.title }}</td>
+                                    {% else %}
+                                        <td>---</td>
+                                    {% endif %}
+                                    <td>{{ article.doi }}</td>
+                                    {% if article.primaryLanguage =='001' %}
+                                        <td>Türkçe</td>
+                                    {% elseif article.primaryLanguage == '002' %}
+                                        <td>İngilizce</td>
+                                    {% elseif article.primaryLanguage == '003' %}
+                                        <td>Almanca</td>
+                                    {% elseif article.primaryLanguage == '004' %}
+                                        <td>İspanyolca</td>
+                                    {% elseif article.primaryLanguage == '005' %}
+                                        <td>Arapça</td>
+                                    {% elseif article.primaryLanguage == '006' %}
+                                        <td>Rusça</td>
+                                    {% elseif article.primaryLanguage == '007' %}
+                                        <td>Farsça</td>
+                                    {% else %}
+                                        <td>Türkçe</td>
+                                    {% endif %}
+                                    <td>{{ article.firstPage }}-{{ article.lastPage }}</td>
+                                    {% if article.status == 'waiting' %}
+                                        <td>Beklemede</td>
+                                    {% elseif article.status == 'EditRequired' %}
+                                        <td> Düzenleme Gerekli</td>
+                                    {% elseif article.status == 'Error' %}
+                                        <td>Hatalı</td>
+                                    {% else %}
+                                        <td>--</td>
+                                    {% endif %}
+                                    <td style="text-align: right">
+                                        {% if article.status == 'EditRequired' %}
+                                            <a class="btn btn-primary"
+                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
+                                            </a>
+                                        {% elseif article.status == 'Error' %}
+                                            <a class="btn btn-danger"
+                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">Makale Bulunamadı...</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteIssueModal" tabindex="-1" role="dialog"
+             aria-labelledby="deleteIssueModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteIssueModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Makaleyi silmek istediğinizden emin misiniz?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="deleteIssueLink" class="btn btn-primary" data-bs-dismiss="modal">
+                            Sayıyı Sil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+
+        <script charset="utf8" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script>
+            function openDeleteModal(issueId) {
+                var deleteUrl = "{{ path('admin_journal_delete', {'id': 'JOURNAL_ID'}) }}".replace('JOURNAL_ID', issueId);
+                document.getElementById('deleteIssueModalLabel').textContent = 'Sayıyı Sil';
+                document.querySelector(`#deleteIssueLink`).setAttribute('href', deleteUrl);
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteIssueModal'));
+                deleteModal.show();
+
+                document.getElementById('deleteIssueLink').addEventListener('click', function () {
+                    window.location.href = deleteUrl;
+                });
+            }
+        </script>
+        <script>
+            function closeModal() {
+                $('#deleteIssueModal').modal('hide');
+                $('.modal-backdrop').remove();
+            }
+
+
+            $('.btn-close').click(function () {
+                closeModal();
+            });
+
+
+            $('#deleteIssueLink').click(function () {
+                closeModal();
+            });
+        </script>
+        <script>
+            jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+                "yesy-asc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return ((str1 < str2) ? -1 : ((str1 > str2) ? 1 : 0));
+                },
+
+                "yesy-desc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return ((str1 < str2) ? 1 : ((str1 > str2) ? -1 : 0));
+                }
+            });
+
+            let table = new DataTable('#myTable', {
+                pageLength: 25,
+                responsive: true,
+                searchBuilder: true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                },
+                order: [[3, 'asc']],
+                columnDefs: [
+                    {type: 'yesy', targets: [1,]},
+                    {orderable: false, targets: [5]},
+                ],
+            });
+        </script>
+    {% endblock %}

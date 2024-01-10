@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Görev Alınan Dergiler{% endblock %}
+{% block stylesheets %}
+    <link type="text/css" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+{% endblock %}
+    {% block body %}
+        <style>
+            .card {
+                max-height: none;
+                overflow: auto;
+            }
+
+            header {
+                background-color: #f3f3f3;
+            }
+
+            #deleteUserModal {
+                margin-top: 150px;
+            }
+        </style>
+
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h1>{{ user.email }} Kullanıcısının Atandığı Dergiler</h1>
+            </div>
+            <div class="card shadow-lg" style="font-size: 20px;">
+                <div class="card-body">
+                    <table class="table" id="myTable">
+                        <thead>
+                        <tr>
+                            <th>Dergi</th>
+                            <th>Issn</th>
+                            <th>E-issn</th>
+                            <th>Editör</th>
+                            <th>Operatör</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for journal in journals %}
+                            <tr>
+                                <td>{{ journal.journal.name }}</td>
+                                <td>{{ journal.journal.issn }}</td>
+                                <td>{{ journal.journal.eIssn }}</td>
+                                <td>
+                                    {% if editor in journal.role %}
+                                        <a class="btn btn-success" href="#" onclick="openDeleteModal('{{ journal.id }}', 2)">
+                                            <p class="card-text text-right">Editör Rolünü Sil</p>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if operator in journal.role %}
+                                        <a class="btn btn-primary" href="#" onclick="openDeleteModal('{{ journal.id }}', 3)">
+                                            <p class="card-text text-right">Operatör Rolünü sil</p>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">Kullanıcıya Ait Atanmış Dergi Bulunamadı.</td>
+                                <td colspan="3"></td>
+                                <td colspan="3"></td>
+                                <td colspan="3"></td>
+                                <td colspan="3"></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog"
+             aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUserModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ user.email }} rolünü silmek istediğinizden emin misiniz?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="deleteUserLink" class="btn btn-primary" data-bs-dismiss="modal">
+                            Rolü Sil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+
+
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script charset="utf8" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+
+        <script>
+            function openDeleteModal(journalId, roleId) {
+                var deleteUrl = "{{ path('admin_assigned_journal_delete', {'id': 'JOURNAL_ID', 'role': 'ROLE_ID'}) }}";
+                deleteUrl = deleteUrl.replace('JOURNAL_ID', journalId).replace('ROLE_ID', roleId);
+
+                var modalTitle = (roleId == 2) ? 'Editör Rolünü Sil' : 'Operatör Rolünü Sil';
+
+                document.getElementById('deleteUserModalLabel').textContent = modalTitle;
+                document.querySelector('#deleteUserLink').setAttribute('href', deleteUrl);
+
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                deleteModal.show();
+
+                document.getElementById('deleteUserLink').addEventListener('click', function () {
+                    window.location.href = deleteUrl;
+                });
+            }
+        </script>
+
+        <script>
+
+            function closeModal() {
+                $('#deleteUserModal').modal('hide');
+                $('.modal-backdrop').remove();
+            }
+
+
+            $('.btn-close').click(function () {
+                closeModal();
+            });
+
+
+            $('#deleteUserLink').click(function () {
+                closeModal();
+            });
+        </script>
+
+        <script>
+            jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+                "yesy-asc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return ((str1 < str2) ? -1 : ((str1 > str2) ? 1 : 0));
+                },
+
+                "yesy-desc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return ((str1 < str2) ? 1 : ((str1 > str2) ? -1 : 0));
+                }
+            });
+            let table = new DataTable('#myTable', {
+                pageLength: 25,
+                responsive: true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                },
+                columnDefs: [
+                    {type: 'yesy', targets: [1, 2, 3, 4]},
+                    {orderable: false, targets: []},
+                ],
+            });
+        </script>
+
+    {% endblock %}
+

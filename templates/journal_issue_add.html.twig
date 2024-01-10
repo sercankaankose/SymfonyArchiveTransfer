@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}Yeni Dergi{% endblock %}
+
+
+{% block body %}
+    <style>
+        .custom-inline-form {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .custom-inline-form-element {
+            flex: 1;
+            margin-right: 10px;
+        }
+    </style>
+    <div class="container">
+    <div class="row justify-content-center">
+        <div style="text-align: right;">
+
+            <h1 class="text-center "> {{ journal.name }} İçin Yeni Sayı</h1>
+        </div>
+        <div class="col-md-6">
+
+            <div class="card d-flex"
+                 style="background-color: #f2f2f2; max-height: 700px; height:600px; width: 100%; ">
+
+                <div class="card-body" style="font-size: 20px">
+
+                    {{ form_start(form) }}
+
+                    <div class="mb-3">
+                        {{ form_label(form.year, 'Yıl', {'label_attr': {'class': 'form-label'}}) }}*
+                        {{ form_widget(form.year, {'attr': {'class': 'form-control custom-inline-form-element' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
+                        {{ form_errors(form.year) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.volume, 'Cilt', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.volume, {'attr': {'class': 'form-control' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
+                        {{ form_errors(form.volume) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.number, 'Sayı', {'label_attr': {'class': 'form-label'}}) }}*
+                        {{ form_widget(form.number, {'attr': {'class': 'form-control' ~ (form_errors(form.number)|length ? ' is-invalid' : '')}}) }}
+                        {{ form_errors(form.number) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.xml, 'Xml', {'label_attr': {'class': 'form-label'}}) }}*
+                        {{ form_widget(form.xml, {'attr': {'class': 'form-control' ~ (form_errors(form.xml)|length ? ' is-invalid' : '')}}) }}
+                        {{ form_errors(form.xml) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.fulltext, 'Tam Metin', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.fulltext, {'attr': {'class': 'form-control' ~ (form_errors(form.fulltext)|length ? ' is-invalid' : '')}}) }}
+                        {{ form_errors(form.fulltext) }}
+                    </div>
+
+                    <div style="text-align: right">
+                        <button type="submit" class="btn btn-primary btn-lg">Yeni Sayı Ekle</button>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

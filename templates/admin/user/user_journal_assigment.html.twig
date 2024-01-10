@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dergi ve Kullanıcı Atama{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block body %}
+    <style>
+        .card {
+            max-height: none;
+            height: 200px;
+            overflow: auto;
+        }
+
+        body {
+            font-size: 20px;
+        }
+
+        header {
+            background-color: #f3f3f3;
+        }
+
+        .custom-inline-form {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .custom-inline-form-element {
+            flex: 1;
+            margin-right: 10px;
+        }
+    </style>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div style="text-align: right;">
+                    <h1 class="text-center ">Dergi ve Kullanıcı Atama</h1>
+                </div>
+                <div class="card d-flex"
+                     style="background-color: #f2f2f2; max-height: 700px; height:400px; width: 100%; ">
+
+                    <div class="card-body">
+                        {{ form_start(form, {'attr':{'class': 'form-group', 'id': 'myForm'}}) }}
+                        <br>
+                        <div class="mb-3">
+                            {{ form_row(form.Dergi, {'attr': {'class': 'form-control', 'id': 'form_Dergi'}}) }}
+                        </div>
+
+                        <br>
+                        <div class="mb-3">
+                            {{ form_row(form.Kullanici, {'attr':{'class': 'form-control', 'id': 'form_Kullanici'}}) }}
+                        </div>
+                        <br>
+                        <div class="custom-inline-form">
+                            <div class="mb-3 custom-inline-form-element">
+                                {{ form_widget(form.ROLE_EDITOR, {'attr': {'class': 'custom-checkbox'}}) }}
+                                {{ form_label(form.ROLE_EDITOR, 'Editör', {'label_attr': {'class': 'custom-checkbox-label'}}) }}
+                            </div>
+                            <div class="mb-3 custom-inline-form-element">
+                                {{ form_widget(form.ROLE_OPERATOR, {'attr': {'class': 'custom-checkbox'}}) }}
+                                {{ form_label(form.ROLE_OPERATOR, 'Operator', {'label_attr': {'class': 'custom-checkbox-label'}}) }}
+                            </div>
+                        </div>
+
+                        <div style="text-align: right">
+                            <button type="submit" class="btn btn-primary"> Dergiye Ata</button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#journal_user_assigment_Dergi').autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: '{{ path('search_journals') }}',
+                        type: 'GET',
+                        data: {
+                            term: request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui) {
+                    console.log('Seçilen Dergi: ' + ui.item.value);
+                    $('#journal_user_assigment_Dergi').val(ui.item.value);
+                    event.preventDefault();
+                },
+                focus: function(event, ui) {
+                    console.log('Hovered Dergi: ' + ui.item.value);
+                    return false;
+                }
+            });
+
+            // Enter tuşuna basıldığında formun gönderilmesini engelle
+            $('#journal_user_assigment_Dergi').keypress(function(event) {
+                if (event.which === 13) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script> <script>
+        $(document).ready(function() {
+            $('#journal_user_assigment_Kullanici').autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: '{{ path('search_user') }}',
+                        type: 'GET',
+                        data: {
+                            term: request.term
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui) {
+                    console.log('Seçilen Kullanıcı: ' + ui.item.value);
+                    $('#journal_user_assigment_Kullanici').val(ui.item.value);
+                    event.preventDefault(); // Enter tuşuna basıldığında formun gönderilmesini engelle
+                },
+                focus: function(event, ui) {
+                    console.log('Hovered Kullanıcı: ' + ui.item.value);
+                    return false;
+                }
+            });
+
+            // Enter tuşuna basıldığında formun gönderilmesini engelle
+            $('#journal_user_assigment_Kullanici').keypress(function(event) {
+                if (event.which === 13) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+

@@ -1,0 +1,282 @@
+{% extends 'base.html.twig' %}
+
+ {% block title %}Dergi Yönetimi{% endblock %}
+ {% block stylesheets %}
+     <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+     <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+
+ {% endblock %}
+
+    {% block body %}
+        <style>
+            .card {
+                max-height: none;
+                overflow: auto;
+            }
+
+            header {
+                background-color: #f3f3f3;
+            }
+
+            #deleteJournalModal {
+                margin-top: 150px;
+            }
+        </style>
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Dergi İşlemleri</h1>
+                <div class="m-3">
+                    <a href="{{ path('admin_journal_add') }}" class="btn btn-lg btn-dark">Dergi Ekle</a>
+                </div>
+
+            </div>
+            <div class="card shadow-lg " style="font-size: 20px;">
+                <div class="card-body">
+
+                    <div class="container_table" style="overflow: hidden;">
+                        <table class="table" id="myTable">
+                            <thead>
+                            <tr>
+                                <th>Dergi İsmi</th>
+                                <th >Issn</th>
+                                <th >E-issn</th>
+
+                                <th style="text-align: right; "></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for journal in journals %}
+                                <tr>
+                                    <td>{{ journal.name }}</td>
+                                    <td>{{ journal.issn }}</td>
+                                    <td>{{ journal.eIssn }}</td>
+                                    <td style="text-align: right">
+                                        <div class="btn-group">
+                                            <a href="{{ path('journal_issues', {'id': journal.id}) }}" class="btn btn-primary">Sayılar</a>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                    <i class="bi bi-three-dots"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item"
+                                                       href="{{ path('admin_journal_edit', {'id': journal.id}) }}">Düzenle</a>
+                                                    <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal"
+                                                       onclick="openDeleteModal({{ journal.id }})"
+                                                       data-bs-target="#deleteJournalModal"
+                                                       data-target="#deleteJournalModal" data-id="{{ journal.id }}">Sil</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">Dergi Bulunamadı...</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteJournalModal" tabindex="-1" role="dialog"
+             aria-labelledby="deleteJournalModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteJournalModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Dergiyi silmek istediğinizden emin misiniz?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="deleteJournalLink" class="btn btn-primary" data-bs-dismiss="modal">
+                            Dergiyi Sil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+
+        <script charset="utf8" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script>
+            function openDeleteModal(journalId) {
+                var deleteUrl = "{{ path('admin_journal_delete', {'id': 'JOURNAL_ID'}) }}".replace('JOURNAL_ID', journalId);
+                document.getElementById('deleteJournalModalLabel').textContent = 'Dergiyi Sil';
+                document.querySelector(`#deleteJournalLink`).setAttribute('href', deleteUrl);
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteJournalModal'));
+                deleteModal.show();
+
+                document.getElementById('deleteJournalLink').addEventListener('click', function () {
+                    window.location.href = deleteUrl;
+                });
+            }
+        </script>
+        <script>
+            function closeModal() {
+                $('#deleteJournalModal').modal('hide');
+                $('.modal-backdrop').remove();
+            }
+
+
+            $('.btn-close').click(function () {
+                closeModal();
+            });
+
+
+            $('#deleteJournalLink').click(function () {
+                closeModal();
+            });
+        </script>
+
+
+        <script>
+            jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+                "yesy-asc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return ((str1 < str2) ? -1 : ((str1 > str2) ? 1 : 0));
+                },
+
+                "yesy-desc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return ((str1 < str2) ? 1 : ((str1 > str2) ? -1 : 0));
+                }
+            });
+
+            let table = new DataTable('#myTable', {
+                pageLength: 25,
+                responsive: true,
+                searchBuilder: true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                },
+
+                columnDefs: [
+                    {type: 'yesy', targets: [1, 2]},
+                    {orderable: false, targets: [3]},
+
+                    {"name": "name", "targets": 0},
+                    {"name": "issn", "targets": 1},
+                    {"name": "Eissn", "targets": 2},
+                ],
+            });
+
+        </script>
+    {% endblock %}
+{# <!--  BU KISIM DENEMEDİR   --> #}
+{# {% extends 'base.html.twig' %} #}
+
+{# {% block title %}Dergi Yönetimi{% endblock %} #}
+{# {% block stylesheets %} #}
+{#    <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet"> #}
+
+{# {% endblock %} #}
+
+{#    {% block body %} #}
+{#        <style> #}
+{#            .card { #}
+{#                max-height: none; #}
+{#                overflow: auto; #}
+{#            } #}
+
+{#            header { #}
+{#                background-color: #f3f3f3; #}
+{#            } #}
+
+
+{#            header { #}
+{#                background-color: #f3f3f3; #}
+{#            } #}
+
+{#        </style> #}
+{#        <div class="container"> #}
+{#            <div class="d-flex justify-content-between align-items-center"> #}
+{#                <h1>Dergi İşlemleri</h1> #}
+{#                <div class="m-3"> #}
+{#                    <a href="{{ path('admin_journal_add') }}" class="btn btn-lg btn-dark">Dergi Ekle</a> #}
+{#                </div> #}
+{#            </div> #}
+{#            <div class="card shadow-lg " style="font-size: 20px;"> #}
+{#                <div class="card-body"> #}
+
+{#                    <div class="container_table" style="overflow: hidden;"> #}
+{#                        <table class="dataTable" id="example"> #}
+{#                            <thead> #}
+{#                            <tr> #}
+{#                                <th>Dergi İsmi</th> #}
+{#                                <th>Issn</th> #}
+{#                                <th>E-issn</th> #}
+{#                            </tr> #}
+{#                            </thead> #}
+{#                            <tbody> #}
+{#                            <tr> #}
+{#                                <td></td> #}
+{#                                <td></td> #}
+{#                                <td></td> #}
+{#                            </tr> #}
+{#                            </tbody> #}
+{#                        </table> #}
+{#                    </div> #}
+{#                </div> #}
+{#            </div> #}
+{#        </div> #}
+{#    {% endblock %} #}
+{#    {% block javascripts %} #}
+
+{#        <script charset="utf8" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" #}
+{#                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" #}
+{#                crossorigin="anonymous"></script> #}
+{#        <script src="https://code.jquery.com/jquery-3.7.1.js"></script> #}
+{#        <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> #}
+
+{#        <script> #}
+{#            let table = $('#example').DataTable({ #}
+{#                serverSide: true, #}
+{#                processing: true, #}
+{#                ajax: { #}
+{#                    url: '{{ path('example_ajax') }}', #}
+{#                    type: 'POST', #}
+{#                    data: function (d) { #}
+{#                        return { #}
+{#                            draw: d.draw, #}
+{#                            start: d.start, #}
+{#                            length: d.length, #}
+{#                            orderColumn: d.order[0].column, #}
+{#                            orderDir: d.order[0].dir, #}
+{#                            search: d.search.value, #}
+{#                        }; #}
+{#                    }, #}
+{#                }, #}
+{#                columns: [ #}
+{#                    { data: 'name', orderable: true, searchable: true }, #}
+{#                    { data: 'issn', orderable: true, searchable: true }, #}
+{#                    { data: 'eIssn', orderable: true, searchable: true }, #}
+{#                ], #}
+{#            }); #}
+
+{#        </script> #}
+{#    {% endblock %} #}
+

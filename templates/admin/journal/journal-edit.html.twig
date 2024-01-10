@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block title %}Dergi Düzenleme{% endblock %}
+{% block body %}
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div style="text-align: right;">
+                    <h1 class="text-center ">Dergi Düzenleme</h1>
+                </div>
+
+                <div class="card d-flex"
+                     style="background-color: #f2f2f2; max-height: 700px; height:520px; width: 100%; ">
+
+                    <div class="card-body">
+
+
+                        {{ form_start(form) }}
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.name, 'Dergi Adı', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.issn, 'Issn', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.issn, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.issn) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.eIssn, 'E-issn', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.eIssn, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.eIssn) }}
+                        </div>
+                        <br>
+
+                        <br>
+                        <div style="text-align: right">
+                            <button type="submit" class="btn btn-primary btn-lg">Düzenlemeyi Kaydet</button>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

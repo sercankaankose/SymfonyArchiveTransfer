@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <br>
+    <br>
+    <br>
+    <br>
+<div class="container mt-5">
+    <div class="row justify-content-center" >
+{% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <div class="col-md-6">
+        <div class="card" style="background-color: #f2f2f2; max-height: 700px; height:250px; width: 100%; ">
+
+            <div class="card-body">
+                <h1 class="h3 mb-3 font-weight-normal">Şifre Sıfırlama</h1>
+
+                {{ form_start(requestForm) }}
+                {{ form_row(requestForm.email) }}
+                <div>
+                    <p>
+                        E-posta adresinizi girin, size şifrenizi sıfırlamak için bağlantılı bir e-posta gönderelim.
+                    </p>
+                </div>
+
+                <button class="btn btn-primary">Şifre sıfırlama E-postası Gönder</button>
+                {{ form_end(requestForm) }}
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

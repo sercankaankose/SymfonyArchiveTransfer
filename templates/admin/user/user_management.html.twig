@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kullanıcı Yönetimi{% endblock %}
+{% block stylesheets %}
+    <link type="text/css" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+
+{% endblock %}
+    {% block body %}
+        <style>
+            .card {
+                max-height: none;
+                overflow: auto;
+            }
+            header {
+                background-color: #f3f3f3;
+            }
+            #deleteUserModal {
+                margin-top: 150px;
+            }
+        </style>
+
+<div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h1>Kullanıcı İşlemleri</h1>
+                <div class="ml-3">
+                    <a href="{{ path('admin_user_add') }}" class="btn btn-lg btn-dark"><i class="bi bi-person-fill-add"></i> Kullanıcı Ekle</a>
+
+                    <a class="btn btn-secondary btn-lg" href="{{ path('admin_assigment_journal') }}"><i class="bi bi-file-plus"></i> Dergi Atama</a>
+                </div>
+            </div>
+            <div class="card shadow-lg" style="font-size: 20px;">
+                <div class="card-body">
+                    <table class="table" id="myTable">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">İsim</th>
+                            <th style="text-align: center">Email</th>
+                            <th style="text-align: right; "></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.name }} {{ user.surname }}</td>
+                                <td>{{ user.email }}</td>
+                                <td style="text-align: right">
+                                    <div class="btn-group">
+                                    {% if user.Isactive %}
+                                        <a class="btn btn-warning" href="{{ path('admin_assigned_journal_list', {'id': user.id}) }}"><i class="bi bi-journals"></i> Dergiler</a>
+                                        <a class="btn btn-secondary" type="button" href="#" data-bs-toggle="modal"
+                                           onclick="openDeleteModal({{ user.id }})"
+                                           data-bs-target="#deleteUserModal"
+                                           data-target="#deleteUserModal" data-id="{{ user.id }}">Pasifleştir</a>
+                                    {% else %}
+                                        <a class="btn btn-warning disabled" disabled="true" href="{{ path('admin_assigned_journal_list', {'id': user.id}) }}"><i class="bi bi-journals"></i> Dergiler</a>
+                                        <a type="button" class="btn btn-primary" href="{{ path('admin_user_active', {'id': user.id}) }}">
+                                            Aktifleştir
+                                        </a>
+                                    {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">Kulanıcı Bulunamadı.</td>
+                                <td colspan="3"></td>
+                                <td colspan="3"></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog"
+             aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUserModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Kullanıcıyı Pasifleştirmek istediğinizden emin misiniz?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="deleteUserLink" class="btn btn-primary" data-bs-dismiss="modal">
+                           Pasifleştir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+
+
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script charset="utf8" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+
+        <script>
+            function openDeleteModal(journalId) {
+                var deleteUrl = "{{ path('admin_user_pasive', {'id': 'USER_ID'}) }}".replace('USER_ID', journalId);
+                document.getElementById('deleteUserModalLabel').textContent = 'Kullanıcıyı Pasifleştir';
+                document.querySelector('#deleteUserLink').setAttribute('href', deleteUrl);
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                deleteModal.show();
+
+                document.getElementById('deleteUserLink').addEventListener('click', function () {
+                    window.location.href = deleteUrl;
+                });
+            }
+
+        </script>
+        <script>
+
+            function closeModal() {
+                $('#deleteUserModal').modal('hide');
+                $('.modal-backdrop').remove();
+            }
+
+
+            $('.btn-close').click(function () {
+                closeModal();
+            });
+
+
+            $('#deleteUserLink').click(function () {
+                closeModal();
+            });
+        </script>
+
+        <script>
+            let table = new DataTable('#myTable', {
+                pageLength: 25,
+                responsive: true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                },
+            });
+        </script>
+
+    {% endblock %}
+

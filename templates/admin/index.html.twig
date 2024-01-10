@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Paneli{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4">
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <a href="{{ path('admin_user_management') }}" class="">
+                    <div class="card" style="background-color: #dcdcdc; border: none;">
+                        <div class="card-header">
+                            <h2><i class="bi bi-people"></i> Kullanıcı Yönetimi</h2></div>
+                        <div class="card-body">
+                            <a href="{{ path('admin_user_management') }}" ><h5 class="card-text"> <i class="bi bi-person"></i> Kullanıcılar</h5></a>
+                            <hr>
+                            <a href="{{ path('admin_user_add') }}"> <h5 class="card-text"> <i class="bi bi-person-fill-add"></i> Kullanıcı Ekle</h5></a>
+                            <hr>
+                            <a href="{{ path('admin_user_add') }}"> <h5 class="card-text"><i class="bi bi-file-plus"></i> Kullanıcıya Dergi Atama</h5></a>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a href="{{ path('admin_journal_management') }}" class="">
+                    <div class="card" style="background-color: #dcdcdc;">
+                        <div class="card-header">
+                            <h2>Dergi Yönetimi</h2></div>
+                        <div class="card-body">
+                            <a href="{{ path('admin_journal_management') }}"><h5 class="card-text"><i class="bi bi-journals"></i>Dergiler</h5></a>
+                            <hr>
+                            <a href="{{ path('admin_journal_add') }}"><h5 class="card-text"><i class="bi bi-journal-plus"></i>Dergi Ekle</h5></a>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

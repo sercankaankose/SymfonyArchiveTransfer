@@ -1,0 +1,894 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .container-fluid {
+            display: flex;
+            align-items: stretch;
+            margin-top: -25px;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 2px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        .card {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .iframe-container {
+            flex: 1;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: unset;
+        }
+
+        .form-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            margin-right: -25px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .yellow-background {
+            background-color: rgba(255, 255, 0, 0.71) !important;
+        }
+
+        textarea,
+        select,
+        input {
+            position: relative;
+            cursor: text;
+            font-size: 14px;
+            line-height: 20px;
+            padding: 0 16px;
+            height: 48px;
+            background-color: #fff;
+            border: 1px solid #d6d6e7;
+            border-radius: 3px;
+            color: rgb(35, 38, 59);
+            box-shadow: inset 0 1px 4px 0 rgb(119 122 175 / 30%);
+            overflow: hidden;
+            transition: all 100ms ease-in-out;
+
+            :focus {
+                border-color: #3c4fe0;
+                box-shadow: 0 1px 0 0 rgb(35 38 59 / 5%);
+            }
+
+        }
+
+        .button-35 {
+            backface-visibility: hidden;
+            background-color: #405cf5;
+            border-radius: 6px;
+            border-width: 0;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
+            font-size: 100%;
+            height: 44px;
+            line-height: 1.15;
+            margin: 12px 0 0;
+            outline: none;
+            overflow: hidden;
+            padding: 0 25px;
+            position: relative;
+            text-align: center;
+            text-transform: none;
+            transform: translateZ(0);
+            transition: all .2s, box-shadow .08s ease-in;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            width: 100%;
+        }
+
+        .button-35:disabled {
+            cursor: default;
+        }
+
+        .button-35:focus {
+            box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
+        }
+
+        .form-container .row {
+            display: flex;
+            align-items: baseline;
+        }
+
+        .form-container .row .col {
+            flex: 0 0 50%;
+            padding-right: 10px;
+        }
+
+        .button-34 {
+            backface-visibility: hidden;
+            background-color: crimson;
+            border-radius: 6px;
+            border-width: 0;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
+            font-size: 100%;
+            height: 44px;
+            line-height: 1.15;
+            outline: none;
+            position: relative;
+            text-align: center;
+            text-transform: inherit;
+            transform: translateZ(0);
+            transition: all .2s, box-shadow .08s ease-in;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            width: 100%;
+        }
+
+        .form-container .row .col.locale {
+            flex: 0 0 20%;
+            margin-top: -20px;
+        }
+
+        .form-container .row .col.doi {
+            flex: 0 0 45%;
+        }
+
+        .form-container .row .col.bigger {
+            flex: 0 0 100%;
+        }
+
+        .form-container .row .col.mid {
+            flex: 0 0 22.5%;
+        }
+
+        .form-container .row .col.half {
+            flex: 0 0 50%;
+        }
+
+        .form-container .row .col.trequarter {
+            flex: 0 0 100%;
+        }
+
+        .form-container .row .col.quarter {
+            flex: 0 0 25%;
+        }
+
+        .form-container .row .col.ten {
+            flex: 0 0 05%;
+        }
+
+        .form-container .row .col.keywords {
+            flex: 0 0 100%;
+
+        }
+
+        .form-container .row .col.primary {
+            flex: 0 0 15%;
+
+        }
+
+        .form-container .row .col.type {
+            flex: 0 0 25%;
+
+        }
+
+        .form-container textarea {
+        }
+
+        .card {
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: #e8eff5;
+            padding: 5px;
+            border-radius: 2px;
+        }
+
+        .nav-pills .nav-link {
+            background-color: #e7eaef;
+            color: #0a58ca;
+            height: 50px;
+            width: 225px;
+            border-radius: 3px;
+        }
+
+        .nav-pills .nav-link.active,
+        .nav-pills .show > .nav-link {
+            background-color: #203b5d;
+            color: #f8f7f7;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container input[type="number"],
+        .form-container textarea,
+        .form-container,
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        label-container label {
+            text-align: right;
+            display: block;
+            padding: 5px;
+        }
+
+        header {
+            margin-top: -1%
+        }
+
+        disabled {
+            background-color: #a52834;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="form-container">
+            {{ form_start(form) }}
+            {% if article.status == 'Error' %}
+                <a class=" btn btn-danger button-34 mb-3 pt-2" type="button"
+                   href="{{ path('article_pdf_error_delete', {'id': article.id}) }}"><h5>PDF HATASI KALDIR</h5></a>
+            {% else %}
+            {% endif %}
+            <div class="btn-group-lg mt-1">
+                <a class="btn btn-danger btn-lg" onclick="openDeleteModal()" style="margin-top: -10px;"
+                   data-toggle="modal" data-target="#pdfErrorModal"><i class="bi bi-exclamation-triangle-fill"></i>Tam
+                    Metin Hatası Bildir</a>
+                <button type="submit" class="btn btn-success btn-lg" style=" margin-top: -10px;"><i
+                            class="bi bi-file-earmark-check"></i>Makaleyi Kaydet
+                </button>
+            </div>
+            <div class="card mt-3 mb-3">
+                <div class="row">
+                    <div class="col type">
+                        {{ form_row(form.type, {'id': 'articleType'}) }}
+                    </div>
+
+                    <div class="col primary">
+                        {{ form_row(form.primaryLanguage) }}
+                    </div>
+                    <div class="col primary">
+                        {{ form_row(form.pageRange) }}
+                    </div>
+                    <div class="col doi">
+                        {{ form_row(form.doi) }}
+                    </div>
+
+                </div>
+            </div>
+            {% if form_errors(form) %}
+                <div class="alert alert-danger message-container" style="text-align: center">
+                    {{ form_errors(form)|raw({ 'attr': {'class': 'custom-error-class', 'style': 'font-size: 18px;margin-bottom: 25px; margin-top: -22px; text-align: center; margin-bottom: 10px;'} }) }}
+                    {#                    {{ form_errors(form.primaryLanguage)|raw({ 'attr': {'class': 'custom-error-class', 'style': 'font-size: 18px;margin-bottom: 25px; margin-top: -22px; text-align: center; margin-bottom: 10px;'} }) }} #}
+                    {#                    {{ form_errors(form.pageRange)|raw({ 'attr': {'class': 'custom-error-class', 'style': 'font-size: 18px;margin-bottom: 25px; margin-top: -22px; text-align: center; margin-bottom: 10px;'} }) }} #}
+                    {#                    {{ form_errors(form.type)|raw({ 'attr': {'class': 'custom-error-class', 'style': 'font-size: 18px;margin-bottom: 25px; margin-top: -22px; text-align: center; margin-bottom: 10px;'} }) }} #}
+                </div>
+            {% endif %}
+
+            <ul class="nav nav-pills custom-tab-nav mb-3" id="pills-tab" role="tablist">
+                {# Üst Veri Tabı #}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-metadata-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-metadata" type="button" role="tab"
+                            {% if form.translations.vars.valid|length < 1 %}style="background-color: #a52834; color: aliceblue"{% endif %}
+                            aria-controls="pills-metadata" aria-selected="true">Üst Veri
+                    </button>
+                </li>
+
+                {# Yazar Tabı #}
+                <li class="nav-item" role="presentation" id="authorTab">
+                    <button class="nav-link" id="pills-author-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-author" type="button" role="tab"
+                            {% if form.authors.vars.valid|length < 1 %}
+                                style="background-color: #a52834; color: aliceblue"
+                            {% endif %}
+                            aria-controls="pills-author" aria-selected="false">Yazar
+                    </button>
+                </li>
+
+                {# Çevirmen Tabı #}
+                <li class="nav-item" role="presentation" id="translatorTab">
+                    <button class="nav-link" id="pills-translator-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-translator" type="button" role="tab"
+                            {% for translatorsForm in form.translations %}
+                                {% if translatorsForm.vars.valid|length < 1 %}
+                                    style="background-color: #a52834; color: aliceblue"
+                                {% endif %}
+                            {% endfor %}
+                            aria-controls="pills-translator" aria-selected="false">Çevirmen
+                    </button>
+                </li>
+
+                {# Atıflar Tabı #}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-citations-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-citations" type="button" role="tab"
+
+                            {% if form.citations.vars.valid|length < 1 %}
+                                style="background-color: #a52834; color: aliceblue"
+                            {% endif %}
+                            aria-controls="pills-citations" aria-selected="false">Atıflar
+                    </button>
+                </li>
+
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+
+                <!-- Translations -->
+                <div class="tab-pane fade show active" id="pills-metadata" role="tabpanel"
+                     aria-labelledby="pills-metadata-tab">
+
+                    <div id="translationsContainer"
+                         data-prototype="{{ form_row(form.translations.vars.prototype)|e('html_attr') }}">
+                        {% for translationForm in form.translations %}
+                            <div class="card mb-3">
+                                <div style="text-align: right;">
+                                    <button class="delete-btn" type="button" onclick="deleteCard(this)">&times;</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col locale">
+                                        {{ form_row(translationForm.locale, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col bigger">
+                                        {{ form_row(translationForm.title, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="abstract">
+                                        {{ form_row(translationForm.abstract, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col keywords">
+                                        {{ form_row(translationForm.keywords, {'attr': {'class': 'form-control select2-multiple'}}) }}
+                                    </div>
+                                </div>
+                                {% if translationForm.vars.errors|length > 0 %}
+                                    <div class="invalid-feedback">
+                                        {% for error in translationForm.vars.errors %}
+                                            {{ error.message }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="button-35" id="addTranslationsButton">Yeni Veri Ekle</button>
+                </div>
+                <!-- End translations -->
+                <!-- authors -->
+                <div class="tab-pane fade" id="pills-author" role="tabpanel"
+                     aria-labelledby="pills-author-tab">
+                    <div id="authorContainer"
+                         data-prototype="{{ form_row(form.authors.vars.prototype)|e('html_attr') }}">
+                        {% for authorForm in form.authors %}
+
+                            <div class="card mb-3">
+                                <div style="text-align: right;">
+                                    <button class="delete-btn" type="button" onclick="deleteCard(this)">&times;</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col half">
+                                        {{ form_row(authorForm.firstname, {'attr': {'class': 'form-control ' ~ (authorForm.firstname.vars.valid ? '' : 'is-invalid')}}) }}
+                                    </div>
+
+                                    <div class="col half">
+                                        {{ form_row(authorForm.lastname, {'attr': {'class': 'form-control ' ~ (authorForm.lastname.vars.valid ? ' ' : 'is-invalid')}}) }}
+                                    </div>
+
+                                    <div class="col half">
+                                        {{ form_row(authorForm.orcId, {'attr': {'class': 'form-control ' ~ (authorForm.orcId.vars.valid ? '' : 'is-invalid')}}) }}
+                                    </div>
+
+                                    <div class="col half">
+                                        {{ form_row(authorForm.email, {'attr': {'class': 'form-control ' ~ (authorForm.email.vars.valid ? '' : 'is-invalid')}}) }}
+                                    </div>
+                                    <div class="col trequarter">
+                                        {{ form_row(authorForm.institute, {'attr': {'class': 'form-control ' ~ (authorForm.institute.vars.valid ? '' : 'is-invalid')}}) }}
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="button-35" id="addAuthorButton">Yeni Yazar Ekle</button>
+                </div>
+                <!-- End authors -->
+
+                <!-- translator -->
+                <div class="tab-pane fade" id="pills-translator" role="tabpanel"
+                     aria-labelledby="pills-translator-tab">
+                    <div id="translatorContainer"
+                         data-prototype="{{ form_row(form.translators.vars.prototype)|e('html_attr') }}">
+                        {% if article.type == '001' %}
+                            {% for translatorForm in form.translators %}
+
+                                <div class="card mb-3">
+                                    <div style="text-align: right;">
+                                        <button class="delete-btn" type="button" onclick="deleteCard(this)">&times;
+                                        </button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col half">
+                                            {{ form_row(translatorForm.firstname) }}
+                                        </div>
+                                        <div class="col half">
+                                            {{ form_row(translatorForm.lastname) }}
+                                        </div>
+                                        <div class="col half">
+                                            {{ form_row(translatorForm.orcId) }}
+                                        </div>
+                                        <div class="col half">
+                                            {{ form_row(translatorForm.email) }}
+                                        </div>
+                                        <div class="col trequarter">
+                                            {{ form_row(translatorForm.institute) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <button type="button" class="button-35" id="addTranslatorButton">Yeni Çevirmen Ekle</button>
+                </div>
+                <!-- End translator -->
+
+                <!-- citations -->
+                <div class="tab-pane fade" id="pills-citations" role="tabpanel"
+                     aria-labelledby="pills-citations-tab">
+
+                    <div class="card mb-3">
+
+                        <div class="row">
+                            {{ form_row(form.citations) }}
+                        </div>
+
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-lg mt-3" style=" margin-top: -10px;"><i
+                            class="bi bi-file-earmark-check"></i>Makaleyi Kaydet
+                </button>
+
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+        <div class="iframe-container" style="margin-right: -14px">
+            {# Assuming $article is available in your template #}
+            <iframe src="{{ path('article_pdf', { 'filename': article.fulltext|url_encode }) }}"></iframe>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteJournalModal" tabindex="-1" role="dialog"
+         aria-labelledby="deleteJournalModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="deleteJournalModalLabel">Pdf Hatası</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '0'}) }}"
+                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
+                                <span>Dosya Görüntülenmiyor</span>
+                                <i class="bi bi-file-earmark-excel"></i>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '1'}) }}"
+                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
+                                <span>Makale Değil</span>
+                                <i class="bi bi-file-earmark-pdf"></i>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '2'}) }}"
+                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
+                                <span>Yazı Bozuk Kopyalanıyor</span>
+                                <i class="bi bi-file-earmark-break"></i>
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '3'}) }}"
+                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
+                                <span>Yazı Seçilemiyor</span>
+                                <i class="bi bi-file-earmark-check"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        function cloneCard(containerId) {
+
+            var container = document.getElementById(containerId);
+
+            var clone = container.lastElementChild.cloneNode(true);
+
+            var inputs = clone.querySelectorAll('input');
+            inputs.forEach(function (input) {
+                input.value = '';
+            });
+
+            container.appendChild(clone);
+        }
+    </script>
+
+    {#    <script> #}
+    {#        $(document).ready(function () { #}
+    {#            var articleType = document.getElementById('articleType'); #}
+    {#            if (articleType !== '001') { #}
+
+    {#                const element = document.getElementById("translatorsCard"); #}
+    {#                element.remove(); #}
+    {#            } #}
+    {#        }); #}
+    {#    </script> #}
+    <script>
+        $(document).ready(function () {
+            function clearTranslators() {
+                $('[id^="translatorsCard"]').remove();
+            }
+
+            checkArticleType();
+
+            $('#articleType').change(function () {
+                checkArticleType();
+            });
+
+            function checkArticleType() {
+                var articleType = $('#articleType').val();
+                if (articleType !== '001') {
+                    clearTranslators();
+                }
+            }
+        });
+    </script>
+
+
+    {#    <script> #}
+    {#        $(document).ready(function() { #}
+    {#            // Form kontrolü #}
+    {#            function checkFormValidity(form, tab) { #}
+    {#                var isEmpty = form.find('input[type="text"], textarea').filter(function() { #}
+    {#                    return $.trim($(this).val()) === ''; #}
+    {#                }).length === 0; #}
+
+    {#                if (!isEmpty) { #}
+    {#                    tab.addClass('yellow-background'); #}
+    {#                } else { #}
+    {#                    tab.removeClass('yellow-background'); #}
+    {#                } #}
+    {#            } #}
+
+    {#            // Her tab için form kontrolü #}
+    {#            $('.nav-link').click(function() { #}
+    {#                var tabId = $(this).attr('data-bs-target'); #}
+    {#                var form = $(tabId); #}
+    {#                checkFormValidity(form, $(this)); #}
+    {#            }); #}
+
+    {#            // Makaleyi Kaydet butonuna basıldığında form kontrolü yap #}
+    {#            $('#saveArticleButton').click(function() { #}
+    {#                var activeTab = $('.nav-link.active'); #}
+    {#                var activeTabId = activeTab.attr('data-bs-target'); #}
+    {#                var activeForm = $(activeTabId); #}
+    {#                checkFormValidity(activeForm, activeTab); #}
+    {#            }); #}
+
+    {#            // Form submit işlemini engelle #}
+    {#            $('#saveArticleForm').submit(function(e) { #}
+    {#                e.preventDefault(); #}
+    {#                // Burada gerekirse başka işlemler yapabilirsiniz #}
+    {#            }); #}
+    {#        }); #}
+    {#    </script> #}
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var typeField = document.getElementById('articleType');
+            var translatorTab = document.getElementById('pills-translator-tab');
+            var metadataTab = document.getElementById('pills-metadata-tab');
+            var metadataPane = document.getElementById('pills-metadata');
+            var translatorPane = document.getElementById('pills-translator');
+            var authorTab = document.getElementById('pills-author-tab');
+            var citationsTab = document.getElementById('pills-citations-tab');
+            toggleTabs();
+
+            typeField.addEventListener('change', function () {
+                toggleTabs();
+            });
+
+            function toggleTabs() {
+                if (typeField.value === '001') {
+                    translatorTab.disabled = false;
+                    // if(translatorTab.style.backgroundColor = '#a52834'){
+                    //     translatorTab.style.color = '#fff';
+                    // }else{
+                    translatorTab.style.backgroundColor = '';
+                    translatorTab.style.color = '';
+                    // }
+                    if (translatorTab.getAttribute('aria-selected') === 'true') {
+                        // Disable translator tab
+                        translatorTab.disabled = true;
+                        translatorTab.setAttribute('aria-selected', 'false');
+                        translatorTab.classList.remove('active');
+
+                        // Enable metadata tab
+                        metadataTab.disabled = false;
+                        metadataTab.setAttribute('aria-selected', 'true');
+                        metadataTab.classList.add('active');
+
+                        // Add 'show active' class to the metadata pane
+                        metadataPane.classList.add('show', 'active');
+
+                        // Remove 'show active' class from the translator pane
+                        translatorPane.classList.remove('show', 'active');
+                    }
+                } else {
+                    translatorTab.disabled = true;
+                    translatorTab.style.backgroundColor = 'rgb(237,237,238)';
+                    translatorTab.style.color = 'rgb(154,32,32)';
+
+                    // Disable translator tab
+                    translatorTab.disabled = true;
+                    translatorTab.setAttribute('aria-selected', 'false');
+                    translatorTab.classList.remove('active');
+
+                    if (!authorTab.getAttribute('aria-selected') === 'true' && !citationsTab.getAttribute('aria-selected') === 'true') {
+                        metadataTab.setAttribute('aria-selected', 'true');
+                        metadataTab.classList.add('active');
+                        metadataPane.classList.add('show', 'active');
+                    }
+
+                    translatorPane.classList.remove('show', 'active');
+                }
+            }
+        });
+    </script>
+    <script>
+        function openDeleteModal() {
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteJournalModal'));
+            deleteModal.show();
+        }
+    </script>
+    <script>
+        function deleteCard(button) {
+            var cardDiv = button.closest('.card');
+            cardDiv.remove();
+        }
+    </script>
+    <script id="translationTemplate" type="text/template">
+        <div class="card mb-4">
+            <div style="text-align: right;">
+                <button class="delete-btn" type="button" onclick="deleteCard(this)">&times;</button>
+            </div>
+            <div class="row">
+
+                <div class="col locale">
+                    <label for="article_form_translations_new_locale" class="required">Dil</label>
+                    <select id="article_form_translations_new_locale" name="article_form[translations][new][locale]"
+                            class="form-control">
+                        <option value="001">Türkçe</option>
+                        <option value="002">İngilizce</option>
+                        <option value="003">Almanca</option>
+                        <option value="004">İspanyolca</option>
+                        <option value="005">Arapça</option>
+                        <option value="006">Rusça</option>
+                        <option value="007">Farsça</option>
+                    </select>
+                </div>
+                <div class="col bigger">
+                    <label for="article_form_translations_new_title" class="required">Başlık</label>
+                    <input type="text" id="article_form_translations_new_title"
+                           name="article_form[translations][new][title]" required="required" class="form-control">
+                </div>
+                <div class="abstract">
+                    <label for="article_form_translations_new_abstract" class="required">Özet</label>
+                    <textarea id="article_form_translations_new_abstract"
+                              name="article_form[translations][new][abstract]" required="required"
+                              class="form-control custom-textarea-class" style="width: 100%; height: 250px;"></textarea>
+                </div>
+                <div class="col keywords">
+                    <label for="article_form_translations_new_keywords" class="required">Anahtar Kelimeler</label>
+                    <select type="text" id="article_form_translations_new_keywords"
+                            name="article_form[translations][new][keywords]" required="required"
+                            class="form-control select2"> </select>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script>
+        //translation
+        $(document).ready(function () {
+            initializeSelect2ForAllFields();
+
+            function initializeSelect2ForNewField(index) {
+                $('#article_form_translations_' + index + '_keywords').select2({
+                    multiple: true,
+                    tags: true,
+                    allowClear: true,
+                    tokenSeparators: [',']
+                });
+            }
+
+            function initializeSelect2ForAllFields() {
+                $('.select2-multiple').select2({
+                    multiple: true,
+                    tags: true,
+                    allowClear: true,
+                    tokenSeparators: [','],
+                    multiple: true,
+                });
+            }
+
+            $('#addTranslationsButton').click(function () {
+                var translationsContainer = $('#translationsContainer');
+                var translationTemplate = $('#translationTemplate').html();
+                var translationsCount = translationsContainer.find('.card').length;
+
+                var newTranslation = translationTemplate.replace(/new/g, translationsCount);
+                translationsContainer.append(newTranslation);
+
+                initializeSelect2ForNewField(translationsCount);
+            });
+
+        });
+    </script>
+    <script id="authorTemplate" type="text/template">
+        <div class="card mb-4">
+            <div style="text-align: right;">
+                <button class="delete-btn" type="button" onclick="deleteCard(this)">&times;</button>
+            </div>
+            <div class="row">
+                <div class="col half">
+                    <label for="article_form_authors_new_firstname" class="required">Ad</label>
+                    <input type="text" id="article_form_authors_new_firstname"
+                           name="article_form[authors][new][firstname]" required="required"
+                           class="form-control col half">
+                </div>
+                <div class="col half">
+                    <label for="article_form_authors_new_lastname" class="required">Soyad</label>
+                    <input type="text" id="article_form_authors_new_lastname"
+                           name="article_form[authors][new][lastname]" required="required"
+                           class="form-control col half">
+                </div>
+                <div class="col half">
+                    <label for="article_form_authors_new_orcId" class="required">Orc Id</label>
+                    <input type="text" id="article_form_authors_new_orcId" name="article_form[authors][new][orcId]"
+                           required="required" class="form-control col half">
+                </div>
+                <div class="col half">
+                    <label for="article_form_authors_new_email" class="required">E-posta</label>
+                    <input type="email" id="article_form_authors_new_email" name="article_form[authors][new][email]"
+                           required="required" class="form-control col half">
+                </div>
+                <div class="col trequarter">
+                    <label for="article_form_authors_new_institute" class="required">Kurum</label>
+                    <input type="text" id="article_form_authors_new_institute"
+                           name="article_form[authors][new][institute]" required="required"
+                           class="form-control col trequarter">
+                </div>
+            </div>
+        </div>
+
+    </script>
+    <script>
+        //author
+        $(document).ready(function () {
+            var authorsContainer = $('#authorContainer');
+            var authorTemplate = $('#authorTemplate').html();
+
+            $('#addAuthorButton').click(function () {
+                var authorsCount = authorsContainer.find('.card').length;
+                var newAuthor = authorTemplate.replace(/new/g, authorsCount);
+                authorsContainer.append(newAuthor);
+            });
+        });
+    </script>
+    <script id="translatorTemplate" type="text/template">
+        <div class="card mb-3" id="translatorsCard">
+            <div style="text-align: right;">
+                <button class="delete-btn" type="button" onclick="deleteCard(this)">&times;</button>
+            </div>
+            <div class="row">
+                <div class="col half">
+                    <label for="article_form_translators_new_firstname" class="required">Ad</label>
+                    <input type="text" id="article_form_translators_new_firstname"
+                           name="article_form[translators][new][firstname]" required="required"
+                           class="form-control col half">
+                </div>
+                <div class="col half">
+                    <label for="article_form_translators_new_lastname" class="required">Soyad</label>
+                    <input type="text" id="article_form_translators_new_lastname"
+                           name="article_form[translators][new][lastname]" required="required"
+                           class="form-control col half">
+                </div>
+                <div class="col half">
+                    <label for="article_form_translators_new_orcId" class="required">Orc Id</label>
+                    <input type="text" id="article_form_translators_new_orcId"
+                           name="article_form[translators][new][orcId]"
+                           required="required" class="form-control col half">
+                </div>
+                <div class="col half">
+                    <label for="article_form_translators_new_email" class="required">E-posta</label>
+                    <input type="email" id="article_form_translators_new_email"
+                           name="article_form[translators][new][email]" required="required"
+                           class="form-control col half">
+                </div>
+                <div class="col trequarter">
+                    <label for="article_form_translators_new_institute" class="required">Kurum</label>
+                    <input type="text" id="article_form_translators_new_institute"
+                           name="article_form[translators][new][institute]" required="required"
+                           class="form-control col trequarter">
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        //translator
+        $(document).ready(function () {
+            var translatorsContainer = $('#translatorContainer');
+            var translatorTemplate = $('#translatorTemplate').html();
+
+            $('#addTranslatorButton').click(function () {
+                var translatorsCount = translatorsContainer.find('.card').length;
+                var newTranslator = translatorTemplate.replace(/new/g, translatorsCount);
+                translatorsContainer.append(newTranslator);
+            });
+        });
+    </script>
+
+{% endblock %}
+{% block title %}Makale Düzenle{% endblock %}

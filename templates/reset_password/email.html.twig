@@ -1,0 +1,12 @@
+<h1>Hi!</h1>
+<br>
+<br>
+<br>
+<br>
+<p>Sıfırlamak için linki takip ediniz</p>
+{#<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>#}
+<a href="https://127.0.0.1:8000{{ path('app_reset_password', {'token': resetToken.token}) }}">
+    https://127.0.0.1:8000{{ path('app_reset_password', {'token': resetToken.token}) }}</a>
+
+<p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
