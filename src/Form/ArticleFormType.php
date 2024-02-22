@@ -55,7 +55,9 @@ class ArticleFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Doi'
+                'label' => 'Doi',
+                'required' => false,
+
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => [

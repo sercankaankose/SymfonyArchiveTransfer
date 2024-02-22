@@ -26,9 +26,12 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <h1>{{ journal.name }} Sayıları</h1>
-                {#                <div class="m-3"> #}
-                {#                    <a href="{{ path('journal_issue_add',{'id': journal.id}) }}" class="btn btn-lg btn-dark">Yeni Makale Ekl ----e</a> #}
-                {#                </div> #}
+                <div class="m-3 me-0">
+                    <a href="{{ path('journal_issue_add',{'id': journal.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
+                        </a>
+
+                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi İşaretle</a>
+                </div>
 
             </div>
             <div class="card shadow-lg " style="font-size: 20px;">
@@ -39,7 +42,6 @@
                             <thead>
                             <tr>
                                 <th>Makale Başlığı</th>
-                                <th>Doi</th>
                                 <th>Dil</th>
                                 <th>Sayfalar</th>
                                 <th>Durum</th>
@@ -55,7 +57,6 @@
                                     {% else %}
                                         <td>---</td>
                                     {% endif %}
-                                    <td>{{ article.doi }}</td>
                                     {% if article.primaryLanguage =='001' %}
                                         <td>Türkçe</td>
                                     {% elseif article.primaryLanguage == '002' %}
@@ -72,23 +73,30 @@
                                         <td>Farsça</td>
                                     {% else %}
                                         <td>Türkçe</td>
+
                                     {% endif %}
-                                    <td>{{ article.firstPage }}-{{ article.lastPage }}</td>
+                                    <td>{{ article.firstPage }} - {{ article.lastPage }}</td>
                                     {% if article.status == 'waiting' %}
                                         <td>Beklemede</td>
-                                    {% elseif article.status == 'EditRequired' %}
+                                    {% elseif article.status == '001' %}
                                         <td> Düzenleme Gerekli</td>
-                                    {% elseif article.status == 'Error' %}
+                                    {% elseif article.status == '002' %}
+                                        <td> Düzenlendi</td>
+                                    {% elseif article.status == '003' %}
                                         <td>Hatalı</td>
                                     {% else %}
                                         <td>--</td>
                                     {% endif %}
                                     <td style="text-align: right">
-                                        {% if article.status == 'EditRequired' %}
+                                        {% if article.status == '001' %}
                                             <a class="btn btn-primary"
                                                href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
                                             </a>
-                                        {% elseif article.status == 'Error' %}
+                                        {% elseif article.status == '002' %}
+                                            <a class="btn btn-warning"
+                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
+                                            </a>
+                                        {% elseif article.status == '003' %}
                                             <a class="btn btn-danger"
                                                href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
                                             </a>
@@ -187,6 +195,23 @@
                     return ((str1 < str2) ? 1 : ((str1 > str2) ? -1 : 0));
                 }
             });
+            jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+                "sayi-asc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return parseInt(str1) - parseInt(str2);
+                },
+
+                "sayi-desc": function (str1, str2) {
+                    if (str1 === "")
+                        return 1;
+                    if (str2 === "")
+                        return -1;
+                    return parseInt(str2) - parseInt(str1);
+                }
+            });
 
             let table = new DataTable('#myTable', {
                 pageLength: 25,
@@ -195,11 +220,13 @@
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
                 },
-                order: [[3, 'asc']],
+                order: [[2, 'asc']],
                 columnDefs: [
-                    {type: 'yesy', targets: [1,]},
-                    {orderable: false, targets: [5]},
+                    {type: 'yesy', targets: [0]},
+                    {type: 'sayi', targets: [2]},
+                    {orderable: false, targets: [4]},
                 ],
             });
+
         </script>
     {% endblock %}

@@ -68,22 +68,22 @@ class IssuesFormType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('fulltext', FileType::class, [
-                'required' => false,
-
-                'constraints' => [
-                    new File([
-                        'maxSize' => '10240k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                        ],
-                        'mimeTypesMessage' => 'Lütfen geçerli bir PDF dosyası yükleyin.',
-                    ]),
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                ],
-            ])
+//            ->add('fulltext', FileType::class, [
+//                'required' => false,
+//
+//                'constraints' => [
+//                    new File([
+//                        'maxSize' => '10240k',
+//                        'mimeTypes' => [
+//                            'application/pdf',
+//                        ],
+//                        'mimeTypesMessage' => 'Lütfen geçerli bir PDF dosyası yükleyin.',
+//                    ]),
+//                ],
+//                'attr' => [
+//                    'class' => 'form-control',
+//                ],
+//            ])
             ->add('xml', FileType::class, [
                 'required' => true,
 

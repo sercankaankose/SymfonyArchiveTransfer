@@ -55,10 +55,8 @@ class TranslationsFormType extends AbstractType
                 'label' => 'Anahtar Kelimeler',
                 'multiple' => true,
                 'expanded' => false,
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(['message' => 'Anahtar Kelimeler alanı boş olamaz.']),
-                ],
+                'required' => false,
+
             ]);
         $builder->addEventListener(
             FormEvents::PRE_SUBMIT,

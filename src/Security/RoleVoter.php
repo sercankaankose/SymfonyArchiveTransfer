@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Params\ROLE_PARAM;
+use App\Params\RoleParam;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

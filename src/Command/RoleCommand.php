@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\Role;
 use App\Entity\User;
-use App\Params\ROLE_PARAM;
+use App\Params\RoleParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -38,7 +38,7 @@ class RoleCommand extends Command
     {
         $email = $input->getArgument('email');
         $userRepository = $this->entityManager->getRepository(User::class);
-        $role = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => ROLE_PARAM::ROLE_ADMIN]);
+        $role = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_ADMIN]);
         $user = $userRepository->findOneBy(['email' => $email]);
 
         if ($user) {

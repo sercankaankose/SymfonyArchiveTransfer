@@ -52,11 +52,11 @@
                         {{ form_errors(form.xml) }}
                     </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.fulltext, 'Tam Metin', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.fulltext, {'attr': {'class': 'form-control' ~ (form_errors(form.fulltext)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.fulltext) }}
-                    </div>
+{#                    <div class="mb-3">#}
+{#                        {{ form_label(form.fulltext, 'Tam Metin', {'label_attr': {'class': 'form-label'}}) }}#}
+{#                        {{ form_widget(form.fulltext, {'attr': {'class': 'form-control' ~ (form_errors(form.fulltext)|length ? ' is-invalid' : '')}}) }}#}
+{#                        {{ form_errors(form.fulltext) }}#}
+{#                    </div>#}
 
                     <div style="text-align: right">
                         <button type="submit" class="btn btn-primary btn-lg">Yeni Sayı Ekle</button>

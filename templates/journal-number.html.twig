@@ -52,34 +52,48 @@
                                     <td>{{ issue.year }}</td>
                                     <td>{{ issue.volume }}</td>
                                     <td>{{ issue.number }}</td>
-                                    {% if issue.status == 'waiting' %}
-                                    <td>İncelemede</td>
-                                    {% elseif issue.status == 'EditRequired' %}
-                                   <td> Düzenlemeye Hazır</td>
-                                    {% elseif issue.status == 'Error' %}
-                                    <td>Hatalı</td>
-                                        {% else %}
-<td>--</td>
-                                            {% endif %}
+                                    {% if issue.status == '000' %}
+                                        <td>İncelemede</td>
+                                    {% elseif issue.status == '001' %}
+                                        <td>Düzenlemeye Hazır</td>
+                                    {% elseif issue.status == '002' %}
+                                        <td>Düzenlendi</td>
+                                    {% elseif issue.status == '003' %}
+                                        <td>Hatalı</td>
+                                    {% else %}
+                                        <td>--</td>
+                                    {% endif %}
+                                    {% if issue.status == '000' %}
+
+                                {% elseif issue.status == '001' %}
                                     <td style="text-align: right">
-                                        <a class="btn btn-primary" href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a>
-{#                                        <div class="dropdown">#}
-{#                                            <button class="btn btn-secondary dropdown-toggle" type="button"#}
-{#                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"#}
-{#                                                    aria-haspopup="true"#}
-{#                                                    aria-expanded="false">#}
-{#                                                <i class="bi bi-three-dots"></i>#}
-{#                                            </button>#}
-{#                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">#}
-{#                                                <a class="dropdown-item"#}
-{#                                                   href="{{ path('admin_journal_edit', {'id': journal.id}) }}">Düzenle</a>#}
-{#                                                <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal"#}
-{#                                                   onclick="openDeleteModal({{ issue.id }})"#}
-{#                                                   data-bs-target="#deleteIssueModal"#}
-{#                                                   data-target="#deleteIssueModal" data-id="{{ issue.id }}">Sil</a>#}
-{#                                            </div>#}
-{#                                        </div>#}
-                                    </td>
+                                        <a class="btn btn-primary" href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a></td>
+                                {% elseif issue.status == '002' %}
+                                    <td style="text-align: right">
+                                        <a class="btn btn-success" href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a></td>
+                                {% elseif issue.status == '003' %}
+                                    <td style="text-align: right">
+                                        <a class="btn btn-primary" href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a></td>
+
+                                {% else %}
+                                    <td>--</td>
+                                    {% endif %}
+                                    {#                                        <div class="dropdown"> #}
+                                        {#                                            <button class="btn btn-secondary dropdown-toggle" type="button" #}
+                                        {#                                                    id="dropdownMenuButton" data-bs-toggle="dropdown" #}
+                                        {#                                                    aria-haspopup="true" #}
+                                        {#                                                    aria-expanded="false"> #}
+                                        {#                                                <i class="bi bi-three-dots"></i> #}
+                                        {#                                            </button> #}
+                                        {#                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> #}
+                                        {#                                                <a class="dropdown-item" #}
+                                        {#                                                   href="{{ path('admin_journal_edit', {'id': journal.id}) }}">Düzenle</a> #}
+                                        {#                                                <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal" #}
+                                        {#                                                   onclick="openDeleteModal({{ issue.id }})" #}
+                                        {#                                                   data-bs-target="#deleteIssueModal" #}
+                                        {#                                                   data-target="#deleteIssueModal" data-id="{{ issue.id }}">Sil</a> #}
+                                        {#                                            </div> #}
+                                        {#                                        </div> #}
                                 </tr>
                             {% else %}
                                 <tr>
@@ -180,10 +194,10 @@
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
                 },
-
+                order: [[2, 'asc']],
                 columnDefs: [
-                    {type: 'yesy', targets: [1,]},
-                    {orderable: false, targets: []},
+                    {type: 'yesy', targets: []},
+                    {orderable: false, targets: [4]},
                 ],
             });
         </script>

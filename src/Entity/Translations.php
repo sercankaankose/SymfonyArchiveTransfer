@@ -20,7 +20,7 @@ class Translations
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $abstract = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 555, nullable: true)]
     private ?string $title = null;
 
     #[ORM\Column(nullable: true)]

@@ -125,32 +125,20 @@ class ParseXmlCommand extends Command
                 }
 
                 $primaryLang = isset($article['primary-language']) ? trim($article['primary-language']) : '';
+                $langCodes = [
+                    'tr' => '001',
+                    'en' => '002',
+                    'ge' => '003',
+                    'es' => '004',
+                    'ar' => '005',
+                    'ru' => '006',
+                    'fa' => '007',
+                ];
                 if (!is_string($primaryLang) || empty($primaryLang)) {
-                    error_log('birincil dil hatalı');
                     array_push($issueErrors, "Birincil dil bilgisini gözden geçirin.");
-
-//                } else {
-//                    switch (strtolower($primaryLang)) {
-//                        case 'tr':
-//                            return '001';
-//                        case 'en':
-//                            return '002';
-//                        case 'ge':
-//                            return '003';
-//                        case 'es':
-//                            return '004';
-//                        case 'ar':
-//                            return '005';
-//                        case 'ru':
-//                            return '006';
-//                        case 'fa':
-//                            return '007';
-//                        default:
-//                            return '';
-//                    }
                 }
                 if (empty($primaryLang)) {
-                    array_push($issueErrors, "Geçersiz birincil dil: " . $primaryLang);
+                    array_push($issueErrors, " birincil dil yok. " );
                     $newarticle->setPrimaryLanguage('001');
                 } else {
                     $newarticle->setPrimaryLanguage($primaryLang);
@@ -176,8 +164,11 @@ class ParseXmlCommand extends Command
                     $this->validateAuthors($authors, $newarticle, $errors);
                 }
                 //validate referance
-                foreach ($article['citations'] as $citations) {
-                    $this->validateCitations($citations, $newarticle, $errors);
+                if (isset($article['citations'])) {
+                    foreach ($article['citations'] as $citations) {
+
+                        $this->validateCitations($citations, $newarticle, $errors);
+                    }
                 }
                 if (!empty($errors)) {
                     $newarticle->setErrors($errors);
@@ -218,14 +209,14 @@ class ParseXmlCommand extends Command
             if (empty($title) || !is_string($title)) {
                 array_push($errors, "makale başlığı hatalı veya eksik. ");
             } else {
-                $newtranslation->setTitle($translation['title']);
+                $newtranslation->setTitle($this->specialChar($translation['title']));
             }
 
             $abstract = isset($translation['abstract']) ? trim($translation['abstract']) : '';
             if (empty($abstract) || !is_string($abstract)) {
                 array_push($errors, "makale özeti hatalı veya eksik. ");
             } else {
-                $newtranslation->setAbstract($translation['abstract']);
+                $newtranslation->setAbstract($this->specialChar($translation['abstract']));
             }
 
             $keywords = isset($translation['keywords']) ? trim($translation['keywords']) : '';
@@ -233,7 +224,7 @@ class ParseXmlCommand extends Command
                 array_push($errors, "makale anahtar kelimeleri hatalı veya eksik. ");
             } else {
                 $keywordsArray = explode(',', $translation['keywords']);
-                $newtranslation->setKeywords($keywordsArray);
+                $newtranslation->setKeywords($this->specialChar($keywordsArray));
             }
 
             $this->entityManager->persist($newtranslation);
@@ -251,14 +242,14 @@ class ParseXmlCommand extends Command
             if (empty($firstname) || !is_string($firstname)) {
                 array_push($errors, "yazar ismi hatalı veya eksik.");
             } else {
-                $newauthor->setFirstname($author['firstname']);
+                $newauthor->setFirstname($this->specialChar($author['firstname']));
             }
 
             $lastname = isset($author['lastname']) ? trim($author['lastname']) : '';
             if (empty($lastname) || !is_string($lastname)) {
                 array_push($errors, "yazar soyismi hatalı veya eksik.");
             } else {
-                $newauthor->setLastname($author['lastname']);
+                $newauthor->setLastname($this->specialChar($author['lastname']));
             }
 
             $institute = isset($author['institute']) ? trim($author['institute']) : '';
@@ -286,7 +277,7 @@ class ParseXmlCommand extends Command
             if (empty($part) || !is_string($author['part'])) {
                 array_push($errors, "yazar rolü hatalı veya eksik. ");
             } else {
-                $newauthor->setPart($author['part']);
+//$newauthor->setPart($author['part']);
             }
 
             $this->entityManager->persist($newauthor);
@@ -372,5 +363,13 @@ class ParseXmlCommand extends Command
             $this->entityManager->persist($issue);
             return false;
         }
+    }
+
+    function specialChar($text)
+    {
+        return str_replace(
+            array("&#13;",'&rdquo;','&ldquo;',"\r\n",'&#13;','&ndash;','','&nbsp;',' ', '&amp;', '\u0026amp;', '&Agrave;', '&Aacute;', '&Acirc;', '&Atilde;', '&Auml;', '&Aring;', '&agrave;', '&aacute;', '&acirc;', '&atilde;', '&auml;', '&aring;', '&AElig;', '&aelig;', '&szlig;', '&Ccedil;', '&ccedil;', '&Egrave;', '&Eacute', '&Ecirc;', '&Euml;', '&egrave;', '&eacute;', '&ecirc;', '&euml;', '&#131;', '&Igrave;', '&Iacute;', '&Icirc;', '&Iuml;', '&igrave;', '&iacute;', '&icirc;', '&iuml;', '&Ntilde;', '&ntilde;', '&Ograve;', '&Oacute;', '&Ocirc;', '&Otilde;', '&Ouml;', '&ograve;', '&oacute;', '&ocirc;', '&otilde;', '&ouml;', '&Oslash;', '&oslash;', '&#140;', '&#156;', '&#138;', '&#154;', '&Ugrave;', '&Uacute;', '&Ucirc;', '&Uuml;', '&ugrave;', '&uacute;', '&ucirc;', '&uuml;', '&#181;', '&#215;', '&Yacute;', '&#159;', '&yacute;', '&yuml;', '&#176;', '&lt;', '&gt;', '&#177;', '&#171;', '&#187;', '&#161;', '&#xD6;', '&#xFC;', '&#xE7;', '&#x131;', '&#x11F;', '&#x130;', '&#x15F;'),
+            array('','”','“'," ",'','-','','','', '&', '&', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'à', 'á', 'â', 'ã', 'ä', 'å', 'Æ', 'æ', 'ß', 'Ç', 'ç', 'È', 'É', 'Ê', 'Ë', 'è', 'é', 'ê', 'ë', 'ƒ', 'Ì', 'Í', 'Î', 'Ï', 'ì', 'í', 'î', 'ï', 'Ñ', 'ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'ò', 'ó', 'ô', 'õ', 'ö', 'Ø', 'ø', 'Œ', 'œ', 'Š', 'š', 'Ù', 'Ú', 'Û', 'Ü', 'ù', 'ú', 'û', 'ü', 'µ', '×', 'Ý', 'Ÿ', 'ý', 'ÿ', '°', '<', '>', '±', '«', '»', 'i', 'Ö', 'ü', 'ç', 'ı', 'ğ', 'İ', 'ş'), $text);
+
     }
 }

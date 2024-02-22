@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Params\ROLE_PARAM;
+use App\Params\RoleParam;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,9 +46,9 @@ class SecurityController extends AbstractController
 //        $user = $this->security->getUser();
 //        if ($user) {
 //            $roles = $user->getRoles();
-//            if ($authorizationChecker->isGranted(ROLE_PARAM::ROLE_ADMIN)) {
+//            if ($authorizationChecker->isGranted(RoleParam::ROLE_ADMIN)) {
 //                return $this->redirectToRoute('dashboard_admin');
-//            } elseif ($authorizationChecker->isGranted(ROLE_PARAM::ROLE_EDITOR)) {
+//            } elseif ($authorizationChecker->isGranted(RoleParam::ROLE_EDITOR)) {
 //                return $this->redirectToRoute('dashboard_editor');
 //            }
 //        }

@@ -5,7 +5,7 @@ namespace App\Params;
 use App\Entity\User;
 use Symfony\Component\Security\Http\Authenticator\AccessTokenAuthenticator;
 
-class ROLE_PARAM
+class RoleParam
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_USER = 'ROLE_USER';

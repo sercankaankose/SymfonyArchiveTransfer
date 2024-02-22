@@ -8,7 +8,7 @@ use App\Entity\JournalUser;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Form\JournalUserAssigmentType;
-use App\Params\ROLE_PARAM;
+use App\Params\RoleParam;
 use App\Form\JournalFormType;
 use App\Form\RegistrationFormType;
 use App\Service\BreadCrumbService;
@@ -81,7 +81,7 @@ class AdminController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $role = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => ROLE_PARAM::ROLE_USER]);
+            $role = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_USER]);
             $newuser->addRoles($role);
             $this->entityManager->persist($newuser);
             $this->entityManager->flush();
@@ -137,8 +137,8 @@ class AdminController extends AbstractController
 
         $form = $this->createForm(JournalUserAssigmentType::class);
         $form->handleRequest($request);
-        $role_editor = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => ROLE_PARAM::ROLE_EDITOR]);
-        $role_operator = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => ROLE_PARAM::ROLE_OPERATOR]);
+        $role_editor = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_EDITOR]);
+        $role_operator = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_OPERATOR]);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -217,8 +217,8 @@ class AdminController extends AbstractController
         $journalUser = $this->entityManager->getRepository(JournalUser::class)->findBy([
             'person' => $user
         ]);
-        $role_editor = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => ROLE_PARAM::ROLE_EDITOR]);
-        $role_Operator = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => ROLE_PARAM::ROLE_OPERATOR]);
+        $role_editor = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_EDITOR]);
+        $role_Operator = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_OPERATOR]);
 
 
         return $this->render('admin/user/assignedJournal.html.twig', [

@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Params\ROLE_PARAM;
+use App\Params\RoleParam;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,7 +54,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         $roles = $token->getRoleNames();
 
         foreach ($roles as $role) {
-            if ($role === ROLE_PARAM::ROLE_ADMIN) {
+            if ($role === RoleParam::ROLE_ADMIN) {
                 return new RedirectResponse($this->urlGenerator->generate('dashboard_admin'));
             }
         }

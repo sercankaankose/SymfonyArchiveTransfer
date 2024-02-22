@@ -34,8 +34,8 @@ class AuthorFormType extends AbstractType
             ->add('orcId', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label' => 'Orc Id',
+                'required' => false,
                 'constraints' => [
-                    new NotBlank(['message' => 'Orc ID alanı boş olamaz.']),
                     new Regex([
                         'pattern' => '/\d{4}-\d{4}-\d{4}-\d{4}$/',
                         'message' => 'Orc ID formatı geçerli değil. Doğru format: 0000-0000-0000-0000',
@@ -45,16 +45,12 @@ class AuthorFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label'=>'E-posta',
-                'constraints' => [
-                    new NotBlank(['message' => 'E-posta alanı boş olamaz.']),
-                ],
+                'required' => false,
             ])
             ->add('institute', TextType::class, [
                 'attr' => ['class' => 'form-control col trequarter'],
                 'label'=>'Kurum',
-                'constraints' => [
-                    new NotBlank(['message' => 'Kurum alanı boş olamaz.']),
-                ],
+                'required' => false,
             ]);
     }
 
