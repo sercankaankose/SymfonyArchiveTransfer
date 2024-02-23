@@ -114,13 +114,13 @@ public function createUserEditBreadcrumb()
         return $menu;
     }
     // Sayıdaki makaleler
-    public function createArticle_listBreadcrumb(FactoryInterface $factory, $journalName, $number,$id)
+    public function createArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number,$id)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
-        $menu->addChild($journalName.' '.$number.'. Sayısı',['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
-        $menu->addChild('Makaleler');
+        $menu->addChild($journalName.' Sayıları ',['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
+        $menu->addChild(' '.$number.'. Sayı '.'Makaleleri');
 
         return $menu;
     }
@@ -130,13 +130,13 @@ public function createUserEditBreadcrumb()
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
-        $menu->addChild($journalName.' '.$number.'. Sayısı',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
-        $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
+        $menu->addChild($journalName.' Sayıları ',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild($number.'. Sayı '.'Makaleleri', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
         $menu->addChild('Makale Düzenleme');
 
         return $menu;
     }
-    public function createArticleNewBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId)
+    public function createArticleAddBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);

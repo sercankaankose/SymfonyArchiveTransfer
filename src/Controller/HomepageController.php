@@ -9,6 +9,7 @@ use App\Entity\Journal;
 
 use App\Entity\Translations;
 use App\Form\ArticleFormType;
+use App\Form\ArticleFulltextAddFormType;
 use App\Form\IssuesFormType;
 
 use App\Params\ArticleStatusParam;
@@ -18,6 +19,7 @@ use App\Params\RoleParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Menu\FactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -79,7 +81,7 @@ class HomepageController extends AbstractController
 
 
     #[Route('/journal/{id}/issue/add', name: 'journal_issue_add')]
-    public function issue_add($id, Request $request, FactoryInterface $factory): Response
+    public function issueAdd($id, Request $request, FactoryInterface $factory): Response
     {
         $journal = $this->entityManager->getRepository(Journal::class)->find($id);
         $journalname = $journal->getName();
@@ -142,14 +144,33 @@ class HomepageController extends AbstractController
             'journal' => $journal,
         ]);
     }
+    #[Route('journal/{id}/issue/save', name: 'issue_save')]
+    public function issueSave($id): Response
+    {
+        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+        $journal = $issue->getJournal();
+        $article = $this->entityManager->getRepository(Articles::class)->findOneBy([
+            'issue' => $issue,
+            'status' => ArticleStatusParam::EDIT_REQUIRED
+        ]);
 
+        if ($article) {
+            $this->addFlash('danger', 'Düzenlenmemiş Makale Var');
+            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+        }
+        $issue->setStatus(IssueStatusParam::EDITED);
+        $this->entityManager->persist($issue);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+
+    }
     #[Route('journal/issue/{id}/articles', name: 'articles_list')]
     public function articleList($id, FactoryInterface $factory): Response
     {
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
         $journal = $issue->getJournal();
 
-        $breadcrumb = $this->breadcrumbService->createArticle_listBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $journal->getId());
+        $breadcrumb = $this->breadcrumbService->createArticleListBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $journal->getId());
 
         $text = "Abbott, R. A., Croudace, T. J., Ploubidis, G. B., Kuh, D., Richards, M., & Huppert, F. A. (2008). The
 relationship between early personality and midlife psychological well-being: Evidence from
@@ -373,10 +394,16 @@ buying. Social Behavior and Personality, 36(5), 693-706. DOI: 10.2224/sbp.2008.3
             foreach ($citat as $value) {
                 $this->entityManager->remove($value);
             }
+
             $article->setStatus(ArticleStatusParam::EDITED);
+            $this->entityManager->persist($article);
             $this->entityManager->flush();
             $this->addFlash('success', 'Makale bilgileri güncellendi.');
 
+            if ($request->request->has('save_and_skip')) {
+
+                return $this->redirectToRoute('article_save_skip', ['id' => $article->getId()]);
+            }
             return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
         }
         return $this->render('article_edit.html.twig', [
@@ -387,26 +414,7 @@ buying. Social Behavior and Personality, 36(5), 693-706. DOI: 10.2224/sbp.2008.3
         ]);
     }
 
-    #[Route('journal/{id}/issue/save', name: 'issue_save')]
-    public function issueSave($id): Response
-    {
-        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
-        $journal = $issue->getJournal();
-        $article = $this->entityManager->getRepository(Articles::class)->findOneBy([
-           'issue'=>$issue,
-           'status'=> ArticleStatusParam::EDIT_REQUIRED
-        ]);
 
-        if ($article){
-            $this->addFlash('danger','Düzenlenmemiş Makale Var');
-            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
-        }
-        $issue->setStatus(IssueStatusParam::EDITED);
-        $this->entityManager->persist($issue);
-        $this->entityManager->flush();
-        return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
-
-    }
 
     #[Route('/article/save-skip/{id}', name: 'article_save_skip')]
     public function articleSaveSkip($id): Response
@@ -419,13 +427,73 @@ buying. Social Behavior and Personality, 36(5), 693-706. DOI: 10.2224/sbp.2008.3
         ]);
 
         if ($nextArticle) {
-            return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
+            return $this->redirectToRoute('article_edit', ['id' => $nextArticle->getId()]);
         } else {
             return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
 
         }
-
     }
+
+    #[Route ('/article/{id}/new', name: 'article_add')]
+    public function articleAdd($id, Request $request,FactoryInterface $factory,): Response
+    {
+
+        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+        $journal = $issue->getJournal();
+        $newArticle = new Articles();
+        $form = $this->createForm(ArticleFulltextAddFormType::class, $newArticle);
+        $form->handleRequest($request);
+        $data = $form->getData();
+        $breadcrumb = $this->breadcrumbService->createArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newArticle->setPrimaryLanguage('001');
+            $this->entityManager->persist($newArticle);
+            $this->entityManager->flush();
+            //bu kısma article dosyasının nereye kaydedileceği gelecek
+
+            $journalId = $issue->getJournal()->getId();
+            $issueId = $issue->getId();
+            $issueYear = $issue->getYear();
+            $issueNumber = $issue->getNumber();
+
+            $uniqName = bin2hex(random_bytes(4));
+
+            $fileName = sprintf('%s-%s-%s-%s-%s.pdf', $journalId, $issueId, $issueYear, $issueNumber, $uniqName);
+            $fileName = pathinfo($fileName, PATHINFO_FILENAME);
+
+            $uploadPath = 'var/journal/';
+
+            $journalFolder = $uploadPath . $journalId;
+            $filesystem = new Filesystem();
+
+            if (!$filesystem->exists($journalFolder)) {
+                $filesystem->mkdir($journalFolder);
+            }
+
+            $issueFolder = $journalFolder . '/' . $issueId;
+            if (!$filesystem->exists($issueFolder)) {
+                $filesystem->mkdir($issueFolder);
+            }
+
+            $destinationPath = $issueFolder . '/' . $fileName;
+
+            if (pathinfo($destinationPath, PATHINFO_EXTENSION) !== 'pdf') {
+                $destinationPath .= '.pdf';
+            }
+            file_put_contents($destinationPath, $newArticle->getFulltext());
+
+            //-*------------------*-*-*-*-*-*-*---------------------------
+        }
+        $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+
+        return $this->render('article_add.html.twig',[
+            'form' => $form->createView(),
+            'breadcrumb' => $breadcrumb,
+                'journal' =>$journal,
+        ]);
+    }
+
 
     #[Route('article/{id}/{status}', name: 'article_pdf_error')]
     public function articlePdfError($id, $status): Response

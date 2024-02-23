@@ -27,7 +27,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h1>{{ journal.name }} Sayıları</h1>
                 <div class="m-3 me-0">
-                    <a href="{{ path('journal_issue_add',{'id': journal.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
+                    <a href="{{ path('article_add',{'id': issues.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
                         </a>
 
                     <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi İşaretle</a>
@@ -53,7 +53,7 @@
                             {% for article in articles %}
                                 <tr>
                                     {% if article.translations.first.title %}
-                                        <td>{{ article.translations.first.title }}</td>
+                                        <td>{{ article.translations.first.title|slice(0, 85) }}</td>
                                     {% else %}
                                         <td>---</td>
                                     {% endif %}
@@ -79,7 +79,7 @@
                                     {% if article.status == 'waiting' %}
                                         <td>Beklemede</td>
                                     {% elseif article.status == '001' %}
-                                        <td> Düzenleme Gerekli</td>
+                                        <td>Düzenlenmeli</td>
                                     {% elseif article.status == '002' %}
                                         <td> Düzenlendi</td>
                                     {% elseif article.status == '003' %}
