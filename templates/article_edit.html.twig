@@ -271,10 +271,14 @@
             {% endif %}
             <div class="btn-group-lg mt-1">
                 <a class="btn btn-danger btn-lg" onclick="openDeleteModal()" style="margin-top: -10px;"
-                   data-toggle="modal" data-target="#pdfErrorModal"><i class="bi bi-exclamation-triangle-fill"></i>Tam
-                    Metin Hatası Bildir</a>
-                <button type="submit" name="save_and_return" class="btn btn-success btn-lg" style=" margin-top: -10px;"><i
-                            class="bi bi-file-earmark-check"></i>Makaleyi Kaydet
+                   data-toggle="modal" data-target="#pdfErrorModal"><i class="bi bi-exclamation-triangle-fill"></i>PDF
+                    Hatası Bildir</a>
+                <a class="btn btn-warning btn-lg" href="{{ path('article_Pdf_Change', {'id': article.id}) }}" style="margin-top: -10px; color: #fff3cd; border:#373a41 solid 1px">
+                    <i class="bi bi-box-arrow-in-down"></i> Pdf Güncelle
+                </a>
+                <button type="submit" name="save_and_return" class="btn btn-success btn-lg" style=" margin-top: -10px;">
+                    <i
+                            class="bi bi-file-earmark-check"></i>Kaydet
                 </button>
                 <button type="submit" name="save_and_skip" class="btn btn-success btn-lg" style="margin-top: -10px;">
                     <i class="bi bi-file-earmark-check"></i>Kaydet ve Sonraki Makaleye Geç
@@ -533,8 +537,6 @@
             </div>
         </div>
     </div>
-
-
 {% endblock %}
 {% block javascripts %}
 
@@ -558,6 +560,30 @@
             container.appendChild(clone);
         }
     </script>
+    {#    <script> #}
+    {#    bu kısım istediğim igibi değil buerayı düzenle    #}
+    {#        document.addEventListener('DOMContentLoaded', function () { #}
+    {#            checkFormValidity(); #}
+
+    {#            function checkFormValidity() { #}
+    {#                var tabs = document.querySelectorAll('.nav-link'); #}
+    {#                tabs.forEach(function(tab) { #}
+    {#                    var controlId = tab.getAttribute('data-bs-target').substring(1); // Remove '#' from the ID #}
+    {#                    var tabContent = document.getElementById(controlId); #}
+    {#                    var invalidInputs = tabContent.querySelectorAll('input:invalid'); #}
+
+    {#                    if (invalidInputs.length > 0) { #}
+    {#                        tab.style.backgroundColor = '#FFFF00'; // Sarı renk #}
+    {#                        tab.style.color = 'aliceblue'; #}
+    {#                    } else { #}
+    {#                        tab.style.backgroundColor = ''; #}
+    {#                        tab.style.color = ''; #}
+    {#                    } #}
+    {#                }); #}
+    {#            } #}
+    {#        }); #}
+    {#    </script> #}
+
 
     <script>
         $(document).ready(function () {

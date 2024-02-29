@@ -51,7 +51,7 @@ class AdminController extends AbstractController
 
 //    kullanıcı paneli
     #[Route('/admin/user-management', name: 'admin_user_management')]
-    public function user_management(): Response
+    public function userManagement(): Response
     {
         $allusers = $this->entityManager->getRepository(User::class)->findBy(["is_admin" => false]);
         $breadcrumb = $this->breadcrumbService->createUserManagementBreadcrumb();
@@ -67,7 +67,7 @@ class AdminController extends AbstractController
 
 //    kullanıcı ekleme
     #[Route('/admin/user/add', name: 'admin_user_add')]
-    public function user_add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function userAdd(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $newuser = new User();
         $form = $this->createForm(RegistrationFormType::class, $newuser);
@@ -104,7 +104,7 @@ class AdminController extends AbstractController
 
 //    kullanıcı pasifleştirme Func
     #[Route('/admin/user/passive/{id}', name: 'admin_user_pasive')]
-    public function user_passive_func($id): Response
+    public function userPassiveFunc($id): Response
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
         $user->setIsActive(false);
@@ -118,7 +118,7 @@ class AdminController extends AbstractController
 
 //    kullanıcı aktifleştirme Func
     #[Route('/admin/user/active/{id}', name: 'admin_user_active')]
-    public function user_active_func($id): Response
+    public function userActiveFunc($id): Response
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
         $user->setIsActive(true);
@@ -131,7 +131,7 @@ class AdminController extends AbstractController
 
     // kullanıcıya dergi atama işlemi
     #[Route('/admin/assigment/journal', name: 'admin_assigment_journal')]
-    public function User_Journal_Assign(Request $request): Response
+    public function UserJournalAssign(Request $request): Response
     {
         $breadcrumb = $this->breadcrumbService->createJournalAssigmentBreadcrumb();
 
@@ -208,7 +208,7 @@ class AdminController extends AbstractController
 
 
     #[Route('/admin/assigned/{id}', name: 'admin_assigned_journal_list')]
-    public function admin_assigned_journal($id)
+    public function adminAssignedJournal($id)
     {
         $user = $this->entityManager->getRepository(User::class)->find($id);
 
@@ -246,7 +246,7 @@ class AdminController extends AbstractController
     }
 
     #[Route("/search_user", name: "search_user")]
-    public function searchusers(Request $request)
+    public function searchUsers(Request $request)
     {
         $searchTerm = $request->query->get('term');
 
@@ -261,7 +261,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/assigned/{id}/{role}', name: 'admin_assigned_journal_delete')]
-    public function admin_assigned_journal_delete_func($id, $role)
+    public function adminAssignedJournalDeleteFunc($id, $role)
     {
         $journalUser = $this->entityManager->getRepository(JournalUser::class)->find($id);
         $role = $this->entityManager->getRepository(Role::class)->find($role);
@@ -302,7 +302,7 @@ class AdminController extends AbstractController
 
 //Dergi paneli
     #[Route('/admin/journal-management', name: 'admin_journal_management')]
-    public function journal_management(): Response
+    public function journalManagement(): Response
     {
 
         $all_journal = $this->entityManager->getRepository(Journal::class)->findAll();
@@ -360,7 +360,7 @@ class AdminController extends AbstractController
 
 //    Dergi Ekleme
     #[Route('/admin/journal/add', name: 'admin_journal_add')]
-    public function journal_add(Request $request): Response
+    public function journalAdd(Request $request): Response
     {
         $breadcrumb = $this->breadcrumbService->createJournalAddBreadcrumb();
 
@@ -390,7 +390,7 @@ class AdminController extends AbstractController
 
 //    Dergi Silme Func
     #[Route('/admin/journal/delete/{id}', name: 'admin_journal_delete')]
-    public function journal_delete_func($id): Response
+    public function journalDeleteFunc($id): Response
     {
         $journal = $this->entityManager->getRepository(Journal::class)->find($id);
 
@@ -409,7 +409,7 @@ class AdminController extends AbstractController
 
 //    Dergi Düzenleme
     #[Route('/admin/journal/edit/{id}', name: 'admin_journal_edit')]
-    public function journal_edit($id, Request $request): Response
+    public function journalEdit($id, Request $request): Response
     {
         $breadcrumb = $this->breadcrumbService->createJournalEditBreadcrumb();
 

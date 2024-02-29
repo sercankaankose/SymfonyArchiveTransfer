@@ -34,6 +34,9 @@ class Journal
     #[ORM\OneToMany(mappedBy: 'journal', targetEntity: Articles::class)]
     private Collection $articles;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $publisher = null;
+
     public function __construct()
     {
 
@@ -169,6 +172,18 @@ class Journal
                 $article->setJournal(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPublisher(): ?string
+    {
+        return $this->publisher;
+    }
+
+    public function setPublisher(?string $publisher): static
+    {
+        $this->publisher = $publisher;
 
         return $this;
     }

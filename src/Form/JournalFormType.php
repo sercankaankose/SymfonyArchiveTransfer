@@ -33,9 +33,24 @@ class JournalFormType extends AbstractType
                     'autocomplete' => 'off',
 
                 ],
+                'label' =>' Dergi İsmi',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Lütfen dergi adı giriniz.',
+                    ]),
+                ],
+            ])
+            ->add('publisher', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'autocomplete' => 'off',
+
+                ],
+                'label' =>' Yayıncı',
+
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Lütfen yayıncı adı giriniz.',
                     ]),
                 ],
             ])

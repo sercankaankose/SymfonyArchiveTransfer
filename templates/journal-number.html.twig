@@ -43,6 +43,7 @@
                                 <th>Sayı</th>
                                 <th>Durum</th>
                                 <th style="text-align: right; "></th>
+                                <th style="text-align: right; "></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -77,6 +78,14 @@
 
                                 {% else %}
                                     <td>--</td>
+                                    {% endif %}
+                                    {% if issue.status == '002' %}
+                                    <td style="text-align: right" >
+                                        <a class="btn btn-warning" href="{{ path('issue_export', {'id': issue.id}) }}">Dışa Aktar</a></td>
+
+                                {% else %} <td style="text-align: right">
+                                    <a class="btn btn-secondary" disabled>Dışa Aktar</a></td>
+
                                     {% endif %}
                                     {#                                        <div class="dropdown"> #}
                                         {#                                            <button class="btn btn-secondary dropdown-toggle" type="button" #}

@@ -136,6 +136,7 @@ public function createUserEditBreadcrumb()
 
         return $menu;
     }
+    //yeni makale ekleme
     public function createArticleAddBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
@@ -144,6 +145,19 @@ public function createUserEditBreadcrumb()
         $menu->addChild($journalName.' '.$number.'. Sayısı',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
         $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
         $menu->addChild('Makale oluştur');
+
+        return $menu;
+    }
+
+    public function createArticlePdfUploadBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId,$articleId)
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
+        $menu->addChild($journalName.' '.$number.'. Sayısı',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
+        $menu->addChild('Makale Düzenleme', ['route' => 'article_edit', 'routeParameters' => ['id' => $articleId]]);
+        $menu->addChild('Pdf Yükleme');
 
         return $menu;
     }

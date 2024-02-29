@@ -52,6 +52,7 @@
 
                             {% for article in articles %}
                                 <tr>
+
                                     {% if article.translations.first.title %}
                                         <td>{{ article.translations.first.title|slice(0, 85) }}</td>
                                     {% else %}

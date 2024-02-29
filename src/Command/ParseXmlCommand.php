@@ -357,7 +357,6 @@ class ParseXmlCommand extends Command
 
             return $destinationPath;
         } catch (RequestException $e) {
-            error_log('HTTP isteği sırasında bir hata oluştu: ' . $e->getMessage());
             array_push($issueErrors, 'HTTP isteği sırasında bir hata oluştu: ' . $e->getMessage());
             $issue->setErrors($issueErrors);
             $this->entityManager->persist($issue);
