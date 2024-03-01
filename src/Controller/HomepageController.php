@@ -215,6 +215,7 @@ class HomepageController extends AbstractController
             $articleNode->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
             $articleNode->setAttribute('article-type', $articleType); //type switchcase ile değiştirelecek
             $articleNode->setAttribute('dtd-version', '1.0');
+//switchcase ile article typeı düzenle
 
             $frontNode = $xmlDoc->createElement('front');
             $journalMetaNode = $xmlDoc->createElement('journal-meta');
@@ -223,13 +224,13 @@ class HomepageController extends AbstractController
             $journalMetaNode->appendChild($journalTitleGroupNode);
 
 //issn
-            $journalIssnNode = $xmlDoc->createElement($journalIssn);
-            $journalIssnNode->setAttribute('pub-type','ppub');
+            $journalIssnNode = $xmlDoc->createElement('issn', $journal->getIssn());
+            $journalIssnNode->setAttribute('pub-type', 'ppub');
             $journalMetaNode->appendChild($journalIssnNode);
 
 // eissn
-            $journalEissnNode = $xmlDoc->createElement($journalEissn);
-            $journalEissnNode->setAttribute('pub-type','epub');
+            $journalEissnNode = $xmlDoc->createElement('issn', $journal->getEIssn());
+            $journalEissnNode->setAttribute('pub-type', 'epub');
             $journalMetaNode->appendChild($journalEissnNode);
 
 //dergi adı
@@ -239,6 +240,7 @@ class HomepageController extends AbstractController
             $journalPublisherNode = $xmlDoc->createElement('publisher');
             $journalPublisherNameNode = $xmlDoc->createElement('publisher-name', $publisher);
             $journalPublisherNode->appendChild($journalPublisherNameNode);
+            $frontNode->appendChild($journalMetaNode);
 //journal meta buraya kadar
 
             $articleMetaNode = $xmlDoc->createElement('article-meta');
@@ -247,212 +249,130 @@ class HomepageController extends AbstractController
             $articleMetaNode->appendChild($articleIdNode);
 
             $articleTitleGroupNode = $xmlDoc->createElement('title-group');
-
 //makale başlıkları burada
             $translations = $article->getTranslations();
             foreach ($translations as $translation) {
                 $articleTitleNode = $xmlDoc->createElement('article-title', $translation->getTitle());
             }
             $articleTitleGroupNode->appendChild($articleTitleNode);
+            $articleMetaNode->appendChild($articleTitleGroupNode);
 
-        //yazar sekmesi
+            //yazar sekmesi
             $contribGroupNode = $xmlDoc->createElement('contrib-group');
             $authors = $article->getAuthors();
             foreach ($authors as $author) {
                 $contribNode = $xmlDoc->createElement('contrib');
                 $contribNode->setAttribute('contrib-type', 'author');
-                $contribGroupNode->appendChild($contribNode);
 //isim soyad
                 $nameNode = $xmlDoc->createElement('name');
-                $surnameNode = $xmlDoc->createElement('surname',$author->getLastname());
+                $surnameNode = $xmlDoc->createElement('surname', $author->getLastname());
                 $nameNode->appendChild($surnameNode);
-                $givenNameNode = $xmlDoc->createElement('given-names',$author->getFirstname());
+                $givenNameNode = $xmlDoc->createElement('given-names', $author->getFirstname());
                 $nameNode->appendChild($givenNameNode);
+                $contribNode->appendChild($nameNode);
 //institute
-                $affNode = $xmlDoc->createElement('aff',$author->getInstitute());
-                $nameNode->appendChild($affNode);
+                $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+                $contribNode->appendChild($affNode);
 //orcid
-                $contribIdNode = $xmlDoc->createElement('contrib-id',$author->getOrcId());
-                $contribIdNode->setAttribute('contrib-id-type','orcid');
-                $nameNode->appendChild($contribIdNode);
+                $contribIdNode = $xmlDoc->createElement('contrib-id', $author->getOrcId());
+                $contribIdNode->setAttribute('contrib-id-type', 'orcid');
+                $contribNode->appendChild($contribIdNode);
+
+                $contribGroupNode->appendChild($contribNode);
             }
-        //çevirmen sekmesi
+            //çevirmen sekmesi
             $translators = $article->getTranslators();
             foreach ($translators as $translator) {
                 $contribNode = $xmlDoc->createElement('contrib');
                 $contribNode->setAttribute('contrib-type', 'translator');
-                $contribGroupNode->appendChild($contribNode);
 //isim soyad
                 $nameNode = $xmlDoc->createElement('name');
-                $surnameNode = $xmlDoc->createElement('surname',$translator->getLastname());
+                $surnameNode = $xmlDoc->createElement('surname', $translator->getLastname());
                 $nameNode->appendChild($surnameNode);
-                $givenNameNode = $xmlDoc->createElement('given-names',$translator->getFirstname());
+                $givenNameNode = $xmlDoc->createElement('given-names', $translator->getFirstname());
                 $nameNode->appendChild($givenNameNode);
+                $contribNode->appendChild($nameNode);
+
 //institute
-                $affNode = $xmlDoc->createElement('aff',$translator->getInstitute());
-                $nameNode->appendChild($affNode);
+                $affNode = $xmlDoc->createElement('aff', $translator->getInstitute());
+                $contribNode->appendChild($affNode);
 //orcid
-                $contribIdNode = $xmlDoc->createElement('contrib-id',$translator->getOrcId());
-                $contribIdNode->setAttribute('contrib-id-type','orcid');
-                $nameNode->appendChild($contribIdNode);
+                $contribIdNode = $xmlDoc->createElement('contrib-id', $translator->getOrcId());
+                $contribIdNode->setAttribute('contrib-id-type', 'orcid');
+                $contribNode->appendChild($contribIdNode);
+
+                $contribGroupNode->appendChild($contribNode);
             }
+            $articleMetaNode->appendChild($contribGroupNode);
+//pubdate
+
+//volume
+            $volumeNode = $xmlDoc->createElement('volume', $issue->getVolume());
+            $articleMetaNode->appendChild($volumeNode);
+//sayı
+            $numberNode = $xmlDoc->createElement('issue', $issue->getNumber());
+            $articleMetaNode->appendChild($numberNode);
+//birinci sayfa
+            $fpageNode = $xmlDoc->createElement('fpage', $fPage);
+            $articleMetaNode->appendChild($fpageNode);
+//ikinci sayfa
+            $lpageNode = $xmlDoc->createElement('lpage', $lPage);
+            $articleMetaNode->appendChild($lpageNode);
+
+//abstract
+            $abstractNode = $xmlDoc->createElement('abstract');
+            foreach ($translations as $translation) {
+                //bu kısımda birden fazla olacağı için bir değişiklik yapılmalı
+                $pNode = $xmlDoc->createElement('p', $translation->getAbstract());
+            }
+            //   <trans-abstract xml:lang="fr">
+            $abstractNode->appendChild($pNode);
+            $articleMetaNode->appendChild($abstractNode);
+//  <kwd-group xml:lang="en">
+            $kwdGroupNode = $xmlDoc->createElement('kwd-group');
+            foreach ($translations as $translation) {
+                foreach ($translation->getKeywords() as $keyword) {
+                    $kwdNode = $xmlDoc->createElement('kwd', $keyword);
+                    $kwdGroupNode->appendChild($kwdNode);
+                }
+            }
+            $articleMetaNode->appendChild($kwdGroupNode);
+
+            //received
+
+            //accepted
+
+            $frontNode->appendChild($articleMetaNode);
 
             $articleNode->appendChild($frontNode);
 
-            // Diğer XML öğelerini oluştur ve <front> öğesine ekle...
+            $back = $xmlDoc->createElement('back');
+            $refListNode = $xmlDoc->createElement('ref-list');
+            foreach ($article->getCitations() as $citation) {
+                $refNode = $xmlDoc->createElement('ref');
+                $refNode->setAttribute('id', 'ref' . $citation->getRow());
 
-            // Makale <article> öğesini <articles> kök öğesine ekle
+                $label = $xmlDoc->createElement('label', $citation->getRow());
+                $refNode->appendChild($label);
+                $mixedCitationNode = $xmlDoc->createElement('mixed-citation', htmlspecialchars($citation->getReferance(), ENT_XML1));
+                $refNode->appendChild($mixedCitationNode);
+
+                $refListNode->appendChild($refNode);
+
+            }
+            $back->appendChild($refListNode);
+            $articleNode->appendChild($back);
             $articlesNode->appendChild($articleNode);
         }
-
 // <articles> kök öğesini XML dokümanına ekle
         $xmlDoc->appendChild($articlesNode);
 
 // XML içeriğini bir değişkene atayın
         $xmlContent = $xmlDoc->saveXML();
         $fileName = 'exported_articles.xml';
-
-        $response = new Response(file_get_contents($fileName));
-        $response->headers->set('Content-Type', 'application/xml');
-        $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
-        $response->sendHeaders();
-
-        return $response;
-
-
-        $articleXml = '<articles>';
-
-        foreach ($articles as $article) {
-            $articleType = $article->getType();
-            $doi = $article->getDoi();
-            $fPage = $article->getFirstPage();
-            $lPage = $article->getLastPage();
-            $primaryLang = $article->getPrimaryLanguage();
-
-            $articleXml .= '<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="' . $articleType . '" dtd-version="1.0">';
-            $articleXml .= '<front>';
-            $articleXml .= '<journal-meta>';
-//            $articleXml .= '<journal-id>-<journal-id/>'; //journal id nedir
-            $articleXml .= '<journal-title-group>';
-            $articleXml .= '<journal-title>' . $journalName . '</journal-title>';
-            $articleXml .= '</journal-title-group>';
-            $articleXml .= '<issn pub-type="ppub">' . $journalIssn . '</issn>';
-            $articleXml .= '<issn pub-type="epub">' . $journalEissn . '</issn>';
-            $articleXml .= '<publisher>';
-            $articleXml .= '<publisher-name>' . $publisher . '</publisher-name>';
-            $articleXml .= '</publisher>';
-            $articleXml .= '</journal-meta>';
-            $articleXml .= '<article-meta>';
-            $articleXml .= '<article-id pub-id-type="doi">' . $doi . '</article-id>';
-            $articleXml .= '<article-categories>';
-            $articleXml .= '<subj-group>';
-            $articleXml .= '<subject>-</subject>';
-            $articleXml .= '</subj-group>';
-            $articleXml .= '</article-categories>';
-            $articleXml .= '<title-group>';
-
-            $translations = $article->getTranslations();
-            foreach ($translations as $translation) {
-                $articleTitle = $translation->getTitle();
-                $articleTitle = htmlspecialchars($articleTitle, ENT_XML1);
-                $articleXml .= '<article-title>' . $articleTitle . '</article-title>';
-
-            }
-            $articleXml .= '</title-group>';
-
-            $articleXml .= '<contrib-group>';
-
-            $authors = $article->getAuthors();
-            foreach ($authors as $author) {
-                $authorName = $author->getFirstname();
-                $authorLastName = $author->getLastname();
-                $authorOrcId = $author->getOrcId();
-                $authorInstitute = $author->getInstitute();
-
-                $articleXml .= '<contrib contrib-type="author">';
-                $articleXml .= '<name>';
-                $articleXml .= '<surname><![CDATA[' . $authorLastName . ']]></surname>';
-                $articleXml .= '<given-names><![CDATA[' . $authorName . ']]></given-names>';
-                $articleXml .= '</name>';
-                $articleXml .= '<aff>' . $authorInstitute . '</aff>';
-                $articleXml .= '<contrib-id contrib-id-type="orcid">' . $authorOrcId . '</contrib-id>';
-                $articleXml .= '</contrib>';
-            }
-            $translators = $article->getTranslators();
-            if ($translators) {
-
-                foreach ($translators as $translator) {
-                    $translatorName = $translator->getFirstname();
-                    $translatorLastName = $translator->getLastname();
-                    $translatorOrcId = $translator->getOrcId();
-                    $translatorInstitute = $translator->getInstitute();
-
-                    $articleXml .= '<contrib contrib-type="translator">';
-                    $articleXml .= '<name>';
-                    $articleXml .= '<surname><![CDATA[' . $translatorLastName . ']]></surname>';
-                    $articleXml .= '<given-names><![CDATA[' . $translatorName . ']]></given-names>';
-                    $articleXml .= '</name>';
-                    $articleXml .= '<aff>' . $translatorInstitute . '</aff>';
-                    $articleXml .= '<contrib-id contrib-id-type="orcid">' . $translatorOrcId . '</contrib-id>';
-                    $articleXml .= '</contrib>';
-                }
-            }
-            $articleXml .= '</contrib-group>';
-
-            //bu kısımda date kısmı gelecek düzelt
-            //***-*-*-*-*--*--------
-
-            $articleXml .= '<abstract><![CDATA[';
-            foreach ($translations as $translation) {
-                $abstract = $translation->getAbstract();
-                $abstract = htmlspecialchars($abstract, ENT_XML1);
-
-                $articleXml .= '<p>' . $abstract . '</p>';
-
-            }
-            $articleXml .= ']]></abstract>';
-
-            $articleXml .= '<kwd-group>';
-            foreach ($translations as $translation) {
-
-                foreach ($translation->getKeywords() as $keyword) {
-                    $articleXml .= '<kwd>' . $keyword . '</kwd>';
-                }
-            }
-            $articleXml .= '</kwd-group>';
-            $articleXml .= '</article-meta>';
-            $articleXml .= '</front>';
-            $articleXml .= '<back>';
-            $articleXml .= '<ref-list>';
-
-            $citations = $article->getCitations();
-
-            foreach ($citations as $citation) {
-
-                $articleXml .= '<ref id="ref' . $citation->getRow() . '">';
-                $articleXml .= '<label>' . $citation->getRow() . '</label>';
-                $articleXml .= '<mixed-citation>' . $citation->getReferance() . '</mixed-citation>';
-                $articleXml .= '</ref>';
-            }
-
-            $articleXml .= '</ref-list>';
-            $articleXml .= '</back>';
-            $articleXml .= '</article>';
-            $articleXml .= '';
-        }
-        $articleXml .= '</articles>';
-
-        $xmlContent = $articleXml;
-
-
-// Dosyayı oluştur
-        $fileName = 'exported_articles.xml';
         $file = fopen($fileName, 'w');
         fwrite($file, $xmlContent);
         fclose($file);
-//switchcase ile article typeı düzenle
 
 // Dosyayı indirme olarak kullanıcıya sun
         $response = new Response(file_get_contents($fileName));
@@ -463,6 +383,7 @@ class HomepageController extends AbstractController
         $response->sendHeaders();
 
         return $response;
+
 
 
     }
