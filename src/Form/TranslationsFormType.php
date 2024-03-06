@@ -21,7 +21,7 @@ class TranslationsFormType extends AbstractType
     {
         $builder
             ->add('locale', ChoiceType::class, [
-                'attr' => ['class' => 'form-control col small'],
+                'attr' => ['class' => ''],
                 'label' => 'Dil',
                 'required' => true,
                 'choices' => [

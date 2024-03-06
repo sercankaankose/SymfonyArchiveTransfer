@@ -6,6 +6,7 @@ use App\Entity\Articles;
 use App\Entity\Citations;
 use App\Entity\Issues;
 use App\Entity\Journal;
+use App\Util\TypeModifier;
 
 use App\Entity\Translations;
 use App\Form\ArticleFormType;
@@ -30,9 +31,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\BreadCrumbService;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 
 class HomepageController extends AbstractController
@@ -207,15 +205,15 @@ class HomepageController extends AbstractController
             $fPage = $article->getFirstPage();
             $lPage = $article->getLastPage();
             $primaryLang = $article->getPrimaryLanguage();
+            $typeModifier = new TypeModifier();
 
             // <article> öğesini oluştur
             $articleNode = $xmlDoc->createElement('article');
             $articleNode->setAttribute('xmlns:mml', 'http://www.w3.org/1998/Math/MathML');
             $articleNode->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
             $articleNode->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-            $articleNode->setAttribute('article-type', $articleType); //type switchcase ile değiştirelecek
+            $articleNode->setAttribute('article-type', $typeModifier->mapArticleType($articleType));
             $articleNode->setAttribute('dtd-version', '1.0');
-//switchcase ile article typeı düzenle
 
             $frontNode = $xmlDoc->createElement('front');
             $journalMetaNode = $xmlDoc->createElement('journal-meta');
@@ -249,13 +247,36 @@ class HomepageController extends AbstractController
             $articleMetaNode->appendChild($articleIdNode);
 
             $articleTitleGroupNode = $xmlDoc->createElement('title-group');
-//makale başlıkları burada
+
             $translations = $article->getTranslations();
+
             foreach ($translations as $translation) {
-                $articleTitleNode = $xmlDoc->createElement('article-title', $translation->getTitle());
+                // Ana dil ile aynı olan çeviriyi doğrudan <article-title> içine ekleyin
+                if ($primaryLang == $translation->getLocale()) {
+                    $articleTitleNode = $xmlDoc->createElement('article-title', $translation->getTitle());
+                    $articleTitleGroupNode->appendChild($articleTitleNode);
+                }
             }
-            $articleTitleGroupNode->appendChild($articleTitleNode);
+
+            $hasTranslations = $translations->count() > 1;
+
+// Ana dil ile aynı olmayan çevirileri <trans-title-group> içine ekleyin
+            if ($hasTranslations) {
+                foreach ($translations as $translation) {
+                    if ($primaryLang != $translation->getLocale()) { // Ana dil ile aynı olmayan çeviriler
+
+                    $articleTransTitleGroupNode = $xmlDoc->createElement('trans-title-group');
+                        $articleTransTitleGroupNode->setAttribute('xml:lang',$typeModifier->convertLanguageCode($translation->getLocale()));
+                        $articleTransTitleNode = $xmlDoc->createElement('trans-title', $translation->getTitle());
+                        $articleTransTitleGroupNode->appendChild($articleTransTitleNode);
+                    }
+                }
+
+                $articleTitleGroupNode->appendChild($articleTransTitleGroupNode);
+            }
+
             $articleMetaNode->appendChild($articleTitleGroupNode);
+
 
             //yazar sekmesi
             $contribGroupNode = $xmlDoc->createElement('contrib-group');
@@ -274,7 +295,7 @@ class HomepageController extends AbstractController
                 $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
                 $contribNode->appendChild($affNode);
 //orcid
-                $contribIdNode = $xmlDoc->createElement('contrib-id', $author->getOrcId());
+                $contribIdNode = $xmlDoc->createElement('contrib-id',  'https://orcid.org/' .$author->getOrcId());
                 $contribIdNode->setAttribute('contrib-id-type', 'orcid');
                 $contribNode->appendChild($contribIdNode);
 
@@ -297,7 +318,7 @@ class HomepageController extends AbstractController
                 $affNode = $xmlDoc->createElement('aff', $translator->getInstitute());
                 $contribNode->appendChild($affNode);
 //orcid
-                $contribIdNode = $xmlDoc->createElement('contrib-id', $translator->getOrcId());
+                $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $translator->getOrcId());
                 $contribIdNode->setAttribute('contrib-id-type', 'orcid');
                 $contribNode->appendChild($contribIdNode);
 
@@ -305,8 +326,57 @@ class HomepageController extends AbstractController
             }
             $articleMetaNode->appendChild($contribGroupNode);
 //pubdate
+            if ($article->getReceivedDate() && $article->getAcceptedDate()) {
+                $receivedDate = $article->getReceivedDate()->format('Y-m-d');
+                $historyNode = $xmlDoc->createElement('history');
 
-//volume
+                // Received Date Node
+                $dateReceivedNode = $xmlDoc->createElement('date');
+                $dateReceivedNode->setAttribute('date-type', 'received');
+                $dateReceivedNode->setAttribute('iso-8601-date', $receivedDate);
+
+                // Day Node
+                $dayReceivedNode = $xmlDoc->createElement('day', $article->getReceivedDate()->format('d'));
+                $dateReceivedNode->appendChild($dayReceivedNode);
+
+                // Month Node
+                $monthReceivedNode = $xmlDoc->createElement('month', $article->getReceivedDate()->format('m'));
+                $dateReceivedNode->appendChild($monthReceivedNode);
+
+                // Year Node
+                $yearReceivedNode = $xmlDoc->createElement('year', $article->getReceivedDate()->format('Y'));
+                $dateReceivedNode->appendChild($yearReceivedNode);
+
+                // Append Received Date Node to history node
+                $historyNode->appendChild($dateReceivedNode);
+
+                // Accepted Date Node
+                $acceptedDate = $article->getAcceptedDate()->format('Y-m-d');
+                $dateAcceptedNode = $xmlDoc->createElement('date');
+                $dateAcceptedNode->setAttribute('date-type', 'accepted');
+                $dateAcceptedNode->setAttribute('iso-8601-date', $acceptedDate);
+
+                // Day Node
+                $dayAcceptedNode = $xmlDoc->createElement('day', $article->getAcceptedDate()->format('d'));
+                $dateAcceptedNode->appendChild($dayAcceptedNode);
+
+                // Month Node
+                $monthAcceptedNode = $xmlDoc->createElement('month', $article->getAcceptedDate()->format('m'));
+                $dateAcceptedNode->appendChild($monthAcceptedNode);
+
+                // Year Node
+                $yearAcceptedNode = $xmlDoc->createElement('year', $article->getAcceptedDate()->format('Y'));
+                $dateAcceptedNode->appendChild($yearAcceptedNode);
+
+                // Append Accepted Date Node to history node
+                $historyNode->appendChild($dateAcceptedNode);
+
+                // Append history node to appropriate parent node (like $articleMetaNode)
+                $articleMetaNode->appendChild($historyNode);
+            }
+
+
+            //volume
             $volumeNode = $xmlDoc->createElement('volume', $issue->getVolume());
             $articleMetaNode->appendChild($volumeNode);
 //sayı
@@ -320,23 +390,31 @@ class HomepageController extends AbstractController
             $articleMetaNode->appendChild($lpageNode);
 
 //abstract
-            $abstractNode = $xmlDoc->createElement('abstract');
             foreach ($translations as $translation) {
-                //bu kısımda birden fazla olacağı için bir değişiklik yapılmalı
-                $pNode = $xmlDoc->createElement('p', $translation->getAbstract());
+                if ($article->getPrimaryLanguage() == $translation->getLocale()) {
+                    $abstractNode = $xmlDoc->createElement('abstract');
+                    $pNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+                    $abstractNode->appendChild($pNode);
+                    $articleMetaNode->appendChild($abstractNode);
+                } else {
+                    $transAbstractNode = $xmlDoc->createElement('trans-abstract');
+                        $transAbstractNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                    $pTransNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+
+//                    $pTransNode = $xmlDoc->createElement('p', $translation->getAbstract());
+                    $transAbstractNode->appendChild($pTransNode);
+                    $articleMetaNode->appendChild($transAbstractNode);
+                }
             }
-            //   <trans-abstract xml:lang="fr">
-            $abstractNode->appendChild($pNode);
-            $articleMetaNode->appendChild($abstractNode);
-//  <kwd-group xml:lang="en">
-            $kwdGroupNode = $xmlDoc->createElement('kwd-group');
             foreach ($translations as $translation) {
+                $kwdGroupNode = $xmlDoc->createElement('kwd-group');
+                $kwdGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
                 foreach ($translation->getKeywords() as $keyword) {
                     $kwdNode = $xmlDoc->createElement('kwd', $keyword);
                     $kwdGroupNode->appendChild($kwdNode);
                 }
+                $articleMetaNode->appendChild($kwdGroupNode);
             }
-            $articleMetaNode->appendChild($kwdGroupNode);
 
             //received
 
@@ -383,7 +461,6 @@ class HomepageController extends AbstractController
         $response->sendHeaders();
 
         return $response;
-
 
 
     }
@@ -502,9 +579,10 @@ class HomepageController extends AbstractController
             foreach ($citat as $value) {
                 $this->entityManager->remove($value);
             }
-
+            $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
             $article->setStatus(ArticleStatusParam::EDITED);
             $this->entityManager->persist($article);
+            $this->entityManager->persist($issue);
             $this->entityManager->flush();
             $this->addFlash('success', 'Makale bilgileri güncellendi.');
 
@@ -557,7 +635,7 @@ class HomepageController extends AbstractController
         $breadcrumb = $this->breadcrumbService->createArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $newArticle->setPrimaryLanguage('001');
+            $newArticle->setPrimaryLanguage('001'); //burayı düzelt
             $this->entityManager->persist($newArticle);
             $this->entityManager->flush();
             //bu kısma article dosyasının nereye kaydedileceği gelecek
@@ -623,10 +701,12 @@ class HomepageController extends AbstractController
             'form' => $form->createView(),
             'breadcrumb' => $breadcrumb,
             'journal' => $journal,
+            'name' =>'Yeni Makale Ekle',
+            'button' => 'Yeni Makale Ekle'
         ]);
     }
 
-
+//pdf değiştirme
     #[Route ('/article/{id}/pdf-change', name: 'article_Pdf_Change')]
     public function articlePdfChange($id, Request $request, FactoryInterface $factory,): Response
     {
@@ -641,7 +721,7 @@ class HomepageController extends AbstractController
         $breadcrumb = $this->breadcrumbService->createArticlePdfUploadBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), $article->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $article->setPrimaryLanguage('001');
+            $article->setPrimaryLanguage('001'); //burayı düzelt
             $this->entityManager->persist($article);
             $this->entityManager->flush();
             //bu kısma article dosyasının nereye kaydedileceği gelecek
@@ -711,6 +791,8 @@ class HomepageController extends AbstractController
             'form' => $form->createView(),
             'breadcrumb' => $breadcrumb,
             'journal' => $journal,
+            'name' => 'Pdf Güncelleme',
+            'button' => 'Pdf\'i Güncelle'
         ]);
     }
 
@@ -765,7 +847,33 @@ class HomepageController extends AbstractController
 
         return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
     }
+    #[Route('/article/all/{id}/delete', name: 'article_delete')]
+    public function articleDeleteFunc($id): Response
+    {
+        $article = $this->entityManager->getRepository(Articles::class)->find($id);
+        $issue = $article->getIssue();
+        $translations = $article->getTranslations();
+        $translators = $article->getTranslators();
+        $authors = $article->getAuthors();
+        $citations = $article->getCitations();
+        foreach ($translations as $translation) {
+            $this->entityManager->remove($translation);
+        }
+        foreach ($authors as $author) {
+            $this->entityManager->remove($author);
+        }
+        foreach ($translators as $translator) {
+            $this->entityManager->remove($translator);
+        }
+        foreach ($citations as $citation) {
+            $this->entityManager->remove($citation);
+        }
+        $this->entityManager->remove($article);
+        $this->entityManager->flush();
 
+        $this->addFlash('success','Makale Başarıyla Silindi');
+        return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+    }
     #[Route('/article/pdf/{filename}', name: 'article_pdf', requirements: ['filename' => '.+'])]
     public function showPdfAction($filename)
     {
@@ -799,106 +907,4 @@ class HomepageController extends AbstractController
         return $newFileName;
     }
 
-
-
-//    #[Route('article/new/{id}', name: 'new_article')]
-//    public function new_article($id, Request $request, FactoryInterface $factory): Response
-//    {
-//
-//        $article = new Articles();
-//        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
-//        $journal = $article->getJournal();
-//
-//        $breadcrumb = $this->breadcrumbService->createArticleNewBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
-//        $pdfFileName = trim($article->getFulltext(), 'var/uploads/articlepdf/');
-//        $pdfFileName = $pdfFileName . 'pdf';
-//        if (!$journal && !$issue && !$article ) {
-//            $this->addFlash('danger', 'Dergi, sayı veya makale hatalı.');
-//            return $this->redirectToRoute('admin_journal_management');
-//        }
-//        $form = $this->createForm(ArticleFormType::class, $article);
-//        $form->handleRequest($request);
-//        foreach ($article->getTranslations() as $newTranslation) {
-//            if ($newTranslation->getId() === null) {
-//                $this->entityManager->persist($newTranslation);
-//            }
-//        }
-//        foreach ($article->getCitations() as $citation) {
-//            if ($citation->getId() === null) {
-//                $this->entityManager->persist($citation);
-//            }
-//        }
-//        foreach ($article->getAuthors() as $author) {
-//            if ($author->getId() === null) {
-//                $this->entityManager->persist($author);
-//            }
-//        }
-//        $translationsInArticle = $article->getTranslations();
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $language = 0;
-//            foreach ($translationsInArticle as $translation) {
-//                if ($article->getPrimaryLanguage() === $translation->getLocale()) {
-//                    $language++;
-//                }
-//            }
-//            if ($language !== 1) {
-//                $this->addFlash('danger', 'Birincil Dil ve Makale dillerini kontrol edin');
-//                return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
-//            }
-//            if ($article->getType() === ArticleTypeParam::TRANSLATE) {
-//                $translaterExists = false;
-//                foreach ($article->getAuthors() as $author) {
-//                    if ($author->getPart() === AuthorPartParam::TRANSLATER) {
-//                        $translaterExists = true;
-//                        break;
-//                    }
-//                }
-//                if (!$translaterExists) {
-//                    $this->addFlash('danger', 'Makale Türü Çeviri, Çevirmen Eklemelisiniz.');
-//                    return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
-//                }
-//            }
-//            $allCitations = $form->get('citationsText')->getData();
-//
-//            if ($allCitations !== null) {
-//                $existingCitations = $article->getCitations();
-//
-//                foreach ($existingCitations as $citation) {
-//                    $this->entityManager->remove($citation);
-//                }
-//
-//                $this->entityManager->flush();
-//
-//                $citationsArray = explode("\r\n\r\n", $allCitations);
-//                $counter = 1;
-//                foreach ($citationsArray as $citationText) {
-//                    $citation = new Citations();
-//                    $citation->setReferance($citationText);
-//                    $citation->setRow($counter);
-//
-//
-//                    $counter = $counter++;
-//                    $article->addCitation($citation);
-//
-//                    $this->entityManager->persist($citation);
-//                }
-//
-//            }
-//            $this->entityManager->flush();
-//
-//            $this->addFlash('success', 'Makale bilgileri güncellendi.');
-//
-//            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
-//        }
-//
-//
-//        return $this->render('article_edit.html.twig', [
-//            'form' => $form->createView(),
-//            'breadcrumb' => $breadcrumb,
-//            'pdfFile' => $pdfFileName,
-//            'article' => $article
-//
-//        ]);
-//    }
 }

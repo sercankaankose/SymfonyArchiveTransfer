@@ -11,6 +11,7 @@ use App\Params\AuthorPartParam;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,20 +37,23 @@ class ArticleFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('primaryLanguage', ChoiceType::class, ['attr' => ['class' => 'form-control'],
-                'label' => 'Birincil Dil*',
-                'choices' => ['Türkçe' => '001',
-                    'İngilizce' => '002',
-                    'Almanca' => '003',
-                    'İspanyolca' => '004',
-                    'Arapça' => '005',
-                    'Rusça' => '006',
-                    'Farsça' => '007',
-                ],
-            ])
+            ->add('primaryLanguage', ChoiceType::class,
+                [
+                    'label' => 'Birincil Dil*',
+                    'choices' => ['Türkçe' => '001',
+                        'İngilizce' => '002',
+                        'Almanca' => '003',
+                        'İspanyolca' => '004',
+                        'Arapça' => '005',
+                        'Rusça' => '006',
+                        'Farsça' => '007',
+                    ],
+                ])
             ->add('pageRange', PageRangeType::class, [
                 'label' => 'Sayfa Aralığı*',
+                'constraints' => [
 
+                ],
             ])
             ->add('doi', TextType::class, [
                 'attr' => [
@@ -65,6 +69,7 @@ class ArticleFormType extends AbstractType
                     'Çeviri' => '001',
                     'Olgu Sunumu' => '003',
                     'Editor Mektup' => '004',
+                    'Derleme' => '005',
                 ],
                 'label' => 'Makale Türü*'
             ])
@@ -116,6 +121,26 @@ class ArticleFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Atıf Boş olamaz.']),
                 ],
+            ])
+            ->add('receivedDate', DateType::class, [
+                'widget' => 'single_text',
+                'placeholder' => [
+                    'year' => 'Yıl', 'month' => 'Ay', 'day' => 'Gün',
+                ],
+//                'format' => 'YYYY-mm-dd',
+
+                'label' => 'Geliş Tarihi',
+                'required' => false,
+                'attr' => ['class' => 'js-datepicker wide-input'],
+                'html5' => false,
+
+            ])
+            ->add('acceptedDate', DateType::class, [
+                'widget' => 'single_text',
+                'label' => 'Kabul Tarihi',
+                'attr' => ['class' => 'js-datepicker wide-input'],
+                'html5' => false,
+                'required' => false,
             ]);
         $builder->get('citations')->addModelTransformer($this->citationsTransformer);
 

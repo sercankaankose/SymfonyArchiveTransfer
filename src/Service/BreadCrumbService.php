@@ -157,7 +157,7 @@ public function createUserEditBreadcrumb()
         $menu->addChild($journalName.' '.$number.'. Sayısı',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
         $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
         $menu->addChild('Makale Düzenleme', ['route' => 'article_edit', 'routeParameters' => ['id' => $articleId]]);
-        $menu->addChild('Pdf Yükleme');
+        $menu->addChild('Pdf Güncelleme');
 
         return $menu;
     }

@@ -67,6 +67,12 @@ class Articles
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Translator::class)]
     private Collection $translators;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $received_date = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $accepted_date = null;
+
 
     public function __construct()
     {
@@ -332,6 +338,30 @@ class Articles
                 $translator->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReceivedDate(): ?\DateTimeInterface
+    {
+        return $this->received_date;
+    }
+
+    public function setReceivedDate(?\DateTimeInterface $received_date): static
+    {
+        $this->received_date = $received_date;
+
+        return $this;
+    }
+
+    public function getAcceptedDate(): ?\DateTimeInterface
+    {
+        return $this->accepted_date;
+    }
+
+    public function setAcceptedDate(?\DateTimeInterface $accepted_date): static
+    {
+        $this->accepted_date = $accepted_date;
 
         return $this;
     }

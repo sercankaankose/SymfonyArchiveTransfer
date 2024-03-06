@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+     <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" rel="stylesheet"/>
 
     <style>
         body {
@@ -165,7 +166,7 @@
         }
 
         .form-container .row .col.doi {
-            flex: 0 0 45%;
+            flex: 0 0 47.5%;
         }
 
         .form-container .row .col.bigger {
@@ -198,12 +199,19 @@
         }
 
         .form-container .row .col.primary {
-            flex: 0 0 15%;
+            flex: 0 0 26%;
+
+        }
+        .form-container .row .col.prange {
+            flex: 0 0 25%;
 
         }
 
         .form-container .row .col.type {
             flex: 0 0 25%;
+
+        }.form-container .row .col.date {
+            flex: 0 0 37%;
 
         }
 
@@ -257,6 +265,11 @@
         disabled {
             background-color: #a52834;
         }
+        .wide-input {
+            width: 100%;
+            font-size: 18px;
+        }
+
     </style>
 {% endblock %}
 
@@ -283,22 +296,33 @@
                 <button type="submit" name="save_and_skip" class="btn btn-success btn-lg" style="margin-top: -10px;">
                     <i class="bi bi-file-earmark-check"></i>Kaydet ve Sonraki Makaleye Geç
                 </button>
-
             </div>
-            <div class="card mt-3 mb-3">
-                <div class="row">
+            <div class="card mt-3 mb-3  ">
+                <div class="row ms-3">
                     <div class="col type">
                         {{ form_row(form.type, {'id': 'articleType'}) }}
                     </div>
 
-                    <div class="col primary">
-                        {{ form_row(form.primaryLanguage) }}
-                    </div>
-                    <div class="col primary">
+
+                    <div class="col prange">
                         {{ form_row(form.pageRange) }}
                     </div>
                     <div class="col doi">
                         {{ form_row(form.doi) }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col primary">
+                            {{ form_row(form.primaryLanguage) }}
+                        </div>
+                        <div class="col date">
+                            {{ form_row(form.receivedDate) }}
+                            <input type="hidden" id="formattedDate" name="formattedDate">
+
+                        </div>
+                        <div class="col date">
+                            {{ form_row(form.acceptedDate) }}
+                        </div>
                     </div>
 
                 </div>
@@ -539,6 +563,7 @@
     </div>
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -560,6 +585,63 @@
             container.appendChild(clone);
         }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.tr.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                language: 'tr'
+            });
+        });
+    </script>
+
+{#    <script>#}
+{#        $(document).ready(function() {#}
+{#            // HTML5 datepicker'ını seç#}
+{#            var datepickers = document.querySelectorAll('input[type="date"]');#}
+{#            for (var i = 0; i < datepickers.length; i++) {#}
+{#                // Her datepicker için formatı ayarla#}
+{#                datepickers[i].addEventListener('input', function() {#}
+{#                    var dateParts = datepickers.split("/");#}
+{#                    var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0]; // yyyy-MM-dd formatına dönüştür#}
+{#                });#}
+{#            }#}
+{#        });#}
+
+{#    </script>#}
+{#    <script>#}
+{#        function formatDateFields() {#}
+{#            var receivedDateInput = document.getElementById("article_form_receivedDate");#}
+{#            var acceptedDateInput = document.getElementById("article_form_acceptedDate");#}
+
+{#            if (receivedDateInput && acceptedDateInput) {#}
+{#                // Tarih değerlerini al#}
+{#                var receivedDateValue = receivedDateInput.value;#}
+{#                var acceptedDateValue = acceptedDateInput.value;#}
+
+{#                // Eğer tarih değeri boşsa işlem yapma#}
+{#                if (receivedDateValue && acceptedDateValue) {#}
+{#                    // Gün, ay ve yıl değerlerini ayrıştır#}
+{#                    var receivedDateParts = receivedDateValue.split("-");#}
+{#                    var acceptedDateParts = acceptedDateValue.split("-");#}
+
+{#                        // Yeni formata dönüştür#}
+{#                        var newReceivedDateValue = receivedDateParts[1] + "-" + receivedDateParts[0] + "-" + receivedDateParts[2];#}
+{#                        var newAcceptedDateValue = acceptedDateParts[1] + "-" + acceptedDateParts[0] + "-" + acceptedDateParts[2];#}
+
+{#                        // Değerleri güncelle#}
+{#                        receivedDateInput.value = newReceivedDateValue;#}
+{#                        acceptedDateInput.value = newAcceptedDateValue;#}
+
+{#                }#}
+{#            }#}
+{#        }#}
+
+{#      ;#}
+{#    </script>#}
     {#    <script> #}
     {#    bu kısım istediğim igibi değil buerayı düzenle    #}
     {#        document.addEventListener('DOMContentLoaded', function () { #}

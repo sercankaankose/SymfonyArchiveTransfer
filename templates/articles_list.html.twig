@@ -28,9 +28,10 @@
                 <h1>{{ journal.name }} Sayıları</h1>
                 <div class="m-3 me-0">
                     <a href="{{ path('article_add',{'id': issues.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
-                        </a>
+                    </a>
 
-                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi İşaretle</a>
+                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi
+                        İşaretle</a>
                 </div>
 
             </div>
@@ -45,6 +46,7 @@
                                 <th>Dil</th>
                                 <th>Sayfalar</th>
                                 <th>Durum</th>
+                                <th style="text-align: right; "></th>
                                 <th style="text-align: right; "></th>
                             </tr>
                             </thead>
@@ -90,11 +92,11 @@
                                     {% endif %}
                                     <td style="text-align: right">
                                         {% if article.status == '001' %}
-                                            <a class="btn btn-primary"
+                                            <a class="btn btn-warning"
                                                href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
                                             </a>
                                         {% elseif article.status == '002' %}
-                                            <a class="btn btn-warning"
+                                            <a class="btn btn-success"
                                                href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
                                             </a>
                                         {% elseif article.status == '003' %}
@@ -102,6 +104,24 @@
                                                href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
                                             </a>
                                         {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item"
+                                                   href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf
+                                                    Güncelle</a>
+                                                <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal"
+                                                   onclick="openDeleteModal({{ article.id }})"
+                                                   data-bs-target="#deleteArticleModal"
+                                                   data-target="#deleteArticleModal" data-id="{{ article.id }}">Sil</a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             {% else %}
@@ -120,13 +140,13 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="deleteIssueModal" tabindex="-1" role="dialog"
-             aria-labelledby="deleteIssueModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteArticleModal" tabindex="-1" role="dialog"
+             aria-labelledby="deleteArticleModalLabel" aria-hidden="true">
 
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteIssueModalLabel"></h5>
+                        <h5 class="modal-title" id="deleteArticleModalLabel">Makale Silinecek</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -134,8 +154,8 @@
                         Makaleyi silmek istediğinizden emin misiniz?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="deleteIssueLink" class="btn btn-primary" data-bs-dismiss="modal">
-                            Sayıyı Sil
+                        <button type="button" id="deleteArticleLink" class="btn btn-danger" data-bs-dismiss="modal">
+                            Sil
                         </button>
                     </div>
                 </div>
@@ -150,21 +170,21 @@
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script>
-            function openDeleteModal(issueId) {
-                var deleteUrl = "{{ path('admin_journal_delete', {'id': 'JOURNAL_ID'}) }}".replace('JOURNAL_ID', issueId);
-                document.getElementById('deleteIssueModalLabel').textContent = 'Sayıyı Sil';
-                document.querySelector(`#deleteIssueLink`).setAttribute('href', deleteUrl);
-                var deleteModal = new bootstrap.Modal(document.getElementById('deleteIssueModal'));
+            function openDeleteModal(articleId) {
+                var deleteUrl = "{{ path('article_delete', {'id': 'article_ID'}) }}".replace('article_ID', articleId);
+                document.getElementById('deleteArticleModalLabel').textContent = 'Makaleyi Sil';
+                document.querySelector(`#deleteArticleLink`).setAttribute('href', deleteUrl);
+                var deleteModal = new bootstrap.Modal(document.getElementById('deleteArticleModal'));
                 deleteModal.show();
 
-                document.getElementById('deleteIssueLink').addEventListener('click', function () {
+                document.getElementById('deleteArticleLink').addEventListener('click', function () {
                     window.location.href = deleteUrl;
                 });
             }
         </script>
         <script>
             function closeModal() {
-                $('#deleteIssueModal').modal('hide');
+                $('#deleteArticleModal').modal('hide');
                 $('.modal-backdrop').remove();
             }
 
@@ -174,7 +194,7 @@
             });
 
 
-            $('#deleteIssueLink').click(function () {
+            $('#deleteArticleLink').click(function () {
                 closeModal();
             });
         </script>
