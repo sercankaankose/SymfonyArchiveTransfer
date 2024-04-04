@@ -193,16 +193,16 @@
 
 <div class="message-container mt-4">
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success message-container" style="margin-bottom: 28px; margin-top: -22px; text-align: center; font-size: 16px;">
+        <div class="alert alert-success message-container" style="margin-bottom: 28px; margin-top: -22px; text-align: center; font-size: 22px;">
             {{ message }}
         </div>
     {% endfor %} {% for message in app.flashes('warning') %}
-        <div class="alert alert-warning message-container" style="font-size: 18px;margin-bottom: 25px; margin-top: -22px; text-align: center">
+        <div class="alert alert-warning message-container" style="margin-bottom: 25px; margin-top: -22px; text-align: center; font-size: 22px;">
             {{ message }}
         </div>
     {% endfor %}
     {% for message in app.flashes('danger') %}
-        <div class="alert alert-danger message-container" style="font-size: 18px; margin-bottom: 25px; margin-top: -22px; text-align: center">
+        <div class="alert alert-danger message-container" style=" margin-bottom: 25px; margin-top: -22px; text-align: center; font-size: 22px;">
             {{ message }}
         </div>
     {% endfor %}

@@ -6,12 +6,14 @@ use App\Entity\Articles;
 use App\Entity\Citations;
 use App\Entity\Issues;
 use App\Entity\Journal;
+use App\Form\IssuesXmlFormType;
 use App\Util\TypeModifier;
 
 use App\Entity\Translations;
 use App\Form\ArticleFormType;
 use App\Form\ArticleFulltextAddFormType;
 use App\Form\IssuesFormType;
+use App\Form\IssuesEditFormType;
 
 use App\Params\ArticleStatusParam;
 use App\Params\ArticleTypeParam;
@@ -118,11 +120,13 @@ class HomepageController extends AbstractController
 //            }
 
             $xmlFile = $form->get('xml')->getData();
+
             if ($xmlFile) {
                 $baseDirectory = $this->getParameter('kernel.project_dir') . '/var/journal/' . $journal->getId();
                 if (!file_exists($baseDirectory)) {
-                    mkdir($baseDirectory, 0755, true);
+                    mkdir($baseDirectory, 0777, true);
                 }
+                $newissue->setStatus(IssueStatusParam::WAITING);
 
                 $xmlFileName = $this->generateHashedFileName($xmlFile, $journalId, $issueId);
 //                $xmlPath = $baseDirectory . '/' . $xmlFileName;
@@ -132,8 +136,9 @@ class HomepageController extends AbstractController
                 } catch (FileException $e) {
                     return new Response($e->getMessage());
                 }
+            } else {
+                $newissue->setStatus(IssueStatusParam::EDIT_REQUIRED);
             }
-            $newissue->setStatus(IssueStatusParam::WAITING);
             $this->entityManager->persist($newissue);
             $this->entityManager->flush();
             $this->addFlash(
@@ -146,39 +151,192 @@ class HomepageController extends AbstractController
             'form' => $form->createView(),
             'breadcrumb' => $breadcrumb,
             'journal' => $journal,
+            'name' => $journalname . ' İçin Yeni Sayı',
+            'button' => 'Yeni Sayı Ekle ',
+
         ]);
     }
 
-// sayı durum kaydetme
-    #[Route('journal/{id}/issue/save', name: 'issue_save')]
-    public function issueSave($id): Response
+//sayı düzenleme
+    #[Route('/journal/{id}/issue/edit', name: 'journal_issue_edit')]
+    public function issueEdit($id, Request $request, FactoryInterface $factory): Response
     {
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
         $journal = $issue->getJournal();
-        $articleEditReq = $this->entityManager->getRepository(Articles::class)->findOneBy([
-            'issue' => $issue,
-            'status' => ArticleStatusParam::EDIT_REQUIRED
-        ]);
-        $articleError = $this->entityManager->getRepository(Articles::class)->findOneBy([
-            'issue' => $issue,
-            'status' => ArticleStatusParam::ERROR
-        ]);
+        $journalname = $journal->getName();
+        $journalId = $journal->getId();
+        $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
 
-        if ($articleEditReq) {
-            $this->addFlash('danger', 'Düzenlenmemiş Makale Var');
-            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+        $form = $this->createForm(IssuesEditFormType::class, $issue);
+        $form->handleRequest($request);
+        $name = $journal->getName() . ' ' . $issue->getNumber() . '. Sayısı Düzenleme';
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->entityManager->persist($issue);
+            $this->entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Sayı Düzenlenmiştir.'
+            );
+
+            return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
         }
-
-        if ($articleError) {
-            $this->addFlash('danger', 'Hatalı Makale Var');
-            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
-        }
-        $issue->setStatus(IssueStatusParam::EDITED);
-        $this->entityManager->persist($issue);
-        $this->entityManager->flush();
-        return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
-
+        return $this->render('journal_issue_edit.html.twig', [
+            'form' => $form->createView(),
+            'breadcrumb' => $breadcrumb,
+            'journal' => $journal,
+            'name' => $name,
+            'button' => 'Düzenle'
+        ]);
     }
+
+    #[Route('/journal/{id}/issue/xml/edit', name: 'journal_issue_xml_edit')]
+    public function issueXmlEdit($id, Request $request, FactoryInterface $factory): Response
+    {
+        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+        $journal = $issue->getJournal();
+        $journalname = $journal->getName();
+        $journalId = $journal->getId();
+        $issueId = $issue->getId();
+        $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
+
+        $form = $this->createForm(IssuesXmlFormType::class);
+        $form->handleRequest($request);
+        $name = $journal->getName() . ' ' . $issue->getNumber() . '. Sayısı Xml Düzenleme';
+
+        if ($form->isSubmitted() && $form->isValid()) {
+        $xmlFile = $form->get('xml')->getData();
+
+            if ($issue->getStatus() === IssueStatusParam::EDIT_REQUIRED && $issue->getStatus() === IssueStatusParam::EDITED) {
+                $this->addFlash('danger', 'Bu sayının aktarımı gerçekleşmiş.');
+                return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+            }
+            $existingXmlPath = $issue->getXml();
+            if ($existingXmlPath && file_exists($existingXmlPath)) {
+                unlink($existingXmlPath);
+            }
+                if ($xmlFile) {
+                    $baseDirectory = $this->getParameter('kernel.project_dir') . '/var/journal/' . $journal->getId();
+                    if (!file_exists($baseDirectory)) {
+                        mkdir($baseDirectory, 0777, true);
+                    }
+
+                    $xmlFileName = $this->generateHashedFileName($xmlFile, $journalId, $issueId);
+                    try {
+                        $xmlFile->move($baseDirectory, $xmlFileName);
+                        $issue->setXml('var/journal/' . $journal->getId() . '/' . $xmlFileName);
+                    } catch (FileException $e) {
+                        return new Response($e->getMessage());
+                    }
+                }
+                else {
+            $this->addFlash('danger', 'Lütfen bir XML dosyası seçin.');
+            return $this->redirectToRoute('journal_issue_xml_edit', ['id' => $id]);
+        }
+
+                $issue->setStatus(IssueStatusParam::WAITING);
+
+            $this->entityManager->persist($issue);
+            $this->entityManager->flush();
+            $this->addFlash(
+                'success',
+                'Xml Dosyası Yenilenmiştir.'
+            );
+
+            return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+        }
+        return $this->render('journal_issue_xml_edit.html.twig', [
+            'form' => $form->createView(),
+            'breadcrumb' => $breadcrumb,
+            'journal' => $journal,
+            'name' => $name,
+            'button' => 'Değiştir'
+        ]);
+    }
+
+    #[Route('/journal/issue/{id}/delete', name: 'journal_issue_delete')]
+    public function deleteIssue($id): Response
+    {
+        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+
+        if (!$issue) {
+            $this->addFlash('danger', 'Sayı bulunamadı.');
+            return $this->redirectToRoute('journal_issues');
+        }
+
+        $journalId = $issue->getJournal()->getId();
+
+
+        $articles = $issue->getArticles();
+        if ($articles) {
+            foreach ($articles as $article) {
+                // Article'a bağlı tüm translationları al
+                $translations = $article->getTranslations();
+                $authors = $article->getAuthors();
+                $translators = $article->getTranslators();
+                $citations = $article->getCitations();
+
+                foreach ($translations as $translation) {
+                    $this->entityManager->remove($translation);
+                }
+
+                foreach ($authors as $author) {
+                    $this->entityManager->remove($author);
+                }
+
+                foreach ($translators as $translator) {
+                    $this->entityManager->remove($translator);
+                }
+
+                foreach ($citations as $citation) {
+                    $this->entityManager->remove($citation);
+                }
+
+                // Article'ı sil
+                $this->entityManager->remove($article);
+            }
+        }
+        // Issues'ı sil
+        $this->entityManager->remove($issue);
+        //$this->entityManager->persist();
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Sayı ve bağlı makaleler başarıyla silindi.');
+
+        return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+    }
+
+// sayı durum kaydetme
+//    #[Route('journal/{id}/issue/save', name: 'issue_save')]
+//    public function issueSave($id): Response
+//    {
+//        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+//        $journal = $issue->getJournal();
+//        $articleEditReq = $this->entityManager->getRepository(Articles::class)->findOneBy([
+//            'issue' => $issue,
+//            'status' => ArticleStatusParam::EDIT_REQUIRED
+//        ]);
+//        $articleError = $this->entityManager->getRepository(Articles::class)->findOneBy([
+//            'issue' => $issue,
+//            'status' => ArticleStatusParam::ERROR
+//        ]);
+//
+//        if ($articleEditReq) {
+//            $this->addFlash('danger', 'Düzenlenmemiş Makale Var');
+//            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+//        }
+//
+//        if ($articleError) {
+//            $this->addFlash('danger', 'Hatalı Makale Var');
+//            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+//        }
+//        $issue->setStatus(IssueStatusParam::EDITED);
+//        $this->entityManager->persist($issue);
+//        $this->entityManager->flush();
+//        return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+//
+//    }
 
 // sayı dışa aktarımı
     #[Route('journal/issue/{id}/export', name: 'issue_export')]
@@ -265,8 +423,8 @@ class HomepageController extends AbstractController
                 foreach ($translations as $translation) {
                     if ($primaryLang != $translation->getLocale()) { // Ana dil ile aynı olmayan çeviriler
 
-                    $articleTransTitleGroupNode = $xmlDoc->createElement('trans-title-group');
-                        $articleTransTitleGroupNode->setAttribute('xml:lang',$typeModifier->convertLanguageCode($translation->getLocale()));
+                        $articleTransTitleGroupNode = $xmlDoc->createElement('trans-title-group');
+                        $articleTransTitleGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
                         $articleTransTitleNode = $xmlDoc->createElement('trans-title', $translation->getTitle());
                         $articleTransTitleGroupNode->appendChild($articleTransTitleNode);
                     }
@@ -295,7 +453,7 @@ class HomepageController extends AbstractController
                 $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
                 $contribNode->appendChild($affNode);
 //orcid
-                $contribIdNode = $xmlDoc->createElement('contrib-id',  'https://orcid.org/' .$author->getOrcId());
+                $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $author->getOrcId());
                 $contribIdNode->setAttribute('contrib-id-type', 'orcid');
                 $contribNode->appendChild($contribIdNode);
 
@@ -398,7 +556,7 @@ class HomepageController extends AbstractController
                     $articleMetaNode->appendChild($abstractNode);
                 } else {
                     $transAbstractNode = $xmlDoc->createElement('trans-abstract');
-                        $transAbstractNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                    $transAbstractNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
                     $pTransNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
 
 //                    $pTransNode = $xmlDoc->createElement('p', $translation->getAbstract());
@@ -659,8 +817,8 @@ class HomepageController extends AbstractController
 
             try {
                 // Hedef dizinleri oluştur
-                $filesystem->mkdir($journalFolder);
-                $filesystem->mkdir($issueFolder);
+                $filesystem->mkdir($journalFolder, 0777);
+                $filesystem->mkdir($issueFolder, 0777);
 
                 $pdfFile = $form->get('fulltext')->getData();
                 if ($pdfFile) {
@@ -701,7 +859,7 @@ class HomepageController extends AbstractController
             'form' => $form->createView(),
             'breadcrumb' => $breadcrumb,
             'journal' => $journal,
-            'name' =>'Yeni Makale Ekle',
+            'name' => 'Yeni Makale Ekle',
             'button' => 'Yeni Makale Ekle'
         ]);
     }
@@ -817,7 +975,7 @@ class HomepageController extends AbstractController
                 $errorText = 'Yazı Seçilmiyor';
                 break;
             default:
-                $errorText = 'Bilinmeyen Hata';
+                $errorText = 'Diğer';
                 break;
         }
 
@@ -830,7 +988,7 @@ class HomepageController extends AbstractController
         $this->entityManager->flush();
         $this->addFlash('success', 'Makale Pdf Hatası Gönderilmiştir.');
 
-        return $this->redirectToRoute('article_Pdf_Change', ['id' => $article->getId()]);
+        return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
     }
 
     // article pdf hata silme
@@ -847,6 +1005,7 @@ class HomepageController extends AbstractController
 
         return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
     }
+
     #[Route('/article/all/{id}/delete', name: 'article_delete')]
     public function articleDeleteFunc($id): Response
     {
@@ -871,9 +1030,10 @@ class HomepageController extends AbstractController
         $this->entityManager->remove($article);
         $this->entityManager->flush();
 
-        $this->addFlash('success','Makale Başarıyla Silindi');
+        $this->addFlash('success', 'Makale Başarıyla Silindi');
         return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
     }
+
     #[Route('/article/pdf/{filename}', name: 'article_pdf', requirements: ['filename' => '.+'])]
     public function showPdfAction($filename)
     {
@@ -894,7 +1054,6 @@ class HomepageController extends AbstractController
 
         return $response;
     }
-
 
     private function generateHashedFileName(UploadedFile $file, $journalId, $issueId): string
     {

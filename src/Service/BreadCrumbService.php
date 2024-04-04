@@ -174,6 +174,17 @@ public function createUserEditBreadcrumb()
         return $menu;
     }
 
+    public function createIssueEditBreadcrumb(FactoryInterface $factory, $journalName, $id)
+    {
+        $menu = $factory->createItem('root');
+        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
+        $menu->addChild($journalName, ['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
+        $menu->addChild('Sayı Düzenle');
+
+        return $menu;
+    }
+
     public function createEmptyBreadcrumb()
     {
         return $this->factory->createItem('root');

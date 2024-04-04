@@ -31,7 +31,7 @@ class Issues
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fulltext = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $xml = null;
 
     #[ORM\OneToMany(mappedBy: 'issue', targetEntity: Articles::class)]
@@ -118,7 +118,7 @@ class Issues
         return $this->xml;
     }
 
-    public function setXml(string $xml): static
+    public function setXml(?string $xml): static
     {
         $this->xml = $xml;
 

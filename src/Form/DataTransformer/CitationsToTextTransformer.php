@@ -22,16 +22,22 @@ class CitationsToTextTransformer implements DataTransformerInterface
 
     public function reverseTransform($formattedCitations)
     {
-        $citationsArray = explode("\r\n\r\n", $formattedCitations);
+        // Boş bir koleksiyon oluştur
         $citationsCollection = new ArrayCollection();
 
-        foreach ($citationsArray as $citationText) {
-            $citation = $this->createCitationFromText($citationText);
-            $citationsCollection->add($citation);
+        // Eğer formatlanmış atıf boş değilse, işlemi devam ettir
+        if (!empty($formattedCitations)) {
+            $citationsArray = explode("\r\n\r\n", $formattedCitations);
+
+            foreach ($citationsArray as $citationText) {
+                $citation = $this->createCitationFromText($citationText);
+                $citationsCollection->add($citation);
+            }
         }
 
         return $citationsCollection;
     }
+
 
     private function createCitationFromText($text)
     {

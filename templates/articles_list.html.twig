@@ -2,6 +2,9 @@
 
  {% block title %}Dergi Sayıları{% endblock %}
  {% block stylesheets %}
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
      <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
      <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
 
@@ -22,6 +25,48 @@
                 margin-top: 150px;
             }
 
+            .text-bg-warning {
+                color: #fff;
+            }
+
+            .badge {
+
+            }
+
+            td {
+                text-align: center; /* Tablo hücrelerini ortala */
+                vertical-align: middle; /* Dikey hizalama */
+            }
+
+            /* Tablo hücrelerine padding ekleme */
+            .table td {
+                padding: 8px; /* İhtiyaca göre ayarlayabilirsiniz */
+            }
+
+            .table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+
+            .badge {
+                display: flow;
+                line-height: unset;
+                font-size: 14px; /* Badgelerin font boyutu */
+                padding: 8px 12px; /* Badgelerin içeriğe boşluk ekleyerek boyutunu ayarlama */
+            }
+
+            .popover {
+                border: 1px solid rgba(0, 0, 0, 0.2); /* Kenarlık rengi */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Gölgelendirme */
+                background-color: white; /* Popovers arka plan rengi */
+            }
+
+            .popover-content {
+                color: black; /* Metin rengi */
+                font-size: 14px; /* Yazı tipi boyutu */
+            }
+
         </style>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
@@ -30,8 +75,8 @@
                     <a href="{{ path('article_add',{'id': issues.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
                     </a>
 
-                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi
-                        İşaretle</a>
+{#                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi#}
+{#                        İşaretle</a>#}
                 </div>
 
             </div>
@@ -43,10 +88,9 @@
                             <thead>
                             <tr>
                                 <th>Makale Başlığı</th>
-                                <th>Dil</th>
+                                <th style="text-align: center">Dil</th>
                                 <th>Sayfalar</th>
-                                <th>Durum</th>
-                                <th style="text-align: right; "></th>
+                                <th style="text-align: center">Durum</th>
                                 <th style="text-align: right; "></th>
                             </tr>
                             </thead>
@@ -56,7 +100,7 @@
                                 <tr>
 
                                     {% if article.translations.first.title %}
-                                        <td>{{ article.translations.first.title|slice(0, 85) }}</td>
+                                        <td style="text-align: left">{{ article.translations.first.title|slice(0, 85) }}</td>
                                     {% else %}
                                         <td>---</td>
                                     {% endif %}
@@ -76,50 +120,75 @@
                                         <td>Farsça</td>
                                     {% else %}
                                         <td>Türkçe</td>
-
                                     {% endif %}
                                     <td>{{ article.firstPage }} - {{ article.lastPage }}</td>
-                                    {% if article.status == 'waiting' %}
-                                        <td>Beklemede</td>
+
+                                    {% if article.status == '0' %}
+                                        <td><span class="badge bg-gray">Beklemede</span></td>
                                     {% elseif article.status == '001' %}
-                                        <td>Düzenlenmeli</td>
+                                        <td><span class="badge bg-warning"
+                                                  style=" ">Düzenlenmeli</span></td>
                                     {% elseif article.status == '002' %}
-                                        <td> Düzenlendi</td>
+                                        <td><span class="badge text-bg-success"
+                                                  style="">Kontrol Edildi</span></td>
                                     {% elseif article.status == '003' %}
-                                        <td>Hatalı</td>
+                                        <td>
+                                            <span class="badge text-bg-danger" tabindex="0" data-bs-toggle="popover"
+                                                  data-bs-placement="left" data-bs-trigger="hover focus"
+                                                  data-bs-content="{{ article.errors|join(', ') }}">
+                                            Hatalı
+                                            </span>
+                                        </td>
                                     {% else %}
                                         <td>--</td>
                                     {% endif %}
-                                    <td style="text-align: right">
-                                        {% if article.status == '001' %}
-                                            <a class="btn btn-warning"
-                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
-                                            </a>
-                                        {% elseif article.status == '002' %}
-                                            <a class="btn btn-success"
-                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
-                                            </a>
-                                        {% elseif article.status == '003' %}
-                                            <a class="btn btn-danger"
-                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle
-                                            </a>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                <i class="bi bi-three-dots"></i>
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item"
-                                                   href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf
-                                                    Güncelle</a>
-                                                <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal"
-                                                   onclick="openDeleteModal({{ article.id }})"
-                                                   data-bs-target="#deleteArticleModal"
-                                                   data-target="#deleteArticleModal" data-id="{{ article.id }}">Sil</a>
+
+                                    <td style="text-align: right;">
+                                        {#                                        <div style="display: flex; justify-content: flex-end; align-items: center;"> #}
+                                        {#                                            <div style="margin-right: 5px;"> #}
+                                        {#                                                <a class="btn btn-dark" href="{{ path('article_edit', {'id': article.id}) }}">Düzenle</a> #}
+                                        {#                                            </div> #}
+
+                                        {#                                            <div> #}
+                                        {#                                                <div class="dropdown"> #}
+                                        {#                                                    <button class="btn btn-secondary dropdown-toggle" type="button" #}
+                                        {#                                                            id="dropdownMenuButton" data-bs-toggle="dropdown" #}
+                                        {#                                                            aria-haspopup="true" aria-expanded="false"> #}
+                                        {#                                                        <i class="bi bi-three-dots"></i> #}
+                                        {#                                                    </button> #}
+                                        {#                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> #}
+                                        {#                                                        <a class="dropdown-item" href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf Güncelle</a> #}
+                                        {#                                                        <a class="dropdown-item" type="button" href="#" #}
+                                        {#                                                           data-bs-toggle="modal" #}
+                                        {#                                                           onclick="openDeleteModal({{ article.id }})" #}
+                                        {#                                                           data-bs-target="#deleteArticleModal" #}
+                                        {#                                                           data-target="#deleteArticleModal" #}
+                                        {#                                                           data-id="{{ article.id }}">Sil</a> #}
+                                        {#                                                    </div> #}
+                                        {#                                                </div> #}
+                                        {#                                            </div> #}
+                                        {#                                        </div> #}
+                                        <div class="btn-group">
+                                            <a class="btn btn-dark" style="text-align: right; border-radius: 4px"
+                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle</a>
+
+                                            <div class="dropdown" style="border-radius: 2px">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                    <i class="bi bi-three-dots"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item"
+                                                       href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf
+                                                        Güncelle</a>
+                                                    <a class="dropdown-item" type="button" href="#"
+                                                       data-bs-toggle="modal"
+                                                       onclick="openDeleteModal({{ article.id }})"
+                                                       data-bs-target="#deleteArticleModal"
+                                                       data-target="#deleteArticleModal"
+                                                       data-id="{{ article.id }}">Sil</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -127,7 +196,6 @@
                             {% else %}
                                 <tr>
                                     <td colspan="3">Makale Bulunamadı...</td>
-                                    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
@@ -164,9 +232,11 @@
     {% endblock %}
     {% block javascripts %}
 
-        <script charset="utf8" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
                 crossorigin="anonymous"></script>
+
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script>
@@ -182,6 +252,15 @@
                 });
             }
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                    return new bootstrap.Popover(popoverTriggerEl);
+                });
+            });
+        </script>
+
         <script>
             function closeModal() {
                 $('#deleteArticleModal').modal('hide');

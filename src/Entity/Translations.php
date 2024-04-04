@@ -29,6 +29,9 @@ class Translations
     #[ORM\ManyToOne(inversedBy: 'translations')]
     private ?Articles $article = null;
 
+    #[ORM\Column(length: 300, nullable: true)]
+    private ?string $shortTitle = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class Translations
     public function setArticle(?Articles $article): static
     {
         $this->article = $article;
+
+        return $this;
+    }
+
+    public function getShortTitle(): ?string
+    {
+        return $this->shortTitle;
+    }
+
+    public function setShortTitle(?string $shortTitle): static
+    {
+        $this->shortTitle = $shortTitle;
 
         return $this;
     }

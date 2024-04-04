@@ -18,12 +18,12 @@
     <div class="row justify-content-center">
         <div style="text-align: right;">
 
-            <h1 class="text-center "> {{ journal.name }} İçin Yeni Sayı</h1>
+            <h1 class="text-center "> {{ name }} </h1>
         </div>
         <div class="col-md-6">
 
             <div class="card d-flex"
-                 style="background-color: #f2f2f2; max-height: 700px; height:600px; width: 100%; ">
+                 style="background-color: #f2f2f2; max-height: 900px;  width: 100%; ">
 
                 <div class="card-body" style="font-size: 20px">
 
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="mb-3">
-                        {{ form_label(form.xml, 'Xml', {'label_attr': {'class': 'form-label'}}) }}*
+                        {{ form_label(form.xml, 'Xml', {'label_attr': {'class': 'form-label'}}) }}
                         {{ form_widget(form.xml, {'attr': {'class': 'form-control' ~ (form_errors(form.xml)|length ? ' is-invalid' : '')}}) }}
                         {{ form_errors(form.xml) }}
                     </div>
@@ -59,7 +59,7 @@
 {#                    </div>#}
 
                     <div style="text-align: right">
-                        <button type="submit" class="btn btn-primary btn-lg">Yeni Sayı Ekle</button>
+                        <button type="submit" class="btn btn-primary btn-lg">{{button}}</button>
                     </div>
                 </div>
 

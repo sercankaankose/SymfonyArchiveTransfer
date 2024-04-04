@@ -31,7 +31,6 @@ class JournalFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'autocomplete' => 'off',
-
                 ],
                 'label' =>' Dergi İsmi',
                 'constraints' => [
@@ -41,25 +40,18 @@ class JournalFormType extends AbstractType
                 ],
             ])
             ->add('publisher', TextType::class, [
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'autocomplete' => 'off',
-
                 ],
                 'label' =>' Yayıncı',
-
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Lütfen yayıncı adı giriniz.',
-                    ]),
-                ],
             ])
             ->add('issn', TextType::class, [
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
                     'autocomplete' => 'off',
-
                 ],
                 'constraints' => [
                     new Regex([
@@ -73,7 +65,6 @@ class JournalFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                     'autocomplete' => 'off',
-
                 ],
                 'constraints' => [
                     new Regex([

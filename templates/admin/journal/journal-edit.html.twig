@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="card d-flex"
-                     style="background-color: #f2f2f2; max-height: 700px; height:520px; width: 100%; ">
+                     style="background-color: #f2f2f2;  width: 100%; ">
 
                     <div class="card-body">
 
@@ -21,6 +21,12 @@
                             {{ form_label(form.name, 'Dergi Adı', {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
                             {{ form_errors(form.name) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.publisher, 'Yayıncı', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.publisher, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.publisher) }}
                         </div>
                         <br>
                         <div class="mb-3">

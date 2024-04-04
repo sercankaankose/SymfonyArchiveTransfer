@@ -8,6 +8,7 @@ use App\Entity\Citations;
 use App\Entity\Issues;
 use App\Entity\Translations;
 use App\Params\ArticleStatusParam;
+use App\Params\IssueStatusParam;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -47,7 +48,7 @@ class ParseXmlCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $issue = $this->entityManager->getRepository(Issues::class)->findOneBy(['status' => 'waiting']);
+        $issue = $this->entityManager->getRepository(Issues::class)->findOneBy(['status' => IssueStatusParam::WAITING]);
 
         if (!$issue) {
             $output->writeln('Bekleyen bir sayı bulunamadı.');
@@ -273,12 +274,12 @@ class ParseXmlCommand extends Command
                 $newauthor->setEmail($author['email']);
             }
 
-            $part = isset($author['part']) ? trim($author['part']) : '';
-            if (empty($part) || !is_string($author['part'])) {
-                array_push($errors, "yazar rolü hatalı veya eksik. ");
-            } else {
+//            $part = isset($author['part']) ? trim($author['part']) : '';
+//            if (empty($part) || !is_string($author['part'])) {
+//                array_push($errors, "yazar rolü hatalı veya eksik. ");
+//            } else {
 //$newauthor->setPart($author['part']);
-            }
+//            }
 
             $this->entityManager->persist($newauthor);
         }
@@ -340,12 +341,12 @@ class ParseXmlCommand extends Command
             $filesystem = new Filesystem();
 
             if (!$filesystem->exists($journalFolder)) {
-                $filesystem->mkdir($journalFolder);
+                $filesystem->mkdir($journalFolder,0777);
             }
 
             $issueFolder = $journalFolder . '/' . $issueId;
             if (!$filesystem->exists($issueFolder)) {
-                $filesystem->mkdir($issueFolder);
+                $filesystem->mkdir($issueFolder,0777);
             }
 
             $destinationPath = $issueFolder . '/' . $fileName;

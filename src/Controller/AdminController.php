@@ -379,10 +379,11 @@ class AdminController extends AbstractController
             );
             return $this->redirectToRoute('admin_journal_management');
         }
-        return $this->render('admin/journal/new-journal-add.html.twig', [
+        return $this->render('admin/journal/journal_add_edit.html.twig', [
             'form' => $form->createView(),
             'breadcrumb' => $breadcrumb,
-
+            'name' => 'Yeni Dergi',
+            'button' => 'Dergi Ekle'
         ]);
 
     }
@@ -430,10 +431,11 @@ class AdminController extends AbstractController
         }
 
 
-        return $this->render('admin/journal/journal-edit.html.twig', [
+        return $this->render('admin/journal/journal_add_edit.html.twig', [
             'form' => $form->createView(),
             'breadcrumb' => $breadcrumb,
-
+            'name' => 'Dergi Düzenleme',
+            'button' => 'Düzenlemeyi Kaydet'
         ]);
     }
 

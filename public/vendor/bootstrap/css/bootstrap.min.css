@@ -7375,7 +7375,7 @@ textarea.form-control-lg {
 }
 
 .text-bg-warning {
-    color: #000 !important;
+    color: #fff !important;
     background-color: RGBA(var(--bs-warning-rgb), var(--bs-bg-opacity, 1)) !important
 }
 

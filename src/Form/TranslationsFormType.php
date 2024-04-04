@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Translations;
 use App\Form\DataTransformer\ArrayToStringTransformer;
+use App\Params\ArticleLanguageParam;
 use phpDocumentor\Reflection\Types\False_;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,15 +25,7 @@ class TranslationsFormType extends AbstractType
                 'attr' => ['class' => ''],
                 'label' => 'Dil',
                 'required' => true,
-                'choices' => [
-                    'Türkçe' => '001',
-                    'İngilizce' => '002',
-                    'Almanca' => '003',
-                    'İspanyolca' => '004',
-                    'Arapça' => '005',
-                    'Rusça' => '006',
-                    'Farsça' => '007',
-                ],
+                'choices' => ArticleLanguageParam::languages,
                 'constraints' => [
                     new NotBlank(['message' => 'Dil alanı boş olamaz.']),
                 ],
@@ -44,6 +37,12 @@ class TranslationsFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Başlık alanı boş olamaz.']),
                 ],
+            ])
+            ->add('shortTitle', TextareaType::class, [
+                'attr' => ['class' => 'form-control', 'style' => 'width: 100%;   resize: none;'],
+                'label' => 'Kısa Başlık',
+                'required' => false,
+
             ])
             ->add('abstract', TextareaType::class, [
                 'attr' => ['class' => 'form-control custom-textarea-class', 'style' => 'width: 100%; height: 250px; overflow-y: scroll;'],

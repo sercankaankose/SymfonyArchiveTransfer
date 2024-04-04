@@ -85,7 +85,8 @@ class IssuesFormType extends AbstractType
 //                ],
 //            ])
             ->add('xml', FileType::class, [
-                'required' => true,
+                'required' => false,
+                'empty_data' => '',
 
                 'attr' => [
                     'class' => 'form-control',
@@ -98,10 +99,6 @@ class IssuesFormType extends AbstractType
                             'application/xml',
                         ],
                         'mimeTypesMessage' => 'Lütfen geçerli bir XML Dosyası Yükleyiniz.',
-                    ]),
-
-                    new NotBlank([
-                        'message' => 'Lütfen Xml Dosyasını Yükleyiniz.',
                     ]),
                 ],
             ]);
