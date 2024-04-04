@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-     <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css"
+          rel="stylesheet"/>
 
     <style>
         body {
@@ -68,9 +69,10 @@
         textarea,
         select,
         input {
+            font-size: 20px;
             position: relative;
+
             cursor: text;
-            font-size: 14px;
             line-height: 20px;
             padding: 0 16px;
             height: 48px;
@@ -87,6 +89,31 @@
                 box-shadow: 0 1px 0 0 rgb(35 38 59 / 5%);
             }
 
+        }
+
+        .select2-selection__rendered {
+            font-size: 20px;
+            /*position: relative;*/
+            /*cursor: text;*/
+            /*line-height: 20px;*/
+            padding: 9px 16px;
+            background-color: #fff;
+            border-radius: 3px;
+            color: rgb(35, 38, 59);
+            height: 45px;
+            box-shadow: inset 0 1px 4px 0 rgb(119 122 175 / 30%);
+            overflow: hidden;
+            transition: all 100ms ease-in-out;
+
+            .select2-selection__rendered:focus {
+                border-color: #3c4fe0;
+                box-shadow: 0 1px 0 0 rgb(35 38 59 / 5%);
+
+            }
+        }
+
+        .select2-container .select2-selection--single {
+            height: 47px;
         }
 
         .button-35 {
@@ -168,6 +195,9 @@
         .form-container .row .col.doi {
             flex: 0 0 47.5%;
         }
+        .form-container .row .col.shortTitle {
+            flex: 0 0 80%;
+        }
 
         .form-container .row .col.bigger {
             flex: 0 0 100%;
@@ -181,6 +211,10 @@
             flex: 0 0 50%;
         }
 
+        .form-container .row .col.lastname {
+            flex: 0 0 40%;
+        }
+
         .form-container .row .col.trequarter {
             flex: 0 0 100%;
         }
@@ -190,7 +224,7 @@
         }
 
         .form-container .row .col.ten {
-            flex: 0 0 05%;
+            flex: 0 0 10%;
         }
 
         .form-container .row .col.keywords {
@@ -202,6 +236,7 @@
             flex: 0 0 26%;
 
         }
+
         .form-container .row .col.prange {
             flex: 0 0 25%;
 
@@ -210,7 +245,9 @@
         .form-container .row .col.type {
             flex: 0 0 25%;
 
-        }.form-container .row .col.date {
+        }
+
+        .form-container .row .col.date {
             flex: 0 0 37%;
 
         }
@@ -265,9 +302,15 @@
         disabled {
             background-color: #a52834;
         }
+
         .wide-input {
             width: 100%;
             font-size: 18px;
+        }
+
+        .is-invalid-yellow {
+            border-color: #ffc107 !important; /* Sarı renk */
+            background-color: #fff3cd !important; /* Sarı renk */
         }
 
     </style>
@@ -276,8 +319,11 @@
 {% block body %}
     <div class="container-fluid">
         <div class="form-container">
-            {{ form_start(form, {'attr': {'id': 'myForm'}}) }}
+            <input type="hidden" name="_token" value="{{ csrf_token('form_token') }}"/>
+
+            {{ form_start(form, {'attr': {'id': 'myForm', 'novalidate' : 'novalidate'}}) }}
             {% if article.status == '003' %}
+
                 <a class=" btn btn-danger button-34 mb-3 pt-2" type="button"
                    href="{{ path('article_pdf_error_delete', {'id': article.id}) }}"><h5>PDF HATASI KALDIR</h5></a>
             {% else %}
@@ -286,7 +332,8 @@
                 <a class="btn btn-danger btn-lg" onclick="openDeleteModal()" style="margin-top: -10px;"
                    data-toggle="modal" data-target="#pdfErrorModal"><i class="bi bi-exclamation-triangle-fill"></i>PDF
                     Hatası Bildir</a>
-                <a class="btn btn-warning btn-lg" href="{{ path('article_Pdf_Change', {'id': article.id}) }}" style="margin-top: -10px; color: #fff3cd; border:#373a41 solid 1px">
+                <a class="btn btn-warning btn-lg" href="{{ path('article_Pdf_Change', {'id': article.id}) }}"
+                   style="margin-top: -10px; color: #fff3cd; border:#373a41 solid 1px">
                     <i class="bi bi-box-arrow-in-down"></i> Pdf Güncelle
                 </a>
                 <button type="submit" name="save_and_return" class="btn btn-success btn-lg" style=" margin-top: -10px;">
@@ -302,7 +349,6 @@
                     <div class="col type">
                         {{ form_row(form.type, {'id': 'articleType'}) }}
                     </div>
-
 
                     <div class="col prange">
                         {{ form_row(form.pageRange) }}
@@ -324,7 +370,6 @@
                             {{ form_row(form.acceptedDate) }}
                         </div>
                     </div>
-
                 </div>
             </div>
             {% if form_errors(form) %}
@@ -397,7 +442,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col locale">
-                                        {{ form_row(translationForm.locale, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_row(translationForm.locale, {'attr': {'class': ''}}) }}
+                                    </div>
+                                    <div class="col shortTitle">
+                                        {{ form_row(translationForm.shortTitle, {'attr': {'class': 'form-control'}}) }}
                                     </div>
                                     <div class="col bigger">
                                         {{ form_row(translationForm.title, {'attr': {'class': 'form-control'}}) }}
@@ -431,13 +479,18 @@
                                         {{ form_row(authorForm.firstname, {'attr': {'class': 'form-control ' ~ (authorForm.firstname.vars.valid ? '' : 'is-invalid')}}) }}
                                     </div>
 
-                                    <div class="col half">
+                                    <div class="col lastname">
                                         {{ form_row(authorForm.lastname, {'attr': {'class': 'form-control ' ~ (authorForm.lastname.vars.valid ? ' ' : 'is-invalid')}}) }}
+                                    </div>
+
+                                    <div class="col ten">
+                                        {{ form_row(authorForm.row , {'attr': {'class': ' ' ~ (authorForm.orcId.vars.valid ? '' : 'is-invalid')}}) }}
                                     </div>
 
                                     <div class="col half">
                                         {{ form_row(authorForm.orcId, {'attr': {'class': 'form-control ' ~ (authorForm.orcId.vars.valid ? '' : 'is-invalid')}}) }}
                                     </div>
+
 
                                     <div class="col half">
                                         {{ form_row(authorForm.email, {'attr': {'class': 'form-control ' ~ (authorForm.email.vars.valid ? '' : 'is-invalid')}}) }}
@@ -472,8 +525,12 @@
                                         <div class="col half">
                                             {{ form_row(translatorForm.firstname) }}
                                         </div>
-                                        <div class="col half">
-                                            {{ form_row(translatorForm.lastname) }}
+                                        <div class="col lastname">
+                                            {{ form_row(translatorForm.lastname, {'attr': {'class': 'form-control ' ~ (translatorForm.lastname.vars.valid ? ' ' : 'is-invalid')}}) }}
+                                        </div>
+
+                                        <div class="col ten">
+                                            {{ form_row(translatorForm.row , {'attr': {'class': ' ' ~ (translatorForm.orcId.vars.valid ? '' : 'is-invalid')}}) }}
                                         </div>
                                         <div class="col half">
                                             {{ form_row(translatorForm.orcId) }}
@@ -556,6 +613,13 @@
                                 <i class="bi bi-file-earmark-check"></i>
                             </a>
                         </li>
+                        <li class="list-group-item">
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '4'}) }}"
+                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
+                                <span>Diğer</span>
+                                <i class="bi bi-file-earmark-check"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -565,11 +629,63 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#articleType').select2();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#article_form_primaryLanguage').select2();
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            // Her bir select2 öğesini etkinleştirmek için döngü
+            $('[id^="article_form_translations_"][id$="_locale"]').each(function () {
+                $(this).select2(); // Her bir select2 öğesini etkinleştir
+            });
+        });
+
+    </script>
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            var authorTab = document.getElementById('pills-author-tab'); // Yazar sekmesinin tab'ını seç
+            var authorFields = authorTab.querySelectorAll('[required]'); // Yazar sekmesindeki zorunlu alanları seç
+            var authorTabLink = authorTab.querySelector('button.nav-link'); // Yazar sekmesinin tab linkini seç
+//bu değiştir
+            var hasEmptyFields = false; // Boş alan var mı kontrol etmek için bir değişken tanımla
+
+            authorFields.forEach(function (field) {
+                if (!field.value) { // Eğer alan boş ise
+                    hasEmptyFields = true; // Boş alan var olduğunu işaretle
+                    console.log('Yazar sekmesinde zorunlu alan doldurulmadı:', field.name); // Konsola bildirim gönder
+                }
+            });
+
+            if (hasEmptyFields) { // Eğer yazar sekmesinde boş alanlar varsa
+                authorTabLink.style.backgroundColor = '#FFD700'; // Yazar sekmesi tabının arka plan rengini sarı yap
+                authorTabLink.style.color = 'black'; // Yazı rengini siyah yap (isteğe bağlı)
+            } else {
+                authorTabLink.style.backgroundColor = ''; // Boş alan yoksa rengi kaldır
+                authorTabLink.style.color = ''; // Yazı rengini kaldır (isteğe bağlı)
+            }
+            if (hasEmptyFields) { // Eğer yazar sekmesinde boş alanlar varsa
+                event.preventDefault(); // Form gönderimini engelle
+                alert('Yazar sekmesinde zorunlu alanları doldurunuz.'); // Kullanıcıya uyarı göster
+            }
+        });
+    </script>
     <script>
         function cloneCard(containerId) {
 
@@ -590,58 +706,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.tr.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.js-datepicker').datepicker({
-                format: 'yyyy-mm-dd',
+                format: 'dd-mm-yyyy',
                 language: 'tr'
             });
         });
     </script>
 
-{#    <script>#}
-{#        $(document).ready(function() {#}
-{#            // HTML5 datepicker'ını seç#}
-{#            var datepickers = document.querySelectorAll('input[type="date"]');#}
-{#            for (var i = 0; i < datepickers.length; i++) {#}
-{#                // Her datepicker için formatı ayarla#}
-{#                datepickers[i].addEventListener('input', function() {#}
-{#                    var dateParts = datepickers.split("/");#}
-{#                    var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0]; // yyyy-MM-dd formatına dönüştür#}
-{#                });#}
-{#            }#}
-{#        });#}
 
-{#    </script>#}
-{#    <script>#}
-{#        function formatDateFields() {#}
-{#            var receivedDateInput = document.getElementById("article_form_receivedDate");#}
-{#            var acceptedDateInput = document.getElementById("article_form_acceptedDate");#}
 
-{#            if (receivedDateInput && acceptedDateInput) {#}
-{#                // Tarih değerlerini al#}
-{#                var receivedDateValue = receivedDateInput.value;#}
-{#                var acceptedDateValue = acceptedDateInput.value;#}
-
-{#                // Eğer tarih değeri boşsa işlem yapma#}
-{#                if (receivedDateValue && acceptedDateValue) {#}
-{#                    // Gün, ay ve yıl değerlerini ayrıştır#}
-{#                    var receivedDateParts = receivedDateValue.split("-");#}
-{#                    var acceptedDateParts = acceptedDateValue.split("-");#}
-
-{#                        // Yeni formata dönüştür#}
-{#                        var newReceivedDateValue = receivedDateParts[1] + "-" + receivedDateParts[0] + "-" + receivedDateParts[2];#}
-{#                        var newAcceptedDateValue = acceptedDateParts[1] + "-" + acceptedDateParts[0] + "-" + acceptedDateParts[2];#}
-
-{#                        // Değerleri güncelle#}
-{#                        receivedDateInput.value = newReceivedDateValue;#}
-{#                        acceptedDateInput.value = newAcceptedDateValue;#}
-
-{#                }#}
-{#            }#}
-{#        }#}
-
-{#      ;#}
-{#    </script>#}
     {#    <script> #}
     {#    bu kısım istediğim igibi değil buerayı düzenle    #}
     {#        document.addEventListener('DOMContentLoaded', function () { #}
@@ -666,27 +740,75 @@
     {#        }); #}
     {#    </script> #}
 
-
     <script>
-        $(document).ready(function () {
-            function clearTranslators() {
-                $('[id^="translatorsCard"]').remove();
-            }
+        // window.onload = function() {
+        //     var articleType = document.getElementById('articleType').value;
+        //     var translatorContainer = document.getElementById('translatorContainer');
+        //
+        //     // Eğer articleType 001 değilse, translatorContainer elemanını gizle
+        //     if (articleType !== '001') {
+        //         translatorContainer.style.display = 'none';
+        //     }
+        // };
 
-            checkArticleType();
-
-            $('#articleType').change(function () {
-                checkArticleType();
+        // translator kartlarını silmek için bir fonksiyon
+        function deleteTranslatorCards() {
+            var translatorContainer = document.getElementById('translatorContainer');
+            // translatorContainer içindeki tüm kartları sil
+            var translatorCards = translatorContainer.querySelectorAll('.card');
+            translatorCards.forEach(function (card) {
+                card.remove();
             });
+        }
 
-            function checkArticleType() {
-                var articleType = $('#articleType').val();
-                if (articleType !== '001') {
-                    clearTranslators();
-                }
+        // articleType değiştiğinde translator kartlarını kontrol et
+        document.getElementById('articleType').addEventListener('change', function () {
+            var articleType = this.value;
+            var translatorContainer = document.getElementById('translatorContainer');
+
+            // Eğer articleType 001 değilse, translator kartlarını sil
+            if (articleType !== '001') {
+                deleteTranslatorCards();
             }
         });
+
+        // translator kartını silmek için bir fonksiyon
+        function deleteCard(element) {
+            var card = element.closest('.card');
+            var translatorContainer = document.getElementById('translatorContainer');
+
+            // Eğer kart translatorContainer içindeyse, sil
+            if (translatorContainer.contains(card)) {
+                card.remove();
+            }
+        }
     </script>
+
+    {#    <script> #}
+
+    {#    document.addEventListener("DOMContentLoaded", function() { #}
+
+    {#        $(document).ready(function () { #}
+    {#            function clearTranslators() { #}
+    {#                $('[id^="translatorsCard"]').remove(); #}
+    {#            } #}
+
+    {#            checkArticleType(); #}
+
+    {#            $('#articleType').change(function () { #}
+    {#                checkArticleType(); #}
+    {#            }); #}
+
+    {#            function checkArticleType() { #}
+    {#                var articleType = $('#articleType').val(); #}
+    {#                if (articleType !== '001') { #}
+    {#                    clearTranslators(); #}
+    {#                } #}
+    {#            } #}
+    {#        }); #}
+    {#        }); #}
+
+    {#    </script> #}
 
 
     <script>
@@ -771,49 +893,79 @@
             <div class="row">
 
                 <div class="col locale">
-                    <label for="article_form_translations_new_locale" class="required">Dil</label>
-                    <select id="article_form_translations_new_locale" name="article_form[translations][new][locale]"
-                            class="form-control">
-                        <option value="001">Türkçe</option>
-                        <option value="002">İngilizce</option>
-                        <option value="003">Almanca</option>
-                        <option value="004">İspanyolca</option>
-                        <option value="005">Arapça</option>
-                        <option value="006">Rusça</option>
-                        <option value="007">Farsça</option>
-                    </select>
+                    <div><label for="article_form_translations_new_locale" class="required">Dil</label><select
+                                id="article_form_translations_new_locale" name="article_form[translations][new][locale]"
+                                class="">
+                            <option value="en" selected="selected">English</option>
+                            <option value="tr">Türkçe</option>
+                            <option value="sq">Albanian</option>
+                            <option value="ar">Arabic</option>
+                            <option value="az">Azeri</option>
+                            <option value="ku">Kurdî</option>
+                            <option value="bs">Bosnian</option>
+                            <option value="sr">Serbian</option>
+                            <option value="bg">Bulgarian</option>
+                            <option value="el">Greek</option>
+                            <option value="uz">Uzbek</option>
+                            <option value="ky">Kyrgyz</option>
+                            <option value="kk">Kazakh</option>
+                            <option value="de">Deutsch</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="ru">Russian</option>
+                            <option value="fa">Farsî</option>
+                            <option value="it">İtalian</option>
+                            <option value="ur">Urdu</option>
+                            <option value="nl">Dutch</option>
+                            <option value="pt">Portugal</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ge">Georgian</option>
+                            <option value="zh">Chinese</option>
+                        </select></div>
                 </div>
                 <div class="col bigger">
-                    <label for="article_form_translations_new_title" class="required">Başlık</label>
-                    <input type="text" id="article_form_translations_new_title"
-                           name="article_form[translations][new][title]" required="required" class="form-control">
+                    <div><label for="article_form_translations_new_title" class="required">Başlık</label><textarea
+                                id="article_form_translations_new_title" name="article_form[translations][new][title]"
+                                required="required" class="form-control"
+                                style="width: 100%; height: 75px;  resize: none;"></textarea></div>
                 </div>
                 <div class="abstract">
-                    <label for="article_form_translations_new_abstract" class="required">Özet</label>
-                    <textarea id="article_form_translations_new_abstract"
-                              name="article_form[translations][new][abstract]" required="required"
-                              class="form-control custom-textarea-class" style="width: 100%; height: 250px;"></textarea>
+                    <div><label for="article_form_translations_new_abstract">Özet</label><textarea
+                                id="article_form_translations_new_abstract"
+                                name="article_form[translations][new][abstract]" class="form-control"
+                                style="width: 100%; height: 250px; overflow-y: scroll;"></textarea></div>
                 </div>
+
                 <div class="col keywords">
-                    <label for="article_form_translations_new_keywords" class="required">Anahtar Kelimeler</label>
-                    <select type="text" id="article_form_translations_new_keywords"
-                            name="article_form[translations][new][keywords]" required="required"
-                            class="form-control select2"> </select>
+                    <div><label for="article_form_translations_new_keywords">Anahtar Kelimeler</label>
+                        <select id="article_form_translations_new_keywords"
+                                name="article_form[translations][new][keywords][]" class="form-control select2-multiple"
+                                multiple="multiple">
+
+                        </select></div>
                 </div>
             </div>
         </div>
     </script>
+
     <script>
         //translation
         $(document).ready(function () {
             initializeSelect2ForAllFields();
+
+            function initializeSelect2MultipleForNewField(index) {
+                $('#article_form_translations_' + index + '_locale').select2({
+                    placeholder: 'Dil Seçiniz', // Opsiyonel: Bir yer tutucu metin ekleyebilirsiniz
+                    // Diğer seçenekler buraya eklenebilir
+                });
+            }
 
             function initializeSelect2ForNewField(index) {
                 $('#article_form_translations_' + index + '_keywords').select2({
                     multiple: true,
                     tags: true,
                     allowClear: true,
-                    tokenSeparators: [',']
+                    tokenSeparators: [',', ';']
                 });
             }
 
@@ -822,8 +974,7 @@
                     multiple: true,
                     tags: true,
                     allowClear: true,
-                    tokenSeparators: [','],
-                    multiple: true,
+                    tokenSeparators: [',', ';'],
                 });
             }
 
@@ -836,10 +987,25 @@
                 translationsContainer.append(newTranslation);
 
                 initializeSelect2ForNewField(translationsCount);
-            });
+                initializeSelect2MultipleForNewField(translationsCount);
 
+            });
         });
+
+
     </script>
+    {#    <script>// Dinamik olarak eklenen locale öğelerine select2 uygula #}
+    {#        function applySelect2ToDynamicLocales() { #}
+    {#            $('[id^="article_form_translations_new_locale"]').select2(); // Benzersiz id ile seç #}
+    {#            // veya #}
+    {#            // $('.locale select').select2(); // Sınıf ile seç #}
+    {#        } #}
+
+    {#        // Dinamik olarak eklenen form elementlerini sayfaya ekledikten sonra select2 uygula #}
+    {#        $(document).ready(function () { #}
+    {#            applySelect2ToDynamicLocales(); #}
+    {#        }); #}
+    {#    </script> #}
     <script id="authorTemplate" type="text/template">
         <div class="card mb-4">
             <div style="text-align: right;">
@@ -852,27 +1018,43 @@
                            name="article_form[authors][new][firstname]" required="required"
                            class="form-control col half">
                 </div>
-                <div class="col half">
-                    <label for="article_form_authors_new_lastname" class="required">Soyad</label>
-                    <input type="text" id="article_form_authors_new_lastname"
-                           name="article_form[authors][new][lastname]" required="required"
-                           class="form-control col half">
+                <div class="col lastname">
+                    <div><label for="article_form_authors_new_lastname" class="required">Soyad</label>
+                        <input type="text" id="article_form_authors_new_lastname"
+                               name="article_form[authors][new][lastname]"
+                               required="required"
+                               class="form-control"
+                               autocomplete="off">
+                    </div>
+                </div>
+                <div class="col ten">
+                    <div><label for="article_form_authors_new_row" class="required">Sıra</label><select
+                                id="article_form_authors_new_row" name="article_form[authors][new][row]" class=" ">
+                            <option value="1" selected="selected">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select></div>
                 </div>
                 <div class="col half">
                     <label for="article_form_authors_new_orcId" class="required">Orc Id</label>
                     <input type="text" id="article_form_authors_new_orcId" name="article_form[authors][new][orcId]"
-                           required="required" class="form-control col half">
+                           required="required" class="form-control col half" autocomplete="off">
                 </div>
                 <div class="col half">
                     <label for="article_form_authors_new_email" class="required">E-posta</label>
                     <input type="email" id="article_form_authors_new_email" name="article_form[authors][new][email]"
-                           required="required" class="form-control col half">
+                           required="required" class="form-control col half" autocomplete="off">
                 </div>
                 <div class="col trequarter">
                     <label for="article_form_authors_new_institute" class="required">Kurum</label>
                     <input type="text" id="article_form_authors_new_institute"
                            name="article_form[authors][new][institute]" required="required"
-                           class="form-control col trequarter">
+                           class="form-control col trequarter" autocomplete="off">
                 </div>
             </div>
         </div>
@@ -897,35 +1079,51 @@
                 <button class="delete-btn" type="button" onclick="deleteCard(this)">&times;</button>
             </div>
             <div class="row">
+
                 <div class="col half">
-                    <label for="article_form_translators_new_firstname" class="required">Ad</label>
-                    <input type="text" id="article_form_translators_new_firstname"
-                           name="article_form[translators][new][firstname]" required="required"
-                           class="form-control col half">
+                    <div><label for="article_form_translators_new_firstname" class="required">Ad</label>
+                        <input type="text" id="article_form_translators_new_firstname"
+                               name="article_form[translators][new][firstname]" required="required"
+                               class="form-control col half">
+                    </div>
                 </div>
-                <div class="col half">
+                <div class="col lastname">
                     <label for="article_form_translators_new_lastname" class="required">Soyad</label>
                     <input type="text" id="article_form_translators_new_lastname"
                            name="article_form[translators][new][lastname]" required="required"
                            class="form-control col half">
                 </div>
-                <div class="col half">
-                    <label for="article_form_translators_new_orcId" class="required">Orc Id</label>
-                    <input type="text" id="article_form_translators_new_orcId"
-                           name="article_form[translators][new][orcId]"
-                           required="required" class="form-control col half">
+                <div class="col ten">
+                    <div><label for="article_form_translators_new_row" class="required">Sıra</label><select
+                                id="article_form_translators_new_row" name="article_form[translators][new][row]"
+                                class=" ">
+                            <option value="1" selected="selected">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select></div>
                 </div>
                 <div class="col half">
-                    <label for="article_form_translators_new_email" class="required">E-posta</label>
-                    <input type="email" id="article_form_translators_new_email"
-                           name="article_form[translators][new][email]" required="required"
-                           class="form-control col half">
+                    <div><label for="article_form_translators_new_orcId">Orc Id</label>
+                        <input type="text" id="article_form_translators_new_orcId"
+                               name="article_form[translators][new][orcId]" class="form-control col half">
+                    </div>
+                </div>
+                <div class="col half">
+                    <div><label for="article_form_translators_new_email">E-posta</label>
+                        <input type="email" id="article_form_translators_new_email"
+                               name="article_form[translators][new][email]" class="form-control col half">
+                    </div>
                 </div>
                 <div class="col trequarter">
-                    <label for="article_form_translators_new_institute" class="required">Kurum</label>
-                    <input type="text" id="article_form_translators_new_institute"
-                           name="article_form[translators][new][institute]" required="required"
-                           class="form-control col trequarter">
+                    <div><label for="article_form_translators_new_institute">Kurum</label>
+                        <input type="text" id="article_form_translators_new_institute"
+                               name="article_form[translators][new][institute]" class="form-control col trequarter">
+                    </div>
                 </div>
             </div>
         </div>

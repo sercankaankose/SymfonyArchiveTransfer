@@ -31,6 +31,9 @@ class Translator
     #[ORM\ManyToOne(inversedBy: 'translators')]
     private ?Articles $article = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $row = null;
+
 
 
     public function getId(): ?int
@@ -106,6 +109,18 @@ class Translator
     public function setArticle(?Articles $article): static
     {
         $this->article = $article;
+
+        return $this;
+    }
+
+    public function getRow(): ?int
+    {
+        return $this->row;
+    }
+
+    public function setRow(?int $row): static
+    {
+        $this->row = $row;
 
         return $this;
     }

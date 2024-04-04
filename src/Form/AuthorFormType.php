@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Authors;
+use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -18,21 +19,27 @@ class AuthorFormType extends AbstractType
     {
         $builder
             ->add('firstname', TextType::class, [
-                'attr' => ['class' => 'form-control col half'],
+                'attr' => ['class' => 'form-control col half',
+                    'autocomplete' => 'off',
+                ],
                 'label'=>'Ad',
                  'constraints' => [
         new NotBlank(['message' => 'Ad alanı boş olamaz.']),
     ],
             ])
             ->add('lastname', TextType::class, [
-                'attr' => ['class' => 'form-control col half'],
+                'attr' => ['class' => 'form-control col half',
+                    'autocomplete' => 'off',
+                ],
                 'label'=>'Soyad',
                  'constraints' => [
         new NotBlank(['message' => 'Soyad boş olamaz.']),
     ],
             ])
             ->add('orcId', TextType::class, [
-                'attr' => ['class' => 'form-control col half'],
+                'attr' => ['class' => 'form-control col half',
+                    'autocomplete' => 'off',
+                ],
                 'label' => 'Orc Id',
                 'required' => false,
                 'constraints' => [
@@ -43,12 +50,30 @@ class AuthorFormType extends AbstractType
                 ],
             ])
             ->add('email', EmailType::class, [
-                'attr' => ['class' => 'form-control col half'],
+                'attr' => ['class' => 'form-control col half',
+                    'autocomplete' => 'off',
+                ],
                 'label'=>'E-posta',
                 'required' => false,
             ])
+            ->add('row', ChoiceType::class, [
+                'attr' => ['class' => ''],
+                'label'=>'Sıra',
+                'choices' => [
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                    '6' => '6',
+                    '7' => '7',
+                    '8' => '8',
+                ],
+            ])
             ->add('institute', TextType::class, [
-                'attr' => ['class' => 'form-control col trequarter'],
+                'attr' => ['class' => 'form-control col trequarter',
+                    'autocomplete' => 'off',
+                ],
                 'label'=>'Kurum',
                 'required' => false,
             ]);

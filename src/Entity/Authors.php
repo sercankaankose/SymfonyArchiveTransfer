@@ -31,6 +31,9 @@ class Authors
     #[ORM\ManyToOne(inversedBy: 'authors')]
     private ?Articles $article = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $row = null;
+
 
 
     public function getId(): ?int
@@ -116,4 +119,16 @@ class Authors
 //
 //        return $this;
 //    }
+
+public function getRow(): ?int
+{
+    return $this->row;
+}
+
+public function setRow(?int $row): static
+{
+    $this->row = $row;
+
+    return $this;
+}
 }

@@ -5,6 +5,7 @@ namespace App\Form;
 
 use App\Entity\Translator;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,22 +21,18 @@ class TranslatorFormType extends AbstractType
             ->add('firstname', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label' => 'Ad',
-                'constraints' => [
-                    new NotBlank(['message' => 'Ad alanı boş olamaz.']),
-                ],
+
             ])
             ->add('lastname', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label' => 'Soyad',
-                'constraints' => [
-                    new NotBlank(['message' => 'Soyad boş olamaz.']),
-                ],
+
             ])
             ->add('orcId', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label' => 'Orc Id',
+                'required' => false,
                 'constraints' => [
-                    new NotBlank(['message' => 'Orc ID alanı boş olamaz.']),
                     new Regex([
                         'pattern' => '/\d{4}-\d{4}-\d{4}-\d{4}$/',
                         'message' => 'Orc ID formatı geçerli değil. Doğru format: 0000-0000-0000-0000',
@@ -45,16 +42,30 @@ class TranslatorFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label' => 'E-posta',
-                'constraints' => [
-                    new NotBlank(['message' => 'E-posta alanı boş olamaz.']),
+                'required' => false,
+
+
+            ])
+            ->add('row', ChoiceType::class, [
+                'attr' => ['class' => ''],
+                'label'=>'Sıra',
+                'choices' => [
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4',
+                    '5' => '5',
+                    '6' => '6',
+                    '7' => '7',
+                    '8' => '8',
                 ],
             ])
             ->add('institute', TextType::class, [
                 'attr' => ['class' => 'form-control col trequarter'],
                 'label' => 'Kurum',
-                'constraints' => [
-                    new NotBlank(['message' => 'Kurum alanı boş olamaz.']),
-                ],
+                'required' => false,
+
+
             ]);
     }
 

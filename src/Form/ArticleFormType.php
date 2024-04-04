@@ -6,6 +6,7 @@ use App\Entity\Articles;
 use App\Entity\Citations;
 use App\Form\DataTransformer\CitationsToTextTransformer;
 use App\Form\Type\PageRangeType;
+use App\Params\ArticleLanguageParam;
 use App\Params\ArticleTypeParam;
 use App\Params\AuthorPartParam;
 use Symfony\Component\Form\AbstractType;
@@ -40,14 +41,9 @@ class ArticleFormType extends AbstractType
             ->add('primaryLanguage', ChoiceType::class,
                 [
                     'label' => 'Birincil Dil*',
-                    'choices' => ['Türkçe' => '001',
-                        'İngilizce' => '002',
-                        'Almanca' => '003',
-                        'İspanyolca' => '004',
-                        'Arapça' => '005',
-                        'Rusça' => '006',
-                        'Farsça' => '007',
-                    ],
+                    'choices' =>
+                        ArticleLanguageParam::languages
+
                 ])
             ->add('pageRange', PageRangeType::class, [
                 'label' => 'Sayfa Aralığı*',
@@ -57,20 +53,17 @@ class ArticleFormType extends AbstractType
             ])
             ->add('doi', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete' => 'off',
+
                 ],
                 'label' => 'Doi',
                 'required' => false,
 
             ])
             ->add('type', ChoiceType::class, [
-                'choices' => [
-                    'Makale' => '002',
-                    'Çeviri' => '001',
-                    'Olgu Sunumu' => '003',
-                    'Editor Mektup' => '004',
-                    'Derleme' => '005',
-                ],
+                'choices' =>
+                   ArticleTypeParam::choices,
                 'label' => 'Makale Türü*'
             ])
             ->add('authors', CollectionType::class, [
@@ -79,10 +72,6 @@ class ArticleFormType extends AbstractType
                 'by_reference' => false,
                 'allow_delete' => true,
                 'label' => ' ',
-
-                'constraints' => [
-                    new Count(['min' => 1, 'minMessage' => 'En Az 1 Tane Yazar Giriniz .']),
-                ],
             ])
             ->add('translators', CollectionType::class, [
                 'entry_type' => TranslatorFormType::class,
@@ -94,7 +83,7 @@ class ArticleFormType extends AbstractType
                     new Callback([
                         'callback' => function ($value, ExecutionContextInterface $context) use ($builder) {
                             $data = $builder->getData();
-                            if ($data instanceof Articles && $data->getType() === '001' && count($value) === 0) {
+                            if ($data instanceof Articles && $data->getType() === ArticleTypeParam::TRANSLATE && count($value) === 0) {
                                 $context->buildViolation('Çevirmen eklemelisiniz.')
                                     ->atPath('translators')
                                     ->addViolation();
@@ -118,9 +107,9 @@ class ArticleFormType extends AbstractType
                 'attr' => ['class' => 'form-control', 'style' => 'width: 100%; height: 650px; overflow-y: scroll;'],
                 'label' => 'Atıf',
                 'required' => false,
-                'constraints' => [
-                    new NotBlank(['message' => 'Atıf Boş olamaz.']),
-                ],
+//                'constraints' => [
+//                    new NotBlank(['message' => 'Atıf Boş olamaz.']),
+//                ],
             ])
             ->add('receivedDate', DateType::class, [
                 'widget' => 'single_text',
@@ -131,14 +120,18 @@ class ArticleFormType extends AbstractType
 
                 'label' => 'Geliş Tarihi',
                 'required' => false,
-                'attr' => ['class' => 'js-datepicker wide-input'],
+                'attr' => ['class' => 'js-datepicker wide-input',
+                    'autocomplete' => 'off',
+],
                 'html5' => false,
 
             ])
             ->add('acceptedDate', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Kabul Tarihi',
-                'attr' => ['class' => 'js-datepicker wide-input'],
+                'attr' => ['class' => 'js-datepicker wide-input',
+                    'autocomplete' => 'off',
+],
                 'html5' => false,
                 'required' => false,
             ]);
@@ -149,13 +142,13 @@ class ArticleFormType extends AbstractType
             /** @var Articles $data */
             $data = $event->getData();
 
-            $citationsArray = $data->getCitations();
-            foreach ($citationsArray as $citations) {
-
-                if (empty($citations->getReferance())) {
-                    $form->get('citations')->addError(new FormError('Atıf Boş olamaz'));
-                }
-            }
+//            $citationsArray = $data->getCitations();
+//            foreach ($citationsArray as $citations) {
+//
+//                if (empty($citations->getReferance())) {
+//                    $form->get('citations')->addError(new FormError('Atıf Boş olamaz'));
+//                }
+//            }
 
             $languageCount = 0;
             foreach ($data->getTranslations() as $translation) {
@@ -168,6 +161,37 @@ class ArticleFormType extends AbstractType
             }
             if ($languageCount > 1) {
                 $form->addError(new FormError('Birden Fazla Birincil Dil ile uyumlu Üstveri Dili Girdiniz.'));
+            }
+
+              $authors = $data->getAuthors();
+
+            // Her bir yazar için kontrol edelim
+            $rows = [];
+            foreach ($authors as $index => $author) {
+                $row = $author->getRow();
+
+
+                if (in_array($row, $rows)) {
+                    $authorField = $form->get('authors')->get($index);
+                    $authorField->addError(new FormError('Her bir yazarın sıra değeri farklı olmalıdır.'));
+                }
+
+
+                $rows[] = $row;
+            }
+
+$translators = $data->getTranslators();
+     // Her bir Çevirmen için kontrol edelim
+            $rows = [];
+            foreach ($translators as $translator) {
+                $row = $translator->getRow();
+
+
+                if (in_array($row, $rows)) {
+                    $form->get('translators')->addError(new FormError('Her bir Çevirmen sıra değeri farklı olmalıdır.'));
+
+                }
+                $rows[] = $row;
             }
         });
 
