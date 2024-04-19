@@ -46,6 +46,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('surname', TextType::class, [
+                'label' =>'Soyad',
                 'attr' => [
                     'class' => 'form-control'
                 ],

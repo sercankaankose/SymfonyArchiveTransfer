@@ -14,7 +14,7 @@ class ArticleFulltextAddFormType extends AbstractType
     {
         $builder
             ->add('fulltext', FileType::class, [
-
+                'required'=> true,
                 'label' => 'Makale PDF Dosyası',
                 'constraints' => [
                     new File([

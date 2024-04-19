@@ -4,6 +4,7 @@ namespace App\Params;
 
 class ArticleLanguageParam
 {
+    const TURKCE = 'tr';
 const languages = [
     'English' => 'en',
     'Türkçe' => 'tr',

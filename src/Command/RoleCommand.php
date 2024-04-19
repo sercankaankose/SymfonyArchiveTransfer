@@ -44,6 +44,7 @@ class RoleCommand extends Command
         if ($user) {
             $user->setIsAdmin(true);
             $user->addRoles($role);
+            $this->entityManager->persist($user);
             $this->entityManager->flush();
             $output->writeln('Role updated for user with email: ' . $email);
         } else {

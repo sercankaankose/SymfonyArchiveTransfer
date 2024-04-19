@@ -7,6 +7,7 @@ use App\Entity\Citations;
 use App\Entity\Issues;
 use App\Entity\Journal;
 use App\Form\IssuesXmlFormType;
+use App\Params\ArticleLanguageParam;
 use App\Util\TypeModifier;
 
 use App\Entity\Translations;
@@ -206,7 +207,7 @@ class HomepageController extends AbstractController
         $name = $journal->getName() . ' ' . $issue->getNumber() . '. Sayısı Xml Düzenleme';
 
         if ($form->isSubmitted() && $form->isValid()) {
-        $xmlFile = $form->get('xml')->getData();
+            $xmlFile = $form->get('xml')->getData();
 
             if ($issue->getStatus() === IssueStatusParam::EDIT_REQUIRED && $issue->getStatus() === IssueStatusParam::EDITED) {
                 $this->addFlash('danger', 'Bu sayının aktarımı gerçekleşmiş.');
@@ -216,26 +217,25 @@ class HomepageController extends AbstractController
             if ($existingXmlPath && file_exists($existingXmlPath)) {
                 unlink($existingXmlPath);
             }
-                if ($xmlFile) {
-                    $baseDirectory = $this->getParameter('kernel.project_dir') . '/var/journal/' . $journal->getId();
-                    if (!file_exists($baseDirectory)) {
-                        mkdir($baseDirectory, 0777, true);
-                    }
-
-                    $xmlFileName = $this->generateHashedFileName($xmlFile, $journalId, $issueId);
-                    try {
-                        $xmlFile->move($baseDirectory, $xmlFileName);
-                        $issue->setXml('var/journal/' . $journal->getId() . '/' . $xmlFileName);
-                    } catch (FileException $e) {
-                        return new Response($e->getMessage());
-                    }
+            if ($xmlFile) {
+                $baseDirectory = $this->getParameter('kernel.project_dir') . '/var/journal/' . $journal->getId();
+                if (!file_exists($baseDirectory)) {
+                    mkdir($baseDirectory, 0777, true);
                 }
-                else {
-            $this->addFlash('danger', 'Lütfen bir XML dosyası seçin.');
-            return $this->redirectToRoute('journal_issue_xml_edit', ['id' => $id]);
-        }
 
-                $issue->setStatus(IssueStatusParam::WAITING);
+                $xmlFileName = $this->generateHashedFileName($xmlFile, $journalId, $issueId);
+                try {
+                    $xmlFile->move($baseDirectory, $xmlFileName);
+                    $issue->setXml('var/journal/' . $journal->getId() . '/' . $xmlFileName);
+                } catch (FileException $e) {
+                    return new Response($e->getMessage());
+                }
+            } else {
+                $this->addFlash('danger', 'Lütfen bir XML dosyası seçin.');
+                return $this->redirectToRoute('journal_issue_xml_edit', ['id' => $id]);
+            }
+
+            $issue->setStatus(IssueStatusParam::WAITING);
 
             $this->entityManager->persist($issue);
             $this->entityManager->flush();
@@ -307,36 +307,6 @@ class HomepageController extends AbstractController
         return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
     }
 
-// sayı durum kaydetme
-//    #[Route('journal/{id}/issue/save', name: 'issue_save')]
-//    public function issueSave($id): Response
-//    {
-//        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
-//        $journal = $issue->getJournal();
-//        $articleEditReq = $this->entityManager->getRepository(Articles::class)->findOneBy([
-//            'issue' => $issue,
-//            'status' => ArticleStatusParam::EDIT_REQUIRED
-//        ]);
-//        $articleError = $this->entityManager->getRepository(Articles::class)->findOneBy([
-//            'issue' => $issue,
-//            'status' => ArticleStatusParam::ERROR
-//        ]);
-//
-//        if ($articleEditReq) {
-//            $this->addFlash('danger', 'Düzenlenmemiş Makale Var');
-//            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
-//        }
-//
-//        if ($articleError) {
-//            $this->addFlash('danger', 'Hatalı Makale Var');
-//            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
-//        }
-//        $issue->setStatus(IssueStatusParam::EDITED);
-//        $this->entityManager->persist($issue);
-//        $this->entityManager->flush();
-//        return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
-//
-//    }
 
 // sayı dışa aktarımı
     #[Route('journal/issue/{id}/export', name: 'issue_export')]
@@ -348,7 +318,7 @@ class HomepageController extends AbstractController
         $journalName = $journal->getName();
         $journalIssn = $journal->getIssn();
         $journalEissn = $journal->getEissn();
-        $publisher = $journal->getPublisher();
+//        $publisher = $journal->getPublisher();
         // XML dom belgesi oluştur
         $xmlDoc = new DOMDocument('1.0', 'UTF-8');
         $xmlDoc->formatOutput = true;
@@ -393,10 +363,10 @@ class HomepageController extends AbstractController
             $journalTitleNode = $xmlDoc->createElement('journal-title', $journalName);
             $journalTitleGroupNode->appendChild($journalTitleNode);
 //yayıncı
-            $journalPublisherNode = $xmlDoc->createElement('publisher');
-            $journalPublisherNameNode = $xmlDoc->createElement('publisher-name', $publisher);
-            $journalPublisherNode->appendChild($journalPublisherNameNode);
-            $frontNode->appendChild($journalMetaNode);
+//            $journalPublisherNode = $xmlDoc->createElement('publisher');
+//            $journalPublisherNameNode = $xmlDoc->createElement('publisher-name', $publisher);
+//            $journalPublisherNode->appendChild($journalPublisherNameNode);
+//            $frontNode->appendChild($journalMetaNode);
 //journal meta buraya kadar
 
             $articleMetaNode = $xmlDoc->createElement('article-meta');
@@ -626,7 +596,43 @@ class HomepageController extends AbstractController
 // makale liste
     #[Route('journal/issue/{id}/articles', name: 'articles_list')]
     public function articleList($id, FactoryInterface $factory): Response
-    {
+    {$list = "sağlamlık ve bilinçli farkındalık ile ilişkisi [Yayınlanmamış yüksek lisans tezi]. Haliç Üniversitesi.
+Fung, K., Lake J, Steel L, Bryce K, Lunsky Y. (2018). ACT processes in group intervention for mothers of children with autism spectrum disorder. Journal of Autism and Developmental Disorders. 48(8): 2740-2747. doi:10.1007/s10803-018-3525-x.
+Fletcher, D., & Sarkar, M. (2013). Psychological resilience. European psychologist.
+Foster, K., Roche, M., Delgado, C., Cuzzillo, C., Giandinoto, J. A., & Furness, T. (2019). Resilience and mental health nursing: An integrative review of international literature. International
+journal of mental health nursing, 28(1), 71-85.
+Gould, E. R., Tarbox, J., & Coyne, L. (2018). Evaluating the effects of acceptance and commitment
+training on the overt behavior of parents of children with autism. Journal of Contextual Behavioral Science, 7, 81-88.
+Halstead, E., Ekas, N., Hastings, R. P., & Griffith, G. M. (2018). Associations between resilience and
+the well-being of mothers of children with autism spectrum disorder and other developmental disabilities. Journal of autism and developmental disorders, 48(4), 1108-1121.
+Hastings, R. P., Allen, R., McDermott, K., & Still, D. (2002). Factors related to positive perceptions
+in mothers of children with intellectual disabilities. Journal of applied research in intellectual
+disabilities, 15(3), 269-275.
+Hollahan, N.C. (2003). Parental coping and family functioning in families with children with mental
+retardation and chronic illness.(Doktora tezi) USA: Georgia State University, College of Arts
+and Sciences.
+Kale, Ü., Çağdaş, A., & Tepeli, K. (2013). Anne-baba eğitim düzeyinin ilköğretim 1. sınıf öğrencilerinin duyguları ifade etme becerilerine etkisinin incelenmesi. Eğitim ve Öğretim Araştırmaları
+Dergisi, 2(2), 254-262.
+Kara A. (2019). Zihinsel özel gereksinimi olan çocuk annelerinde psikolojik sağlamlık ve baba katılımı
+ilişkisi [Yayınlanmamış yüksek lisans tezi]. Sivas Cumhuriyet Üniversitesi.
+Karaaslan, M. ve Çelebioğlu, A. (2018). Lise öğrencilerinin sağlıklı yaşam biçimi davranışlarının
+belirlenmesi. Journal of Human Sciences, 15(2), 1355-1361.
+Kronenberger, W. G., & Thompson Jr, R. J. (1992). Psychological adaptation of mothers of children
+with spina bifida: Association with dimensions of social relationships. Journal of Pediatric
+Psychology, 17(1), 1-14.
+Macias, M. M., Saylor, C. F., Rowe, B. P., & Bell, N. L. (2003). Age-related parenting stress differences
+in mothers of children with spina bifida. Psychological reports, 93(3_suppl), 1223-1232.
+Norman, Elaine (2000). Resiliency enhancement: Putting the strengths perspective into socialwork, New
+York: Columbia University Press.
+Oelofsen, N., & Richardson, P. (2006). Sense of coherence and parenting stress in mothers and
+fathers of preschool children with developmental disability. Journal of Intellectual and developmental Disability, 31(1), 1-12.
+Pisula, E. (2011). Parenting stress in mothers and fathers of children with autism spectrum disorders, in a Comprehensive Book on Autism Spectrum Disorders, ed M. R. Mohammadi (Rijeka:
+InTech), 87–106.
+Richman, D. M., Belmont, J. M., Kim, M., Slavin, C. B., & Hayner, A. K. (2009). Parenting stress in
+families of children with Cornelia de Lange syndrome and Down syndrome. Journal of Developmental and Physical Disabilities, 21(6), 537-553.
+Scorgie, K., Wilgosh, L., & Sobsey, D. (2004). The Experience of Transformation in Parents of Children with Disabilities: Theoretical Considerations. Developmental Disabilities Bulletin, 32(1), ";
+
+//        dd($list);
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
         $journal = $issue->getJournal();
         $breadcrumb = $this->breadcrumbService->createArticleListBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $journal->getId());
@@ -638,8 +644,7 @@ class HomepageController extends AbstractController
                 return $this->redirectToRoute('app_homepage');
             }
         }
-
-        $articles = $this->entityManager->getRepository(Articles::class)->findBy([
+     $articles = $this->entityManager->getRepository(Articles::class)->findBy([
             'issue' => $issue
         ]);
 
@@ -652,6 +657,7 @@ class HomepageController extends AbstractController
         ]);
     }
 
+    //makale düzenleme
     #[Route('article/edit/{id}', name: 'article_edit')]
     public function article_edit($id, Request $request, FactoryInterface $factory): Response
     {
@@ -740,6 +746,30 @@ class HomepageController extends AbstractController
             $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
             $article->setStatus(ArticleStatusParam::EDITED);
             $this->entityManager->persist($article);
+//            $articleEditReq = $this->entityManager->getRepository(Articles::class)->findOneBy([
+//                'issue' => $issue,
+//                'status' => ArticleStatusParam::EDIT_REQUIRED
+//            ]);
+//            $articleError = $this->entityManager->getRepository(Articles::class)->findOneBy([
+//                'issue' => $issue,
+//                'status' => ArticleStatusParam::ERROR
+//            ]);
+            $this->entityManager->flush();
+
+            $articleEdited = $this->entityManager->getRepository(Articles::class)->findBy([
+                'issue' => $issue,
+                'status' => ArticleStatusParam::EDITED,
+            ]);
+            $articleCount = $this->entityManager->getRepository(Articles::class)->findBy([
+                'issue' => $issue,
+            ]);
+            if (count($articleCount) > 0 && count($articleCount) === count($articleEdited)) {
+                $issue->setStatus(IssueStatusParam::EDITED);
+                $this->entityManager->persist($issue);
+                $this->entityManager->flush();
+                $this->addFlash('success', 'Tüm Makaleler Güncellendi.');
+                return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+            }
             $this->entityManager->persist($issue);
             $this->entityManager->flush();
             $this->addFlash('success', 'Makale bilgileri güncellendi.');
@@ -802,9 +832,8 @@ class HomepageController extends AbstractController
             $issueId = $issue->getId();
             $issueYear = $issue->getYear();
             $issueNumber = $issue->getNumber();
+
 //translation ekle
-
-
             $uniqName = bin2hex(random_bytes(4));
             $fileName = sprintf('%s-%s-%s-%s-%s.pdf', $journalId, $issueId, $issueYear, $issueNumber, $uniqName);
 
@@ -879,7 +908,7 @@ class HomepageController extends AbstractController
         $breadcrumb = $this->breadcrumbService->createArticlePdfUploadBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), $article->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $article->setPrimaryLanguage('001'); //burayı düzelt
+            $article->setPrimaryLanguage(ArticleLanguageParam::TURKCE);
             $this->entityManager->persist($article);
             $this->entityManager->flush();
             //bu kısma article dosyasının nereye kaydedileceği gelecek
@@ -954,116 +983,145 @@ class HomepageController extends AbstractController
         ]);
     }
 
-// article pdf hata bildirme
-    #[Route('article/{id}/{status}', name: 'article_pdf_error')]
-    public function articlePdfError($id, $status): Response
+    #[Route('/fetch-article', name: 'fetch_article_data', methods: ['GET'])]
+    public function articleDoiCheck(Request $request): JsonResponse
     {
-        $article = $this->entityManager->getRepository(Articles::class)->find($id);
-        $article->setStatus(ArticleStatusParam::ERROR);
-
-        switch ($status) {
-            case '0':
-                $errorText = 'Dosya Görüntülenmiyor';
-                break;
-            case '1':
-                $errorText = 'Makale Değil';
-                break;
-            case '2':
-                $errorText = 'Yazı Bozuk Kopyalanıyor';
-                break;
-            case '3':
-                $errorText = 'Yazı Seçilmiyor';
-                break;
-            default:
-                $errorText = 'Diğer';
-                break;
+        $doi = $request->query->get('doi');
+        if (!$doi) {
+            return new JsonResponse(['error' => 'DOI parameter is missing'], Response::HTTP_BAD_REQUEST);
         }
+        $response = $this->httpClient->request('GET', 'https://api.crossref.org/works/' . $doi);
+        $content = $response->getContent();
+        $data = json_decode($content, true);
+        $title = $data['message']['title'][0] ?? null;
+        $abstract = $data['message']['abstract'] ?? null;
 
-        $article->setErrors([$errorText]);
-        $issue = $article->getIssue();
-        $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
-
-        $this->entityManager->persist($issue);
-        $this->entityManager->persist($article);
-        $this->entityManager->flush();
-        $this->addFlash('success', 'Makale Pdf Hatası Gönderilmiştir.');
-
-        return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+        // Başlık ve özet bilgileri varsa JSON yanıt oluştur
+        if ($title && $abstract) {
+            $responseData = [
+                'title' => $title,
+                'abstract' => $abstract
+            ];
+            return new JsonResponse($responseData);
+        } else {
+            // Başlık veya özet bilgisi bulunamazsa hata yanıtı oluştur
+            return new JsonResponse(['error' => 'Title or abstract not found.'], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
+
+
+
+// article pdf hata bildirme
+#[
+Route('article/{id}/{status}', name: 'article_pdf_error')]
+    public function articlePdfError($id, $status): Response
+{
+    $article = $this->entityManager->getRepository(Articles::class)->find($id);
+    $article->setStatus(ArticleStatusParam::ERROR);
+
+    switch ($status) {
+        case '0':
+            $errorText = 'Dosya Görüntülenmiyor';
+            break;
+        case '1':
+            $errorText = 'Makale Değil';
+            break;
+        case '2':
+            $errorText = 'Yazı Bozuk Kopyalanıyor';
+            break;
+        case '3':
+            $errorText = 'Yazı Seçilmiyor';
+            break;
+        default:
+            $errorText = 'Diğer';
+            break;
+    }
+
+    $article->setErrors([$errorText]);
+    $issue = $article->getIssue();
+    $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
+
+    $this->entityManager->persist($issue);
+    $this->entityManager->persist($article);
+    $this->entityManager->flush();
+    $this->addFlash('success', 'Makale Pdf Hatası Gönderilmiştir.');
+
+    return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+}
 
     // article pdf hata silme
     #[Route('/article/{id}/delete/error', name: 'article_pdf_error_delete')]
     public function articlePdfErrorDelete($id): Response
-    {
-        $article = $this->entityManager->getRepository(Articles::class)->find($id);
-        $article->setStatus(ArticleStatusParam::EDIT_REQUIRED);
-        $article->setErrors([]);
+{
+    $article = $this->entityManager->getRepository(Articles::class)->find($id);
+    $article->setStatus(ArticleStatusParam::EDIT_REQUIRED);
+    $article->setErrors([]);
 
-        $this->entityManager->persist($article);
-        $this->entityManager->flush();
-        $this->addFlash('success', 'Makale Hatası Geri Alınmıştır.');
+    $this->entityManager->persist($article);
+    $this->entityManager->flush();
+    $this->addFlash('success', 'Makale Hatası Geri Alınmıştır.');
 
-        return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
-    }
+    return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
+}
 
     #[Route('/article/all/{id}/delete', name: 'article_delete')]
     public function articleDeleteFunc($id): Response
-    {
-        $article = $this->entityManager->getRepository(Articles::class)->find($id);
-        $issue = $article->getIssue();
-        $translations = $article->getTranslations();
-        $translators = $article->getTranslators();
-        $authors = $article->getAuthors();
-        $citations = $article->getCitations();
-        foreach ($translations as $translation) {
-            $this->entityManager->remove($translation);
-        }
-        foreach ($authors as $author) {
-            $this->entityManager->remove($author);
-        }
-        foreach ($translators as $translator) {
-            $this->entityManager->remove($translator);
-        }
-        foreach ($citations as $citation) {
-            $this->entityManager->remove($citation);
-        }
-        $this->entityManager->remove($article);
-        $this->entityManager->flush();
-
-        $this->addFlash('success', 'Makale Başarıyla Silindi');
-        return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+{
+    $article = $this->entityManager->getRepository(Articles::class)->find($id);
+    $issue = $article->getIssue();
+    $translations = $article->getTranslations();
+    $translators = $article->getTranslators();
+    $authors = $article->getAuthors();
+    $citations = $article->getCitations();
+    foreach ($translations as $translation) {
+        $this->entityManager->remove($translation);
     }
+    foreach ($authors as $author) {
+        $this->entityManager->remove($author);
+    }
+    foreach ($translators as $translator) {
+        $this->entityManager->remove($translator);
+    }
+    foreach ($citations as $citation) {
+        $this->entityManager->remove($citation);
+    }
+    $this->entityManager->remove($article);
+    $this->entityManager->flush();
+
+    $this->addFlash('success', 'Makale Başarıyla Silindi');
+    return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+}
 
     #[Route('/article/pdf/{filename}', name: 'article_pdf', requirements: ['filename' => '.+'])]
     public function showPdfAction($filename)
-    {
-        $pdfPath = $this->getParameter('pdf_directory') . '/' . $filename;
-        if (!file_exists($pdfPath)) {
-            throw $this->createNotFoundException('The file does not exist');
-        }
-
-        $sanitizedFilename = str_replace(['/', '\\'], '_', $filename);
-
-        $response = new BinaryFileResponse($pdfPath);
-        $response->headers->set('Content-Type', 'application/pdf');
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $sanitizedFilename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $sanitizedFilename)
-        );
-
-        return $response;
+{
+    $pdfPath = $this->getParameter('pdf_directory') . '/' . $filename;
+    if (!file_exists($pdfPath)) {
+        throw $this->createNotFoundException('The file does not exist');
     }
+
+    $sanitizedFilename = str_replace(['/', '\\'], '_', $filename);
+
+    $response = new BinaryFileResponse($pdfPath);
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->setContentDisposition(
+        ResponseHeaderBag::DISPOSITION_INLINE,
+        $sanitizedFilename,
+        iconv('UTF-8', 'ASCII//TRANSLIT', $sanitizedFilename)
+    );
+
+    return $response;
+}
 
     private function generateHashedFileName(UploadedFile $file, $journalId, $issueId): string
-    {
-        $uniqName = uniqid(10);
+{
+    $uniqName = uniqid(10);
 
-        $extension = $file->guessExtension();
+    $extension = $file->guessExtension();
 
-        $newFileName = sprintf('%s-%s-%s.%s', $journalId, $issueId, $uniqName, $extension);
+    $newFileName = sprintf('%s-%s-%s.%s', $journalId, $issueId, $uniqName, $extension);
 
-        return $newFileName;
-    }
+    return $newFileName;
+}
 
 }

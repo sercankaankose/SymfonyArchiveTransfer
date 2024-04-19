@@ -39,7 +39,7 @@ class TranslationsFormType extends AbstractType
                 ],
             ])
             ->add('shortTitle', TextareaType::class, [
-                'attr' => ['class' => 'form-control', 'style' => 'width: 100%;   resize: none;'],
+                'attr' => ['class' => 'form-control', 'style' => 'width: 100%;  resize: none;'],
                 'label' => 'Kısa Başlık',
                 'required' => false,
 

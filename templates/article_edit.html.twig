@@ -193,8 +193,9 @@
         }
 
         .form-container .row .col.doi {
-            flex: 0 0 47.5%;
+            flex: 0 0 47%;
         }
+
         .form-container .row .col.shortTitle {
             flex: 0 0 80%;
         }
@@ -313,6 +314,20 @@
             background-color: #fff3cd !important; /* Sarı renk */
         }
 
+        .input-group {
+            position: relative;
+        }
+
+        .input-group .form-control {
+            padding-right: 100px; /* DOI giriş alanının sağ tarafına düğme için yer ayırır */
+        }
+
+        .input-group .btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
     </style>
 {% endblock %}
 
@@ -344,7 +359,7 @@
                     <i class="bi bi-file-earmark-check"></i>Kaydet ve Sonraki Makaleye Geç
                 </button>
             </div>
-            <div class="card mt-3 mb-3  ">
+            <div class="card mt-3 mb-3">
                 <div class="row ms-3">
                     <div class="col type">
                         {{ form_row(form.type, {'id': 'articleType'}) }}
@@ -354,8 +369,16 @@
                         {{ form_row(form.pageRange) }}
                     </div>
                     <div class="col doi">
-                        {{ form_row(form.doi) }}
+                        <div class="form-label">{{ form_label(form.doi) }}</div>
+                        <div class="form-widget input-group">
+                            {{ form_widget(form.doi, {'attr': {'class': 'form-control'}}) }}
+                            <button style="padding: 10px; margin-top: 1px" type="button" class="btn btn-secondary"
+                                    id="doiButton">Veri Çek
+                            </button>
+                        </div>
+                        <div class="form-error">{{ form_errors(form.doi) }}</div>
                     </div>
+
 
                     <div class="row">
                         <div class="col primary">
@@ -513,7 +536,7 @@
                      aria-labelledby="pills-translator-tab">
                     <div id="translatorContainer"
                          data-prototype="{{ form_row(form.translators.vars.prototype)|e('html_attr') }}">
-                        {% if article.type == '001' %}
+                        {% if article.type == '57' %}
                             {% for translatorForm in form.translators %}
 
                                 <div class="card mb-3">
@@ -627,7 +650,6 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
@@ -715,6 +737,226 @@
     </script>
 
 
+    {#    <script>$(document).ready(function () { #}
+    {#            $("#article_form_doi").on("change", function () { #}
+    {#                var doi = $(this).val(); #}
+    {#                if (doi.trim() !== "") { #}
+    {#                    $.ajax({ #}
+    {#                        url: "/fetch-article", #}
+    {#                        type: "GET", #}
+    {#                        data: {doi: doi}, #}
+    {#                        dataType: "json", #}
+    {#                        success: function (response) { #}
+    {#                            // AJAX isteği başarılı olduğunda burası çalışır #}
+    {#                            // Gelen verileri kullanabiliriz #}
+    {#                            if (response.title && response.abstract) { #}
+    {#                                console.log("Title:", response.title); #}
+    {#                                console.log("Abstract:", response.abstract); #}
+    {#                            } else { #}
+    {#                                console.error("Title veya abstract bilgisi bulunamadı."); #}
+    {#                            } #}
+    {#                        }, #}
+    {#                        error: function (xhr, status, error) { #}
+    {#                            // Hata durumunda burası çalışır #}
+    {#                            console.error("Hata: ", error); #}
+    {#                        } #}
+    {#                    }); #}
+    {#                } #}
+    {#            }); #}
+    {#        }); #}
+    {#        </script> #}
+    <script>
+        // document.getElementById("doiButton").addEventListener("click", function () {
+        //     var doi = document.getElementById("article_form_doi").value;
+        //
+        //     fetch('https://api.crossref.org/works/' + doi)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             var abstract = data.message.abstract;
+        //             var title = data.message.title;
+        //             var pageRange = data.message.page;
+        //             var authors = data.message.author;
+        //
+        //             // Tüm çeviri form inputlarını seç
+        //             var translationInputs = document.querySelectorAll("[id^='article_form_translations_']");
+        //
+        //             // En küçük rakama sahip olan çeviri formunu bul
+        //             var minTranslationIndex = Infinity;
+        //             translationInputs.forEach(function (input) {
+        //                 var index = parseInt(input.id.split('_')[3]);
+        //                 if (index < minTranslationIndex) {
+        //                     minTranslationIndex = index;
+        //                 }
+        //             });
+        //
+        //             // En küçük rakama sahip çeviri formunun inputlarını doldur
+        //             var abstractInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_abstract");
+        //             var titleInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_title");
+        //             var pageRangeInput = document.getElementById("article_form_pageRange");
+        //
+        //             if (abstractInput && titleInput) {
+        //                 abstractInput.value = abstract;
+        //                 titleInput.value = title;
+        //             } else {
+        //                 console.error("Abstract or title input not found!");
+        //             }
+        //             pageRangeInput.value = pageRange;
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        // });
+
+//         document.getElementById("doiButton").addEventListener("click", function () {
+//             var doi = document.getElementById("article_form_doi").value;
+//
+//             fetch('https://api.crossref.org/works/' + doi)
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     var abstract = data.message.abstract;
+//                     var title = data.message.title;
+//                     var pageRange = data.message.page;
+//                     var authors = data.message.author;
+//
+//                     // Tüm çeviri form inputlarını seç
+//                     var translationInputs = document.querySelectorAll("[id^='article_form_translations_']");
+//
+//                     // En küçük rakama sahip olan çeviri formunu bul
+//                     var minTranslationIndex = Infinity;
+//                     translationInputs.forEach(function (input) {
+//                         var index = parseInt(input.id.split('_')[3]);
+//                         if (index < minTranslationIndex) {
+//                             minTranslationIndex = index;
+//                         }
+//                     });
+//
+//                     // En küçük rakama sahip çeviri formunun inputlarını doldur
+//                     var abstractInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_abstract");
+//                     var titleInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_title");
+//                     var pageRangeInput = document.getElementById("article_form_pageRange");
+//
+//                     if (abstractInput && titleInput) {
+//                         abstractInput.value = abstract;
+//                         titleInput.value = title;
+//                     } else {
+//                         console.error("Abstract or title input not found!");
+//                     }
+//                     pageRangeInput.value = pageRange;
+//
+// // Varolan index numaralarını al
+//                     var existingIndexes = [];
+//                     translationInputs.forEach(function(input) {
+//                         var index = parseInt(input.id.split('_')[3]);
+//                         existingIndexes.push(index);
+//                     });
+//
+// // Varolan index numaralarını küçükten büyüğe doğru sırala
+//                     existingIndexes.sort(function(a, b) {
+//                         return a - b;
+//                     });
+//
+// // Yazar bilgilerini ekleyin
+//                     existingIndexes.forEach(function(index) {
+//                         var author = authors[index];
+//                         var authorFirstNameInput = document.getElementById("article_form_authors_" + index + "_firstname");
+//                         var authorLastNameInput = document.getElementById("article_form_authors_" + index + "_lastname");
+//
+//                         if (authorFirstNameInput && authorLastNameInput) {
+//                             authorFirstNameInput.value = author.given;
+//                             authorLastNameInput.value = author.family;
+//                         } else {
+//                             console.error("Author inputs not found for index: " + index);
+//                         }
+//                     });
+//                 })
+//                 .catch(error => console.error('Error:', error));
+//         });
+        document.getElementById("doiButton").addEventListener("click", function () {
+            var doi = document.getElementById("article_form_doi").value;
+
+            fetch('https://api.crossref.org/works/' + doi)
+                .then(response => response.json())
+                .then(data => {
+                    var abstract = data.message.abstract;
+                    var title = data.message.title;
+                    var pageRange = data.message.page;
+                    var authors = data.message.author;
+
+                    // Tüm çeviri form inputlarını seç
+                    var translationInputs = document.querySelectorAll("[id^='article_form_translations_']");
+
+                    // En küçük rakama sahip olan çeviri formunu bul
+                    var minTranslationIndex = Infinity;
+                    translationInputs.forEach(function (input) {
+                        var index = parseInt(input.id.split('_')[3]);
+                        if (index < minTranslationIndex) {
+                            minTranslationIndex = index;
+                        }
+                    });
+
+                    // En küçük rakama sahip çeviri formunun inputlarını doldur
+                    var abstractInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_abstract");
+                    var titleInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_title");
+                    var pageRangeInput = document.getElementById("article_form_pageRange");
+
+                    if (abstractInput && titleInput) {
+                        abstractInput.value = abstract;
+                        titleInput.value = title;
+                    } else {
+                        console.error("Abstract or title input not found!");
+                    }
+                    pageRangeInput.value = pageRange;
+
+                    // Yazar bilgilerini ekleyin
+                    var authorInputsExist = true;
+                    var authorIndex = 0;
+                    while (authorInputsExist) {
+                        var authorFirstNameInput = document.getElementById("article_form_authors_" + authorIndex + "_firstname");
+                        var authorLastNameInput = document.getElementById("article_form_authors_" + authorIndex + "_lastname");
+
+                        if (!authorFirstNameInput || !authorLastNameInput) {
+                            // Eksik bir input alanı bulundu, yeni bir input alanı oluştur
+                            // createNewAuthorInput(authorIndex, authors[authorIndex]);
+                            $(document).ready(function () {
+                                var authorsContainer = $('#authorContainer');
+                                var authorTemplate = $('#authorTemplate').html();
+
+                                $('#addAuthorButton').click(function () {
+                                    var authorsCount = authorsContainer.find('.card').length;
+                                    var newAuthor = authorTemplate.replace(/new/g, authorsCount);
+                                    authorsContainer.append(newAuthor);
+                                });
+                            });
+                        }
+
+                        authorIndex++;
+
+                        // Kontrol edilecek bir sonraki index numarasına sahip input alanı var mı?
+                        authorInputsExist = document.getElementById("article_form_authors_" + authorIndex + "_firstname") &&
+                            document.getElementById("article_form_authors_" + authorIndex + "_lastname");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function createNewAuthorInput(index, author) {
+
+            newAuthorFirstNameInput.id = "article_form_authors_" + index + "_firstname";
+            newAuthorFirstNameInput.value = author.given || "";
+            newAuthorFirstNameInput.value = author.given || "";
+            newAuthorLastNameInput.id = "article_form_authors_" + index + "_lastname";
+            newAuthorLastNameInput.value = author.family || "";
+        }
+        $(document).ready(function authorNew() {
+            var authorsContainer = $('#authorContainer');
+            var authorTemplate = $('#authorTemplate').html();
+
+            $('#addAuthorButton').click(function () {
+                var authorsCount = authorsContainer.find('.card').length;
+                var newAuthor = authorTemplate.replace(/new/g, authorsCount);
+                authorsContainer.append(newAuthor);
+            });
+        });
+    </script>
+
 
     {#    <script> #}
     {#    bu kısım istediğim igibi değil buerayı düzenle    #}
@@ -740,48 +982,35 @@
     {#        }); #}
     {#    </script> #}
 
-    <script>
-        // window.onload = function() {
-        //     var articleType = document.getElementById('articleType').value;
-        //     var translatorContainer = document.getElementById('translatorContainer');
-        //
-        //     // Eğer articleType 001 değilse, translatorContainer elemanını gizle
-        //     if (articleType !== '001') {
-        //         translatorContainer.style.display = 'none';
-        //     }
-        // };
+    <script>document.addEventListener('DOMContentLoaded', function () {
+            // articleType değiştiğinde translator kartlarını kontrol et
+            $('#articleType').on('select2:select', function (e) {
+                var articleType = e.params.data.id; // Seçilen değeri al
 
-        // translator kartlarını silmek için bir fonksiyon
-        function deleteTranslatorCards() {
-            var translatorContainer = document.getElementById('translatorContainer');
-            // translatorContainer içindeki tüm kartları sil
-            var translatorCards = translatorContainer.querySelectorAll('.card');
-            translatorCards.forEach(function (card) {
-                card.remove();
+                // Eğer articleType '57' değilse, translator kartlarını sil
+                if (articleType !== '57') {
+                    deleteTranslatorCards();
+                }
             });
-        }
 
-        // articleType değiştiğinde translator kartlarını kontrol et
-        document.getElementById('articleType').addEventListener('change', function () {
-            var articleType = this.value;
-            var translatorContainer = document.getElementById('translatorContainer');
+            // translator kartlarını silmek için bir fonksiyon
+            function deleteTranslatorCards() {
+                var translatorContainer = document.getElementById('translatorContainer');
+                // translatorContainer içindeki tüm kartları sil
+                translatorContainer.innerHTML = '';
+            }
 
-            // Eğer articleType 001 değilse, translator kartlarını sil
-            if (articleType !== '001') {
-                deleteTranslatorCards();
+            // translator kartını silmek için bir fonksiyon
+            function deleteCard(element) {
+                var card = element.closest('.card');
+                var translatorContainer = document.getElementById('translatorContainer');
+
+                // Eğer kart translatorContainer içindeyse, sil
+                if (translatorContainer.contains(card)) {
+                    card.remove();
+                }
             }
         });
-
-        // translator kartını silmek için bir fonksiyon
-        function deleteCard(element) {
-            var card = element.closest('.card');
-            var translatorContainer = document.getElementById('translatorContainer');
-
-            // Eğer kart translatorContainer içindeyse, sil
-            if (translatorContainer.contains(card)) {
-                card.remove();
-            }
-        }
     </script>
 
     {#    <script> #}
@@ -811,8 +1040,7 @@
     {#    </script> #}
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+    <script>document.addEventListener('DOMContentLoaded', function () {
             var typeField = document.getElementById('articleType');
             var translatorTab = document.getElementById('pills-translator-tab');
             var metadataTab = document.getElementById('pills-metadata-tab');
@@ -822,34 +1050,29 @@
             var citationsTab = document.getElementById('pills-citations-tab');
             toggleTabs();
 
-            typeField.addEventListener('change', function () {
+            $('#articleType').on('select2:select', function (e) {
                 toggleTabs();
             });
 
             function toggleTabs() {
-                if (typeField.value === '001') {
+                var selectedValue = $('#articleType').val(); // Select2 ile seçilen değeri al
+
+                if (selectedValue === '57') {
                     translatorTab.disabled = false;
-                    // if(translatorTab.style.backgroundColor = '#a52834'){
-                    //     translatorTab.style.color = '#fff';
-                    // }else{
                     translatorTab.style.backgroundColor = '';
                     translatorTab.style.color = '';
-                    // }
+
                     if (translatorTab.getAttribute('aria-selected') === 'true') {
-                        // Disable translator tab
+                        // Devre dışı bırakılan sekmeleri ayarla ve aktif sekmeyi değiştir
                         translatorTab.disabled = true;
                         translatorTab.setAttribute('aria-selected', 'false');
                         translatorTab.classList.remove('active');
 
-                        // Enable metadata tab
                         metadataTab.disabled = false;
                         metadataTab.setAttribute('aria-selected', 'true');
                         metadataTab.classList.add('active');
 
-                        // Add 'show active' class to the metadata pane
                         metadataPane.classList.add('show', 'active');
-
-                        // Remove 'show active' class from the translator pane
                         translatorPane.classList.remove('show', 'active');
                     }
                 } else {
@@ -857,11 +1080,11 @@
                     translatorTab.style.backgroundColor = 'rgb(237,237,238)';
                     translatorTab.style.color = 'rgb(154,32,32)';
 
-                    // Disable translator tab
                     translatorTab.disabled = true;
                     translatorTab.setAttribute('aria-selected', 'false');
                     translatorTab.classList.remove('active');
 
+                    // Diğer sekmeler etkin değilse metadata sekmelerini etkinleştir
                     if (!authorTab.getAttribute('aria-selected') === 'true' && !citationsTab.getAttribute('aria-selected') === 'true') {
                         metadataTab.setAttribute('aria-selected', 'true');
                         metadataTab.classList.add('active');
@@ -922,6 +1145,12 @@
                             <option value="ge">Georgian</option>
                             <option value="zh">Chinese</option>
                         </select></div>
+                </div>
+                <div class="col shortTitle">
+                    <div><label for="article_form_translations_new_shortTitle">Kısa Başlık</label><textarea
+                                id="article_form_translations_new_shortTitle"
+                                name="article_form[translations][new][shortTitle]" class="form-control"
+                                style="width: 100%;   resize: none;"></textarea></div>
                 </div>
                 <div class="col bigger">
                     <div><label for="article_form_translations_new_title" class="required">Başlık</label><textarea
@@ -991,8 +1220,6 @@
 
             });
         });
-
-
     </script>
     {#    <script>// Dinamik olarak eklenen locale öğelerine select2 uygula #}
     {#        function applySelect2ToDynamicLocales() { #}

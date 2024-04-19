@@ -39,14 +39,7 @@ class JournalFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('publisher', TextType::class, [
-                'required' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'autocomplete' => 'off',
-                ],
-                'label' =>' Yayıncı',
-            ])
+
             ->add('issn', TextType::class, [
                 'required' => false,
                 'attr' => [

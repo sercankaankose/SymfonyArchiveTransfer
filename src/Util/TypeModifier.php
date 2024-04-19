@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Util;
+use App\Form\ArticleFormType;
+use App\Params\ArticleLanguageParam;
+use App\Params\ArticleTypeParam;
+
 class TypeModifier
 {
     function mapArticleType($type)
     {
-        $articleTypeMap = [
-            '001' => 'Çeviri',
-            '002' => 'Makale',
-            '003' => 'Olgu Sunumu',
-            '004' => 'Editor Mektup',
-            '005' => 'Derleme'
-        ];
+        $articleTypeMap =
+           ArticleTypeParam::choices
+        ;
 
         return isset($articleTypeMap[$type]) ? $articleTypeMap[$type] : 'Bilinmeyen';
     }
@@ -19,15 +19,7 @@ class TypeModifier
 
     function convertLanguageCode($code)
     {
-        $langCodes = [
-            'tr' => '001',
-            'en' => '002',
-            'ge' => '003',
-            'es' => '004',
-            'ar' => '005',
-            'ru' => '006',
-            'fa' => '007',
-        ];
+        $langCodes = ArticleLanguageParam::languages;
 
         return isset($langCodes[$code]) ? $langCodes[$code] : array_search($code, $langCodes);
     }

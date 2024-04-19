@@ -21,12 +21,15 @@ class TranslatorFormType extends AbstractType
             ->add('firstname', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label' => 'Ad',
+                'required' => true,
+
+
 
             ])
             ->add('lastname', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],
                 'label' => 'Soyad',
-
+                'required' => true,
             ])
             ->add('orcId', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],

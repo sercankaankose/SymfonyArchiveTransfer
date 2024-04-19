@@ -1,1004 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <articles>
-  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Makale" dtd-version="1.0">
+  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
     <front>
       <journal-meta>
         <journal-title-group>
-          <journal-title>Mutluluk Dergisi</journal-title>
+          <journal-title>balo dergisi</journal-title>
         </journal-title-group>
-        <issn pub-type="ppub">1234-1234</issn>
-        <issn pub-type="epub"/>
+        <issn pub-type="ppub"/>
+        <issn pub-type="epub">1234-1234</issn>
       </journal-meta>
       <article-meta>
         <article-id pub-id-type="doi"/>
         <title-group>
-          <article-title>Özgül Fobilerin Tedavisinde  Tek Seans Sanal Gerçeklikle Maruz Bırakmanın Etkinliği</article-title>
-          <trans-title-group xml:lang="en">
-            <trans-title>The Efficacy of A Single-Session Virtual Reality Exposure  In The Therapeutic Intervention  of Specific Phobias</trans-title>
+          <article-title>Rekabetçi Psikomotor Oyunlarında Öznel İyi Oluş: Nitel Bir Yaklaşım</article-title>
+          <trans-title-group xml:lang="">
+            <trans-title>Subjective Well-Being in Competitive Psychomotor Games: A Qualitative Approach</trans-title>
           </trans-title-group>
         </title-group>
-        <contrib-group>
-          <contrib contrib-type="author">
-            <name>
-              <surname>İLHAN</surname>
-              <given-names>Yulet</given-names>
-            </name>
-            <aff>Antalya Bilim University</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0003-3619-4014</contrib-id>
-          </contrib>
-          <contrib contrib-type="author">
-            <name>
-              <surname>AVCİL</surname>
-              <given-names>Cumhur</given-names>
-            </name>
-            <aff>Antalya Bilim University</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0001-9237-1201</contrib-id>
-          </contrib>
-        </contrib-group>
-        <volume/>
-        <issue>15</issue>
-        <fpage>4</fpage>
-        <lpage>19</lpage>
+        <contrib-group/>
+        <volume>1</volume>
+        <issue>1</issue>
+        <fpage>196</fpage>
+        <lpage>211</lpage>
         <abstract>
-          <p>Mevcut çalışma, özgül fobilerin tedavisinde yalnızca bir sanal gerçeklikle (SG) maruz bırakma seansının nederece etkili olduğunu ortaya koymayı hedeflemektedir. Klinik olarak özgül fobi teşhisi konmuş toplam 33&#13;
-  katılımcı, ya bir tedavi grubuna (N=16) ya da bir bekleme listesi kontrol grubuna (N=17) dahil edilmiştir.Kullanılan ölçüm araçları arasında Demografik Bilgi Formu, DSM-5 Özgül Fobi Şiddeti Ölçeği ve Öz Bildirime Dayalı Anksiyete Ölçümü yer almaktadır. İstatistiksel analizlerde, tedavinin etkilerini daha derinlemesineanlamak için karma bir varyans analizi (ANOVA) modeli benimsenmiştir. Analiz sonuçları, tedavi grubunun&#13;
-  kontrol grubuna kıyasla fobi semptomlarında istatistiksel olarak anlamlı bir düşüş yaşadığını göstermektedir (p &lt; .05). Üç aylık takip değerlendirmesinde de, bu terapötik kazanımlar korunmuş ve tedavi grubunda&#13;
-  anksiyete ve panik düzeyleri de anlamlı derecede azalmıştır (p &lt; .01). Bu çalışma, özgül fobilerin hafifletilmesiiçin tek bir SG maruziyeti seansının uzun vadeli etkisini de desteklemektedir. Aktif bir kontrol grubunun&#13;
-  olmaması ve örneklem demografisinin nispeten homojen olması gibi sınırlamalara rağmen, bu bulgular alandaki mevcut literatüre önemli bir katkı sağlamaktadır. Bu çalışma, özgül fobiler için SG tabanlı terapötik&#13;
-  yaklaşımların anlaşılması ve uygulanabilirliği konusunda daha fazla araştırma yapılması için sağlam bir temeloluşturmaktadır.</p>
+          <p>Özet&#13;
+&#13;
+Oyunlardaki katılımcılarda öznel iyi oluşu (ÖİO) geliştirmek, beden eğitim öğretmenleri için ilginç bir kaynak teşkil etmektedir. Bu çalışma görev veya egoya yönelik, bireysel rekabetçi psikomotor oyunlarında katılımcılarda (yakın ilişki, otonomi, uzmanlık ve anlamla ilgili olarak) ÖİO durumlarına yol açan oyunların yapısal özelliklerini (iç mantık) ve oyuncuların öznel özelliklerini incelemektir. Çalışmaya beden eğitimi ve spor bilimleri bölümünde okuyan 218 birinci sınıf üniversite öğrencisi katılmıştır. Seans başına beş bireysel oyun olmak üzere, öğrenciler iki seans almıştır. Katılımcılar her bir oyundan sonra ölçekleri cevaplandırarak duygusal deneyimlerinden bahsetmiştir. Altı uzman tarafından gerçekleştirilen içerik analizi, ÖİO&amp;rsquo;yu her bir oyunun yapısal yönleriyle ilişkilendirmiştir: Eğlenceli bir oyun, hoş veya nahoş bir yarışma ve zaferin kazanılma biçimi (sayı- yakın/ezici; frekans- ilk kez/tekrarlanan; beklenmedik; geri dönüş yapma). ÖİO ayrıca kişiyle (strateji ve çaba), rakiple (beceriler ve özellikler) ve grupla (ortam) ilgili üç öznel boyuta atfedilmiştir.&#13;
+&#13;
+Anahtar kelimeler: Doyum, Bireysel Oyun, Rekabetçi Seçim, İçerik Analizi, Duygusal Deneyim</p>
         </abstract>
-        <trans-abstract xml:lang="en">
-          <p>The present study endeavors to evaluate the therapeutic efficacy of a singular session of virtual reality (VR)exposure therapy for treating specific phobias. A total of 33 individuals with clinically diagnosed specific&#13;
-  phobias were allocated into either a treatment group (N=16) or a waiting list control group (N=17). Measurement instruments included the Demographic Information Form, the DSM-5 Severity Measure for Specific&#13;
-  Phobia Scale, and the Self-Reported Anxiety Measure. In terms of statistical analyses, a mixed-design analysisof variance (ANOVA) was utilized to examine both within-group and between-group differences over time,effectively allowing for a more comprehensive understanding of the treatment's impact. Results demonstrateda statistically significant reduction in the severity of phobia symptoms in the treatment group compared to thecontrol group (p &lt; .05). The therapeutic gains were maintained during a three-month follow-up assessment,with associated levels of anxiety and panic also showing a significant reduction in the treatment group (p &lt;.01). This study corroborates the clinical efficacy of a single VR exposure session for the amelioration of specific phobias. The gains were not only immediate but also durable over a follow-up period, substantiating thelonger-term effectiveness of this treatment modality. Despite certain limitations, such as the absence of activecontrol treatments and a somewhat homogeneous sample demographic, the findings make a significant contribution to the extant literature. The study serves as an important foundation for future research that aimsto broaden the applicability and understanding of VR-based therapeutic interventions for specific phobias.</p>
+        <trans-abstract xml:lang="">
+          <p>Abstract&#13;
+&#13;
+Fostering subjective well-being (SWB) in participants in games is an interesting resource for physical education teachers. This study examines the structural traits (internal logic) of games and the subjective traits (external logic, individual and group) of players, oriented towards the task or the ego, that provoke states of SWB (related to affiliation, autonomy, mastery and meaning) in participants in individual competitive psychomotor games. Two hundred and eighteen first-year undergraduates pursuing a physical education and sports science degree took part in the study. The students received two sessions consisting of five individual games each per session. The participants completed questionnaires after each game, giving accounts of their emotional experiences. The content analysis performed by six experts related SWB to the structural aspects of each game: a fun game, a pleasant or unpleasant competition, and the way victory was achieved (score - close/crushing; frequency - first time/repeated; unexpected; making a comeback). SWB also referred to three subjective aspects related to oneself (strategy and effort), to the rival (skills and characteristics) and to the group (climate).</p>
         </trans-abstract>
-        <kwd-group xml:lang="tr">
-          <kwd>Sanal Gerçeklik</kwd>
-          <kwd>Maruz Bırakma</kwd>
-          <kwd>Özgül Fobi</kwd>
-        </kwd-group>
-        <kwd-group xml:lang="en">
-          <kwd>Virtual Reality</kwd>
-          <kwd>Exposure</kwd>
-          <kwd>Specific Phobia</kwd>
-        </kwd-group>
+        <kwd-group xml:lang=""/>
+        <kwd-group xml:lang=""/>
       </article-meta>
     </front>
     <back>
-      <ref-list>
-        <ref id="ref1">
-          <label>1</label>
-          <mixed-citation>Amerikan Psikiyatri Birliği. (2013). Ruhsal Bozuklukların Tanısal ve Sayımsal Elkitabı, Beşinci Baskı&#13;
-(DSM-5). (E. Köroğlu, Çev.). Ankara: Hekimler Yayın Birliği.</mixed-citation>
-        </ref>
-        <ref id="ref2">
-          <label>2</label>
-          <mixed-citation>American Psychiatric Association (2017). PTSD Clinical Practice Guideline: What is exposure-therapy?-https://www.apa.org/ptsd-guideline/patients-and-families/exposure-therapy.pdf&#13;
-(Erişim tarihi: 15/04/2022-20.30).</mixed-citation>
-        </ref>
-        <ref id="ref3">
-          <label>3</label>
-          <mixed-citation>Botella, C., Quero, S., Baños, R.M., Perpiñá, C., Garcia-Palacios, A. and Riva, G. (2004). Virtual Reality&#13;
-And Psychotherapy. Studies in Health Technology and Informatics, 99, 37-54. doi:10.3233/978-1-60750-943-1-37.</mixed-citation>
-        </ref>
-        <ref id="ref4">
-          <label>4</label>
-          <mixed-citation>Botella, C., Garcia-Palacios, A., Quero, S., Baños, R.M. and Bretón-López, J. M. (2006). Virtual Reality and Psychological Treatments: A Review. Psicologia Conductual, 14(3), 491-509.</mixed-citation>
-        </ref>
-        <ref id="ref5">
-          <label>5</label>
-          <mixed-citation>Choy, Y., Fyer, A. J. and Lipsitz, J. D. (2007). Treatment Of Specific Phobia In Adults. Clinical Psychology Review, 27(3), 266-286. doi: 10.1016/j.cpr.2006.10.002.</mixed-citation>
-        </ref>
-        <ref id="ref6">
-          <label>6</label>
-          <mixed-citation>Clark, N., Mayers, T. and Sosa, G. (2019). The Effectiveness Of Virtual Reality Exposure Therapy&#13;
-For Treatment Of Specific Phobias: A Meta-Analysis. Southern California Conferences for Undergraduate Research. https://www.sccur.org/sccur/fall_2019_conference/oral_session_1/80/&#13;
-(Erişim tarihi: 25.12.2021-21.30).</mixed-citation>
-        </ref>
-        <ref id="ref7">
-          <label>7</label>
-          <mixed-citation>Craske, M. G. (2003). Origins of phobias and anxiety disorders: why more women than men?. Oxford,&#13;
-UK: Elsevier.</mixed-citation>
-        </ref>
-        <ref id="ref8">
-          <label>8</label>
-          <mixed-citation>Eaton, W. W., Bienvenu, O. J. and Miloyan, B. (2018). Specific Phobias. The Lancet Psychiatry, 5(8),&#13;
-678–686. doi:10.1016/S2215-0366(18)30169-X.</mixed-citation>
-        </ref>
-        <ref id="ref9">
-          <label>9</label>
-          <mixed-citation>Emmelkamp, P. M., Krijn, M., Hulsbosch, A., de Vries, S., Schuemie, M. and van der Mast, C. A.&#13;
-P. (2002). Virtual Reality Treatment Versus Exposure In Vivo: A Comparative Evaluation In Acrophobia. Behaviour Research and Therapy, 40(5), 509–516. doi:10.1016/s0005-&#13;
-7967(01)00023-7.</mixed-citation>
-        </ref>
-        <ref id="ref10">
-          <label>10</label>
-          <mixed-citation>Freitas, J., Velosa, V., Abreu, L., Jardim, R. L., Santos, J., Peres, B. and Campos, P. F. (2021). Virtual&#13;
-Reality Exposure Treatment In Phobias: A Systematic Review. Psychiatric Quarterly, 92(4),&#13;
-1685–1710. doi:10.1007/s11126-021-09935-6.</mixed-citation>
-        </ref>
-        <ref id="ref11">
-          <label>11</label>
-          <mixed-citation>Garcia-Palacios, A., Hoffman, H., Carlin, A., Furness, T. A. and Botella, C. (2002). Virtual Reality In&#13;
-The Treatment Of Spider Phobia: A Controlled Study. Behaviour Research and Therapy, 40(9),&#13;
-983–993. doi:10.1016/s0005-7967(01)00068-7.</mixed-citation>
-        </ref>
-        <ref id="ref12">
-          <label>12</label>
-          <mixed-citation>Grös, D. F. and Antony, M. M. (2006). The Assessment And Treatment Of Specific Phobias: A Review. Current Psychiatry Reports, 8(4), 298–303. doi:10.1007/s11920-006-0066-3.</mixed-citation>
-        </ref>
-        <ref id="ref13">
-          <label>13</label>
-          <mixed-citation>Işıklı, S., Baran, Z. ve Aslan, S. (2019). Özgül Fobilerde Sanal Gerçeklik Teknolojisi Uygulamaları İle&#13;
-Tedaviye Yardımcı Araç Geliştirme: Bir Etkililik Çalışması. Klinik Psikiyatri, 22(3), 316-328.&#13;
-doi: 10.5505/kpd.2019.43660.</mixed-citation>
-        </ref>
-        <ref id="ref14">
-          <label>14</label>
-          <mixed-citation>Kessler, R. C., Berglund, P., Demler, O., Jin, R., Merikangas, K. R., &amp; Walters, E. E. (2005). Lifetime&#13;
-Prevalence and Age-of-Onset Distributions of DSM-IV Disorders in the National Comorbidity&#13;
-Survey Replication. Archives of General Psychiatry, 62(6), 593. doi:10.1001/archpsyc.62.6.593.</mixed-citation>
-        </ref>
-        <ref id="ref15">
-          <label>15</label>
-          <mixed-citation>Krijn, M., Emmelkamp, P. M., Biemond, R., de Wilde de Ligny, C., Schuemie, M. J., and Van der Mast,&#13;
-C. A. (2004). Treatment Of Acrophobia In Virtual Reality: The Role Of Immersion And Presence. Behaviour Research and Therapy, 42(2), 229–239. doi:10.1016/S0005-7967(03)00139-6.</mixed-citation>
-        </ref>
-        <ref id="ref16">
-          <label>16</label>
-          <mixed-citation>Michaliszyn, D., Marchand, A., Bouchard, S., Martel, M. O. and Poirier-Bisson, J. (2010). A Randomized, Controlled Clinical Trial Of In Virtuo And In Vivo Exposure For Spider Phobia. Cyberpsychology, Behavior, and Social Networking, 13(6), 689–695. doi:10.1089/cyber.2009.0277.</mixed-citation>
-        </ref>
-        <ref id="ref17">
-          <label>17</label>
-          <mixed-citation>Öztekin, S., Aydın, O., Aydemir, Ö., Balıkçı, K., Çökmüş, F. P., Sarıkavak, T. ve Köroğlu, E. (2017).&#13;
-DSM-5 Özgül Fobi Şiddet Ölçeği Türkçe Formunun Geçerliliği Ve Güvenilirliği. Anadolu Psikiyatri Dergisi, 18 (Ek sayı 2), 31-37. doi: 10.5455/apd.240709.</mixed-citation>
-        </ref>
-        <ref id="ref18">
-          <label>18</label>
-          <mixed-citation>Park, M. J., Kim, D. J., Lee, U., Na, E. J. and Jeon, H. J. (2019). A Literature Overview Of Virtual Reality (VR) In Treatment Of Psychiatric Disorders: Recent Advances And Limitations. Frontiers&#13;
-in Psychiatry, 10(505), 1-9. doi:10.3389/fpsyt.2019.00505.</mixed-citation>
-        </ref>
-        <ref id="ref19">
-          <label>19</label>
-          <mixed-citation>Richard, D.C.S. and Lauterbach, D. (2007). Handbook of exposure therapies. Amsterdam, Boston:&#13;
-Elsevier.</mixed-citation>
-        </ref>
-      </ref-list>
+      <ref-list/>
     </back>
   </article>
-  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Makale" dtd-version="1.0">
+  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
     <front>
       <journal-meta>
         <journal-title-group>
-          <journal-title>Mutluluk Dergisi</journal-title>
+          <journal-title>balo dergisi</journal-title>
         </journal-title-group>
-        <issn pub-type="ppub">1234-1234</issn>
-        <issn pub-type="epub"/>
+        <issn pub-type="ppub"/>
+        <issn pub-type="epub">1234-1234</issn>
       </journal-meta>
       <article-meta>
-        <article-id pub-id-type="doi">10.32739/usmut.2023.9.15.97</article-id>
+        <article-id pub-id-type="doi"/>
         <title-group>
-          <article-title>Türk Genç Yetişkinlerde Büyük Beşli Kişilik Özellikleri ve Alışveriş Bağımlılığı</article-title>
-          <trans-title-group xml:lang="en">
-            <trans-title>The Big Five Personality Traits and Shopping Addiction  among Young Turkish Adults</trans-title>
+          <article-title>Meaning Making in Rural Appalachia: Age and Gender Patterns in Seven Measures of Meaning</article-title>
+          <trans-title-group xml:lang="Türkçe">
+            <trans-title>Appalachia Kırsalında Anlam Kurma: Anlamın Yedi Ölçütündeki Yaş ve Cinsiyet Örüntüleri</trans-title>
           </trans-title-group>
         </title-group>
         <contrib-group>
           <contrib contrib-type="author">
             <name>
-              <surname>ALKAN</surname>
-              <given-names>Neşe</given-names>
+              <surname>Hamby</surname>
+              <given-names>Sherry</given-names>
             </name>
-            <aff>Atılım University</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-5615-3183</contrib-id>
+            <aff>University of the South and Life Paths Appalachian Research Center</aff>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Segura</surname>
+              <given-names>Anna</given-names>
+            </name>
+            <aff>Universitat de Barcelona</aff>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Taylor</surname>
+              <given-names>Elizabeth</given-names>
+            </name>
+            <aff>University of the South</aff>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Grych</surname>
+              <given-names>John</given-names>
+            </name>
+            <aff>Marquette University</aff>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Banyard</surname>
+              <given-names>Victoria</given-names>
+            </name>
+            <aff>University of New Hampshire</aff>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
           </contrib>
         </contrib-group>
-        <volume/>
-        <issue>15</issue>
-        <fpage>20</fpage>
-        <lpage>31</lpage>
-        <abstract>
-          <p>COVID-19 salgını ve ilgili kısıtlamaların başlamasıyla birlikte, çevrimiçi alışverişin bireylerin günlük yaşamının bir parçası haline geldiği görülmektedir. Alışveriş bağımlılığı veya kompulsif satın alma ise bireylerin iyi&#13;
-  oluş ve mutluluk düzeylerini olumsuz yönde etkileyen, giderek artan ve gençler arasında yaygın bir davranışsal bağımlılık sorunu olarak kabul edilmektedir. Bu çalışma, üniversite öğrencilerinde cinsiyetin ve Beş faktör&#13;
-  kişilik özelliklerinin alışveriş bağımlılığı üzerindeki rolünü incelemeyi amaçlamıştır. Çalışma verileri çevrimiçibir anket platformu aracılığıyla elde edilmiştir. Yaşları 18 ile 33 arasında değişen (M=23.10, SS=3.38) yetmiş&#13;
-  üniversite öğrencisi analizlere dahil edilmiştir. Grup karşılaştırmaları Tek Yönlü Varyans Analizi kullanılarakyapılmıştır. Alışveriş bağımlılığı puanının bağımlı değişken olduğu regresyon modelini test etmek için hiyerarşik çoklu regresyon analizi kullanılmıştır. Yordayıcı değişkenler, katılımcıların dışadönüklük, uyumluluk,vicdanlılık, nevrotiklik ve deneyime açıklık puanlarıdır. Tek Yönlü Varyans Analizi testlerinin sonuçları, alışveriş bağımlılığı puanında kadınların daha yüksek puan almasıyla cinsiyet farklılığına işaret etmiştir. Hiyerarşik çoklu regresyon analizi, yalnızca deneyime açıklık kişilik özelliğinin alışveriş bağımlılığını anlamlı ve tersyönde yordadığını göstermiştir. Bu çalışma, kişilik - alışveriş bağımlılığı ilişkisini incelemek için özel olaraktasarlanmıştır ve Batılı olmayan bir kültürden bulgular sağlayarak mevcut bilgileri desteklemektedir. Deneyime açıklık özelliğinin alışveriş bağımlılığı açısından olası bir koruyucu rolü çalışmanın temel çıkarımıdır.</p>
-        </abstract>
-        <trans-abstract xml:lang="en">
-          <p>With the onset of the COVID-19 pandemic and related restrictions, online shopping has become a part ofthe daily life of individuals across the globe. Shopping addiction or compulsive buying, on the other hand,&#13;
-  is considered to be a growing behavioral addiction problem which renders individuals&amp;rsquo; wellbeing and happiness. The current study aimed at examining the role of gender and the Big Five personality traits on shoppingaddiction among university students. Study data were obtained through an online survey platform. Seventyuniversity students aged between 18 and 33 (M=23.10, SD=3.38) were included in the analyses. Group comparisons were carried out by conducting One-way Analysis of Variance. A hierarchical multiple regressionanalysis was used to test the hypothesized model where the shopping addiction score was the dependentvariable. The predictor variables were extraversion, agreeableness, conscientiousness, neuroticism, and openness to experience scores of the participants. One-way Analysis of Variance tests results indicated a genderdifference, with females scoring higher on the shopping addiction score. Hierarchical multiple regressionanalysis showed that only the openness to experience trait significantly and inversely predicted the shoppingaddiction. Empirical studies that address the relationship between potentially addictive shopping and the BigFive personality traits are producing inconclusive results. This study was specifically designed to examinethe personality - shopping addiction relationship and supports the existing body of knowledge by providingfindings from a non-Western culture. A possible protective role of openness to experience trait with regardsto shopping addiction is the main implication of the study</p>
+        <volume>1</volume>
+        <issue>1</issue>
+        <fpage>168</fpage>
+        <lpage>186</lpage>
+        <trans-abstract xml:lang="Türkçe">
+          <p>İnsanlar yaşamda çok çeşitli kaynaklardan anlam çıkarır ama anlam kurmanın örüntülerini bireyler arasında değişiklik göstermesi hakkında çok az şey bilinmektedir. Bu çalışma anlamın yedi ölçütündeki yaş ve cinsiyet örüntülerini incelemektedir: Amaç hissiyatı, iyimserlik, dini veya ruhani katılım, aile bakımı, ahlak ve ahlaki standartlar, kendi kendine ve ilişki yönelimli anlam kurma. Bildiğimiz kadarıyla bu çalışma bu konuda yapılmış en büyük çalışmalardan biridir; bu da yaş ve cinsiyet arasındaki eğri-çizgisel yaş örüntü ve etkileşimlerini keşfetmemize olanak sağlamaktadır. Örneklem, üç güney Amerikan eyaletinin kırsal topluluklarında seçilmiş,ergenler ve yetişkinlerden oluşan 2565 katılımcıdan (%63,9 kadın) meydana gelmektedir. Katılımcılar anlam kurmanın güçlü yönlerini ölçen öz rapor ölçeklerini tamamlamıştır. Genel olarak analizler, anlam kurmanın çoğu güçlü yönünün hayat boyunca, ergenlikten orta yetişkinliğe doğru arttığını, ergenlik boyunca yüksek olan kendi kendine yönelimli etkinliklerin daha sonra azaldığını göstermiştir. Anlam kurmanın güçlü yönlerinin çeşitli türlerinde kadınlar, erkeklerden daha yüksek puanlar bildirmiştir ama erkeklerin iyimserlik puanları daha yüksektir. Yaştaki bazı eğri-çizgisel örüntülere dikkat çekilmiştir; bunlar daha önce belirlenmemiş, anlam kurmadaki dönüş noktalarına veya düzlüklere işaret etmektedir. Önleme ve müdahale programları dönüş noktalarının veya anlam kurmadaki diğer yaş ve cinsiyet örüntülerinin değerlendirmelerinden faydalanabilir. Örneğin, bir nüfusun kimlik gelişimi veya aile rollerine daha yatkın olup olmadığının fark edilmesi, programlamaya rehberlik edebilir. Gelecek araştırmalar araştırılan anlam türlerini artırmaya devam edebilir.&#13;
+&#13;
+Anahtar Kelimeler: Yaş Eğilimleri, Gelişim, Anlam Kurma, Kırsal, Güçlü Yönler, Cinsiyet Farklılıkları</p>
         </trans-abstract>
-        <kwd-group xml:lang="tr">
-          <kwd>Beş Faktör Kişilik</kwd>
-          <kwd>Alışveriş Bağımlılığı</kwd>
-          <kwd>Üniversite Öğrencileri</kwd>
-        </kwd-group>
-        <kwd-group xml:lang="en">
-          <kwd>Big Five Personality</kwd>
-          <kwd>Shopping Addiction</kwd>
-          <kwd>University Students</kwd>
-        </kwd-group>
+        <abstract>
+          <p>Abstract&#13;
+&#13;
+People derive meaning in life from a wide variety of sources, but little is known about how patterns of meaning making vary across individuals. The current study examined age and gender patterns in seven measures of meaning: sense of purpose, optimism, religious or spiritual involvement, family care, morals and ethical standards, self-oriented, and relationship-oriented meaning making. As far as we are aware, this study is one of the largest studies ever conducted on this topic, allowing us to explore curvilinear age patterns and interactions between age and gender. The sample comprised 2565 participants (63.9% females), including adolescents and adults, who were recruited from rural communities of 3 Southern U.S. states. Participants completed self-report measures assessing meaning-making strengths. Overall, analyses indicated that most meaning-making strengths increase across the lifespan, from adolescence to middle adulthood, except for self-oriented activities, which were highest during adolescence and then declined. Females reported higher scores in several types of meaning-making strengths than males, but males reported more optimism. Some curvilinear patterns in age were noted, suggesting turning points or plateaus in meaning making, which have not been previously identified. Prevention and intervention programs may benefit from consideration of turning points and other age and gender patterns in meaning making. For example, recognizing whether a population is likely to be more involved in identity development or family roles could help guide programming. Future research could continue to expand the types of meaning studied.</p>
+        </abstract>
+        <kwd-group xml:lang="Türkçe"/>
+        <kwd-group xml:lang="English"/>
       </article-meta>
     </front>
     <back>
-      <ref-list>
-        <ref id="ref1">
-          <label>1</label>
-          <mixed-citation>Abbott, R. A., Croudace, T. J., Ploubidis, G. B., Kuh, D., Richards, M., &amp; Huppert, F. A. (2008). The&#13;
-relationship between early personality and midlife psychological well-being: Evidence from&#13;
-a UK birth cohort study. Social Psychiatry and Psychiatric Epidemiology, 43, 679-687. https://&#13;
-doi.org/10.1007/s00127-008-0355-8</mixed-citation>
-        </ref>
-        <ref id="ref2">
-          <label>2</label>
-          <mixed-citation>Andreassen, C. S., Griffiths, M. D., Pallesen, S., Bilder, R. M., Torsheim, T., &amp; Aboujaoude, E. (2015).&#13;
-The Bergen Shopping Addiction Scale: Reliability and validity of a brief screening test. Frontiers in Psychology, 6, 1374. DOI: 10.3389/fpsyg.2015.01374.</mixed-citation>
-        </ref>
-        <ref id="ref3">
-          <label>3</label>
-          <mixed-citation>Aston, J., Vipond, O., Virgin, K., &amp; Youssouf, O. (2020). Retail e-commerce and COVID-19: How online shopping opened doors while many were closing. Statistics Canada= Statistique Canada.&#13;
-https://www150.statcan.gc.ca/n1/en/pub/45-28. DOI: 0001/2020001/article/00064-eng.&#13;
-pdf?st=k6eLZftr.</mixed-citation>
-        </ref>
-        <ref id="ref4">
-          <label>4</label>
-          <mixed-citation>Atak, H. (2013). On-Maddeli Kişilik Ölçeği›nin Türk Kültürü’ne Uyarlanması. Archives of Neuropsychiatry/Noropsikiatri Arsivi, 50(4), 312-319. DOI: 10.4274/npa.y6128.</mixed-citation>
-        </ref>
-        <ref id="ref5">
-          <label>5</label>
-          <mixed-citation>Averill, J. R., &amp; More, T. A. (1993). Happiness. In M. Lewis &amp; J. M. Haviland (Eds.), Handbook of&#13;
-Emotions (pp. 617–629). The Guilford Press.</mixed-citation>
-        </ref>
-        <ref id="ref6">
-          <label>6</label>
-          <mixed-citation>Bozdağ, Y., &amp; Alkar, Ö. Y. (2018). Bergen Alışveriş Bağımlılığı Ölçeği’nin kompülsif çevrimiçi satın&#13;
-alma davranışına uyarlanması. Bağımlılık Dergisi, 19(2), 23-34.</mixed-citation>
-        </ref>
-        <ref id="ref7">
-          <label>7</label>
-          <mixed-citation>Brunelle, C., &amp; Grossman, H. (2022). Predictors of online compulsive buying: The role of personality and mindfulness. Personality and Individual Differences, 185, 111237. DOI: 10.1016/j.&#13;
-paid.2021.111237&#13;
-Claes, L., &amp; Müller, A. (2017). Resisting temptation: is compulsive buying an expression of personality deficits? Current Addiction Reports, 4(3), 237-245. DOI: 10.1007/s40429-017-0152-0.</mixed-citation>
-        </ref>
-        <ref id="ref8">
-          <label>8</label>
-          <mixed-citation>Costa Jr, P. T., &amp; McCrae, R. R. (1992). Four ways five factors are basic. Personality and Individual&#13;
-Differences, 13(6), 653-665. DOI: 10.1016/0191-8869(92)90236-I.</mixed-citation>
-        </ref>
-        <ref id="ref9">
-          <label>9</label>
-          <mixed-citation>De Neve, J. E., Diener, E., Tay, L. &amp; Xuereb, C. (2013). The objective benefits of subjective well-being. World Happiness Report. http://eprints.lse.ac.uk/51669/1/dp1236.pdf.</mixed-citation>
-        </ref>
-        <ref id="ref10">
-          <label>10</label>
-          <mixed-citation>DeYoung, C. G.(2015).Cybernetic big five theory.Journal of Research in Personality, 56, 33– 58.DOI:&#13;
-10.1016/j.jrp.2014.07.004.</mixed-citation>
-        </ref>
-        <ref id="ref11">
-          <label>11</label>
-          <mixed-citation>Diener, E., Kesebir, P., &amp; Tov, W. (2009). Happiness. Handbook of Individual Differences in Social&#13;
-Behavior, 147-160.</mixed-citation>
-        </ref>
-        <ref id="ref12">
-          <label>12</label>
-          <mixed-citation>Diener, E., Ng, W., Harter, J., &amp; Arora, R. (2010). Wealth and happiness across the world: Material&#13;
-prosperity predicts life evaluation, whereas psychosocial prosperity predicts positive feeling. Journal of Personality and Social Psychology, 99(1), 52-61.DOI: 10.1037/a0018066.</mixed-citation>
-        </ref>
-        <ref id="ref13">
-          <label>13</label>
-          <mixed-citation>Diener, E., Heintzelman, S. J., Kushlev, K., Tay, L., Wirtz, D., Lutes, L. D., &amp; Oishi, S. (2017). Findings all psychologists should know from the new science on subjective well-being. Canadian Psychology/psychologie canadienne, 58(2), 87- 105. DOI: http:// dx.doi.org/10.1037/&#13;
-cap0000063.&#13;
-Dolan, P., Peasgood, T., &amp; White, M. (2008). Do we really know what makes us happy? A review of&#13;
-the economic literature on the factors associated with subjective well-being. Journal of Economic Psychology, 29(1), 94-122. DOI: 10.1016/j.joep.2007.09.001.</mixed-citation>
-        </ref>
-        <ref id="ref14">
-          <label>14</label>
-          <mixed-citation>Dubey, M. J., Ghosh, R., Chatterjee, S., Biswas, P., Chatterjee, S., &amp; Dubey, S. (2020). COVID-19&#13;
-and addiction. Diabetes &amp; Metabolic Syndrome: Clinical Research &amp; Reviews, 14(5), 817-823.&#13;
-DOI: 10.1016/j.dsx.2020.06.008.</mixed-citation>
-        </ref>
-        <ref id="ref15">
-          <label>15</label>
-          <mixed-citation>Faber, R., J. &amp; O’Guinn, T.,C. (1992). A Clinical Screener for Compulsive Buying, Journal of Consumer Research, 19(3), 459–469. DOI: 10.1086/209315.</mixed-citation>
-        </ref>
-        <ref id="ref16">
-          <label>16</label>
-          <mixed-citation>Gosling, S. D., Rentfrow, P. J., &amp; Swann Jr, W. B. (2003). A very brief measure of the Big-Five personality domains. Journal of Research in Personality, 37(6), 504-528. DOI: 10.1016/S0092-&#13;
-6566(03)00046-1.</mixed-citation>
-        </ref>
-        <ref id="ref17">
-          <label>17</label>
-          <mixed-citation>Griffiths, M.D. &amp; Larkin, M. (2004). Conceptualizing addiction: The case for a “complex systems”&#13;
-account, Addiction Research &amp; Theory, 12(2), 99-102, DOI: 10.1080/1606635042000193211.&#13;
-Griffiths, M. (2005). A ‘components’ model of addiction within a biopsychosocial framework, Journal of Substance Use, 10(4), 191-197, DOI: 10.1080/14659890500114359.</mixed-citation>
-        </ref>
-        <ref id="ref18">
-          <label>18</label>
-          <mixed-citation>Griffiths, M. D., Andreassen, C. S., Pallesen, S., Bilder, R. M., Torsheim, T., &amp; Aboujaoude, E. (2016).&#13;
-When is a new scale not a new scale? The case of the Bergen Shopping Addiction Scale and&#13;
-the Compulsive Online Shopping Scale. International Journal of Mental Health and Addiction, 14(6), 1107-1110. DOI: 10.1007/s11469-016-9711-1.</mixed-citation>
-        </ref>
-        <ref id="ref19">
-          <label>19</label>
-          <mixed-citation>Harnish, R. J., Roche, M. J., &amp; Bridges, K. R. (2021). Predicting compulsive buying from pathological personality traits, stressors, and purchasing behavior. Personality and Individual Differences, 177, 110821. DOI: 10.1016/j.paid.2021.110821.</mixed-citation>
-        </ref>
-        <ref id="ref20">
-          <label>20</label>
-          <mixed-citation>Helliwell, J. F., Layard, R., Sachs, J. D., &amp; Neve, J. E. D. (2021). World Happiness Report 2021.&#13;
-https://www.wellbeingintlstudiesrepository.org/cgi/viewcontent.cgi?article=1004&amp;context=hw_happiness.</mixed-citation>
-        </ref>
-        <ref id="ref21">
-          <label>21</label>
-          <mixed-citation>Hone, L. C., Jarden, A., Schofield, G. M. ve Duncan, S. (2014). Measuring flourishing: The impact of&#13;
-operational definitions on the prevalence of high levels of wellbeing. International Journal of Wellbeing, 4(1), 62-90. DOI:10.5502/ijw.v4i1.4.</mixed-citation>
-        </ref>
-      </ref-list>
+      <ref-list/>
     </back>
   </article>
-  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Makale" dtd-version="1.0">
+  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
     <front>
       <journal-meta>
         <journal-title-group>
-          <journal-title>Mutluluk Dergisi</journal-title>
+          <journal-title>balo dergisi</journal-title>
         </journal-title-group>
-        <issn pub-type="ppub">1234-1234</issn>
-        <issn pub-type="epub"/>
+        <issn pub-type="ppub"/>
+        <issn pub-type="epub">1234-1234</issn>
       </journal-meta>
       <article-meta>
-        <article-id pub-id-type="doi">10.32739/usmut.2023.9.15.98</article-id>
+        <article-id pub-id-type="doi"/>
         <title-group>
-          <article-title>COVID-19 Pandemisinde Sağlık Çalışanları: Beş Faktör Kişilik  Özellikleri ve Psikolojik Sağlamlığın Şefkat Yorgunluğunu  Yordamadaki Rolleri</article-title>
-          <trans-title-group xml:lang="en">
-            <trans-title>Healthcare Workers in the COVID-19 Pandemic: The Roles of Five Factors  Personality Traits and Resilience in Predicting Compassion Fatigue</trans-title>
+          <article-title>Mutluluk Korkusu Ölçeği Türkçe Formu’nun Psikometrik Özellikleri</article-title>
+          <trans-title-group xml:lang="English">
+            <trans-title>Psychometric Properties of Turkish Form of the Fear of Happiness Scale</trans-title>
           </trans-title-group>
         </title-group>
         <contrib-group>
           <contrib contrib-type="author">
             <name>
-              <surname>ÇAKMAK</surname>
-              <given-names>Mehmet Akif</given-names>
-            </name>
-            <aff>Tokat Gaziosmanpaşa Üniversitesi Eğitim Fakültesi</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-4011-2774</contrib-id>
-          </contrib>
-          <contrib contrib-type="author">
-            <name>
-              <surname>İLHAN</surname>
-              <given-names>Tahsin</given-names>
-            </name>
-            <aff>Tokat Gaziosmanpaşa Üniversitesi Eğitim Fakültesi</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-5007-5022</contrib-id>
-          </contrib>
-        </contrib-group>
-        <volume/>
-        <issue>15</issue>
-        <fpage>32</fpage>
-        <lpage>52</lpage>
-        <abstract>
-          <p>Bu araştırmanın amacı, sağlık çalışanlarında beş faktör kişilik özellikleri ve psikolojik sağlamlık düzeylerininşefkat yorgunluğu ve alt boyut puanları üzerindeki yordayıcılığını incelemektir. İlişkisel modelin kullanıldığı&#13;
-  araştırmada hemşireler, hekimler ve ebeler başta olmak üzere farklı meslek grubundaki 697 sağlık personeliyer almıştır. Veri toplama aracı olarak Kişisel Bilgi Formu, Merhamet Yorgunluğu-Kısa Ölçek, Sıfatlara Dayalı&#13;
-  Kişilik Testi ve Kısa Psikolojik Sağlamlık Ölçeği kullanılmıştır. Veri analizi için IBM SPSS 25.0 kullanılmıştır.Araştırmada öne sürülen problemleri cevaplamak için, Pearson Momentler Çarpım Korelasyon Katsayısı,&#13;
-  Hiyerarşik Çoklu Doğrusal Regresyon Analizi, bağımsız gruplar t-testi, tek yönlü varyans analizi (ANOVA) veMann-Whitney U Testi kullanılmıştır. Beta katsayısına göre (&amp;beta;) sırasıyla duygusal denge, psikolojik sağlamlık&#13;
-  ve COVID-19 ile ilgili çalışma durumu şefkat yorgunluğu toplam varyansının % 26.2&amp;rsquo;sini açıklamaktadır. Şefkat yorgunluğu ve alt boyut puanlarının COVID-19 ile ilgili birimde çalışma, iş yükünde artış algısı ve bulaştırıcı olma kaygısına göre farklılaştığı belirlenmiştir. Bulgular alanyazın temelinde tartışılmış ve son bölümdesonuçlar çerçevesinde öneriler sunulmuştur.</p>
-        </abstract>
-        <trans-abstract xml:lang="en">
-          <p>The aim of this study is to examine the predictors of five factor personality traits and resilience levels on compassion fatigue and sub-dimension scores among healthcare workers. In the study, in which the relational model was used, 697 health workers from different professions, especially nurses, physicians and midwives, took part. Personal Information Form, Compassion Fatigue-Short Scale, Adjective Based Personality Test and Brief Psychological Resilience Scale were used as data collection tools. The data were analyzed with the SPSS 25.0 statistical program. Pearson Moments Product Correlation Coefficient, Hierarchical Multiple Regression Analysis, independent groups t-test, One-way analysis of variance (ANOVA) and Mann-Whitney U Test were used to answer the problems put forward in the study. According to the beta coefficient (&amp;beta;) neuroticism, resilience, and work related to COVID-19 variables explain 26,2 % of the total variance of compassion fatigue, respectively. It was found that compassion fatigue and sub-dimension scores differ according to working with COVID-19, perceived increase in workload and anxiety about being contagious. The findings were discussed on the basis of the literature and in the last part, suggestions were presented within the framework of the results.World.</p>
-        </trans-abstract>
-        <kwd-group xml:lang="tr"/>
-        <kwd-group xml:lang="en"/>
-      </article-meta>
-    </front>
-    <back>
-      <ref-list>
-        <ref id="ref1">
-          <label>1</label>
-          <mixed-citation>Abbondanzio, M. (2020). The Relationship Between Burnout and Personality Traits in Secondary School&#13;
-Athletic Trainers. Unpublished master’s thesis. Georgia Southern University, USA.</mixed-citation>
-        </ref>
-        <ref id="ref2">
-          <label>2</label>
-          <mixed-citation>Adams, R. E., Boscarino, J. A., &amp; Figley, C. R. (2006). Compassion fatigue and psychological distress&#13;
-among social workers:A validation study. American Journal of orthopsychiatry, 76(1), 103-108.&#13;
-https://doi.org/10.1037/0002-9432.76.1.103</mixed-citation>
-        </ref>
-        <ref id="ref3">
-          <label>3</label>
-          <mixed-citation>Alharbi, J., Jackson, D., &amp; Usher, K. (2020). The potential for COVID‐19 to contribute to compassion fatigue in critical care nurses. Journal of Clinical Nursing. 2020;00:1–3. https://doi.&#13;
-org/10.1111/jocn.15314</mixed-citation>
-        </ref>
-        <ref id="ref4">
-          <label>4</label>
-          <mixed-citation>Alessandri, G., Perinelli, E., De Longis, E., Schaufeli, W. B., Theodorou, A., Borgogni, L., Caprara G.&#13;
-V., &amp; Cinque, L. (2018). Job burnout: The contribution of emotional stability and emotional self‐efficacy beliefs. Journal of Occupational and Organizational Psychology, 91(4), 823-851. &#13;
-https://doi.org/10.1111/joop.12225</mixed-citation>
-        </ref>
-        <ref id="ref5">
-          <label>5</label>
-          <mixed-citation>Armon, G., Shirom, A., &amp; Melamed, S. (2012). The big five personality factors as predictors of&#13;
-changes across time in burnout and its facets. Journal of Personality, 80(2), 403-427. https://&#13;
-doi.org/10.1111/j.1467-6494.2011.00731.x</mixed-citation>
-        </ref>
-        <ref id="ref6">
-          <label>6</label>
-          <mixed-citation>Bacanlı, H., İlhan,T., &amp; Aslan, S. (2009). Beş faktör kuramına dayalı bir kişilik ölçeğinin geliştirilmesi:sıfatlara dayalı kişilik testi (SDKT). Türk Eğitim Bilimleri Dergisi, 7(2)261-279.</mixed-citation>
-        </ref>
-        <ref id="ref7">
-          <label>7</label>
-          <mixed-citation>Bakker, A. B., Van Der Zee, K. I., Lewig, K. A., &amp; Dollard, M. F. (2006). The relationship between&#13;
-the big five personality factors and burnout: A study among volunteer counselors. The Journal of Social Psychology, 146(1), 31-50. https://doi.org/ 10.3200/SOCP.146.1.31-50</mixed-citation>
-        </ref>
-        <ref id="ref8">
-          <label>8</label>
-          <mixed-citation>Barbosa, F. T., Leão, B. A., Tavares, G. M. S., &amp; Santos, J. G. R. P. D. (2012). Burnout syndrome&#13;
-and weekly workload of on-call physicians: cross-sectional study. Sao Paulo Medical Journal, 130(5), 282-288. https://doi.org/10.1590/s1516-31802012000500003.</mixed-citation>
-        </ref>
-        <ref id="ref9">
-          <label>9</label>
-          <mixed-citation>Barr, P. (2018). The five‐factor model of personality, work stress and professional quality of life in&#13;
-neonatal intensive care unit nurses. Journal of Advanced Nursing, 74(6), 1349-1358. https://&#13;
-doi.org/10.1111/jan.13543</mixed-citation>
-        </ref>
-        <ref id="ref10">
-          <label>10</label>
-          <mixed-citation>Bellicoso, D., Trudeau, M., Fitch, M. I., &amp; Ralph, M. R. (2017). Chronobiological factors for compassion satisfaction and fatigue among ambulatory oncology caregivers. Chronobiology İnternational, 34(6), 808-818. https://doi.org/10.1080/07420528.2017.1314301</mixed-citation>
-        </ref>
-        <ref id="ref11">
-          <label>11</label>
-          <mixed-citation>Bonfield, A. (2014). The relationship between the big 5 personality factors and compassion fatigue; a&#13;
-study among mental health professionals. Unpublished master’s thesis, Alliant International&#13;
-University, USA</mixed-citation>
-        </ref>
-        <ref id="ref12">
-          <label>12</label>
-          <mixed-citation>Burnett Jr, H. J., &amp; Wahl, K. (2015). The compassion fatigue and resilience connection: A survey of&#13;
-resilience, compassion fatigue, burnout, and compassion satisfaction among trauma&#13;
-responders. Andrews Universty Faculty Publications. 7(1), 318- 326.</mixed-citation>
-        </ref>
-        <ref id="ref13">
-          <label>13</label>
-          <mixed-citation>Chen, Y. P., Tsai, J. M., Lu, M. H., Lin, L. M., Lu, C. H., &amp; Wang, K. W. K. (2018). The influence of personality traits and socio‐demographic characteristics on paediatric nurses’ compassion satisfaction and fatigue. Journal of advanced nursing, 74(5), 1180-1188. https://doi.org/10.1111/jan.13516</mixed-citation>
-        </ref>
-        <ref id="ref14">
-          <label>14</label>
-          <mixed-citation>Cheung T, Fong TK, Bressington D. (2020) Cheung, T., Fong, T. K., &amp; Bressington, D. (2021).&#13;
-COVID‐19 under the SARS cloud: Mental health nursing during the pandemic in Hong&#13;
-Kong. Journal of Psychiatric and Mental Health Nursing, 28(2), 115. https://doi.org/10.1111/jpm.12639</mixed-citation>
-        </ref>
-        <ref id="ref15">
-          <label>15</label>
-          <mixed-citation>Ceobanu, M. C., &amp; Mairean, C. (2015). The relation between personality traits, social support and&#13;
-traumatic stress. Revista de Cercetare si Interventie Sociala, 48(17),&#13;
-Craig, C. D., &amp; Sprang, G. (2010). Compassion satisfaction, compassion fatigue, and burnout in&#13;
-a national sample of trauma treatment therapists. Anxiety, Stress, &amp; Coping, 23(3), 319-339.&#13;
-https://doi.org/10.1080/10615800903085818</mixed-citation>
-        </ref>
-        <ref id="ref16">
-          <label>16</label>
-          <mixed-citation>Crano, W.D., &amp; Brewer, M.B. (2002). Principles and methods of social research. New Jersey: Lawrence Erlbaum Associates Publishers Crepeau-Hobson, F. (2020). Coping with the COVID-19 Crisis: The Importance of Care for Caregivers. Communique, 48(7), 1-6.</mixed-citation>
-        </ref>
-        <ref id="ref17">
-          <label>17</label>
-          <mixed-citation>Cronin, M. S., Ryan, D. M., &amp; Brier, D. (2007). Support for staff working in disaster situations:&#13;
-A social work perspective. International Social Work, 50(3), 370-382. https://doi.org/&#13;
-10.1177/0020872807076050</mixed-citation>
-        </ref>
-      </ref-list>
-    </back>
-  </article>
-  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Makale" dtd-version="1.0">
-    <front>
-      <journal-meta>
-        <journal-title-group>
-          <journal-title>Mutluluk Dergisi</journal-title>
-        </journal-title-group>
-        <issn pub-type="ppub">1234-1234</issn>
-        <issn pub-type="epub"/>
-      </journal-meta>
-      <article-meta>
-        <article-id pub-id-type="doi">10.32739/usmut.2023.9.15.99</article-id>
-        <title-group>
-          <article-title>Affediciliğin, Pozitif Düşünme ve Yaşam Doyumu Üzerine  Etkisi: Üniversite Öğrencileri Üzerinde Bir Çalışma</article-title>
-          <trans-title-group xml:lang="en">
-            <trans-title>The effect of forgiveness on positive thinking and life satisfaction:  A study on university students</trans-title>
-          </trans-title-group>
-        </title-group>
-        <contrib-group>
-          <contrib contrib-type="author">
-            <name>
-              <surname>BAĞCI</surname>
-              <given-names>Sinem</given-names>
-            </name>
-            <aff>İstanbul Nişantaşı Üniversitesi</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0009-0005-2466-6725</contrib-id>
-          </contrib>
-          <contrib contrib-type="author">
-            <name>
-              <surname>AKTAY</surname>
-              <given-names>Mune</given-names>
-            </name>
-            <aff>İstanbul Nişantaşı Üniversitesi</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0001-8688-5564</contrib-id>
-          </contrib>
-        </contrib-group>
-        <volume/>
-        <issue>15</issue>
-        <fpage>53</fpage>
-        <lpage>67</lpage>
-        <abstract>
-          <p>Bu araştırma, üniversite öğrencilerinde affediciliğin pozitif düşünme ve yaşam doyumu üzerindeki etkisinintespit edilmesi amacıyla gerçekleştirilmiştir. Araştırmada, veri toplamak için bazı ölçekler uygulanmıştır. Bu&#13;
-  ölçekler: Kişisel Bilgi Formu” ile “Heartland Affetme Ölçeği”, “Pozitif-Negatif Duygu Ölçeği” ve “Yaşam Doyumu Ölçeği” dir. Araştırmada toplam 385 üniversite öğrencisinden elde edilen veriler SPSS 25 paket programı&#13;
-  ile analiz edilmiştir. Yapılan analiz sonucunda, affetme toplam puanının pozitif ve negatif duygu ile yaşamdoyum düzeyini anlamlı yönde etkilediği tespit edilmiştir. Araştırmada ayrıca, kendini affetme ve başkalarını&#13;
-  affetme alt boyutlarının yaşam doyum düzeyini etkilediği, durumları affetme alt boyutunun ise yaşam doyumdüzeyini etkilemediği tespit edilmiştir.</p>
-        </abstract>
-        <trans-abstract xml:lang="en">
-          <p>This research was carried out to determine the effect of forgiveness on positive thinking and life satisfactionin university students. In the research, a survey was applied to collect data. The survey includes “Personal Information Form” and “Heartland Forgiveness Scale”; “Positive-Negative Emotion Scale” and “Life SatisfactionScale”. In the study, the data obtained from a total of 385 university students were analyzed with the SPSS 25package program. As a result of the analysis, it was determined that the total score of forgiveness significantlyaffected the level of positive and negative emotions and life satisfaction. In the study, it was also determinedthat the sub-dimensions of self-forgiveness and forgiveness of others affected the level of life satisfaction, whilethe sub-dimension of forgiving situations did not affect the level of life satisfaction.</p>
-        </trans-abstract>
-        <kwd-group xml:lang="tr">
-          <kwd>Affetme</kwd>
-          <kwd>Yaşam Doyumu</kwd>
-          <kwd>Pozitif Düşünme</kwd>
-          <kwd>Negatif Duygu</kwd>
-          <kwd>Pozitif Duygu</kwd>
-        </kwd-group>
-        <kwd-group xml:lang="en">
-          <kwd>Forgiveness</kwd>
-          <kwd>Life Satisfaction</kwd>
-          <kwd>Positive Thinking</kwd>
-          <kwd>Negative Emotion</kwd>
-          <kwd>Positive Emotion</kwd>
-        </kwd-group>
-      </article-meta>
-    </front>
-    <back>
-      <ref-list>
-        <ref id="ref1">
-          <label>1</label>
-          <mixed-citation>Aslan, G. A. (2016). Üniversite öğrencilerinin affetme davranışları, yaşam doyumları ve sürekli öfke&#13;
-düzeyleri arasındaki ilişkilerin incelenmesi. Yayımlanmamış yüksek lisans tezi. Gazi Üniversitesi, Eğitim Bilimleri Enstitüsü, Ankara.</mixed-citation>
-        </ref>
-        <ref id="ref2">
-          <label>2</label>
-          <mixed-citation>Avcı, D. (2009). Öğrenilmiş İyimserlik Eğitim Programının 9. ve 10. Sınıf Öğrencilerinin İyimserlik&#13;
-Düzeylerine Etkisi, (Yayımlanmamış Yüksek Lisans Tezi), Eğitim Bilimleri Enstitüsü, Gazi&#13;
-Üniversitesi, Ankara.</mixed-citation>
-        </ref>
-        <ref id="ref3">
-          <label>3</label>
-          <mixed-citation>Ayten, A. Ferhan, H. (2016). Forgiveness, Religiousness, and Life Satisfaction: An Empirical Study&#13;
-on Turkish and Jordanian University Students. Spiritual Psychology and Counseling, 1 (1),&#13;
-79-84.</mixed-citation>
-        </ref>
-        <ref id="ref4">
-          <label>4</label>
-          <mixed-citation>Bakalım, O. Muyan, M. (2020). Yalnızlık ve Yaşam Doyumu İlişkisinde Pozitif ve Negatif Duyguların&#13;
-Aracı Rolü. Dokuz Eylül Üniversitesi Buca Eğitim Fakültesi Dergisi, (50), 125-140.</mixed-citation>
-        </ref>
-        <ref id="ref5">
-          <label>5</label>
-          <mixed-citation>Baker, J. C. (2014). Emotion regulation and the implications for forgiveness: An investigation of the&#13;
-late positive potential. Yayımlanmamış doktora tezi. ABD, Biola University.</mixed-citation>
-        </ref>
-        <ref id="ref6">
-          <label>6</label>
-          <mixed-citation>Berry, J. W., Worthington, E. L., O’Connor, L. E., Parrot, L. ve Wade, N. G. (2005). Forgiveness,&#13;
-Vengeful Rumination, and Affective Traits. Journal of Personality, 73(1), 183–226.</mixed-citation>
-        </ref>
-        <ref id="ref7">
-          <label>7</label>
-          <mixed-citation>Bono, G., McCullough, M. E. Root, L. M. (2008). Forgiveness, feeling connected to others, and&#13;
-well-being: Two longitudinal studies. Personality and Social Psychology Bulletin, 34(2), 182-&#13;
-195.</mixed-citation>
-        </ref>
-        <ref id="ref8">
-          <label>8</label>
-          <mixed-citation>Bouckenooghe, D., Raja, U. Butt, A. N. (2013). Combined Effects of Positive and Negative Affectivity&#13;
-and Job Satisfaction on Job Performance and Turnover Intentions, The Journal of Psychology, 147(2), 105-123.&#13;
-Brown, R. P. Phillips, A. (2005). Letting bygones be bygones: Further evidence for the validity of the&#13;
-Tendency to Forgive scale. Personality and Individual Differences, 38(3), 627-638.</mixed-citation>
-        </ref>
-        <ref id="ref9">
-          <label>9</label>
-          <mixed-citation>Bugay A. Demir, A. (2011). Hataya ilişkin özelliklerin başkasını affetmeyi yordaması. Türk Psikolojik Danışma ve Rehberlik Dergisi, 4(35), 8-17.</mixed-citation>
-        </ref>
-        <ref id="ref10">
-          <label>10</label>
-          <mixed-citation>Bugay, A. Demir, A. (2012). Can be forgiveness increased?: Forgiveness Enrichment Group. Türk&#13;
-Psikolojik Danışma ve Rehberlik Dergisi, 4(37), 96-106.</mixed-citation>
-        </ref>
-        <ref id="ref11">
-          <label>11</label>
-          <mixed-citation>Chan, D. W. (2013). Subjective well-being of Hong Kong Chinese teachers: The contribution of&#13;
-gratitude, forgiveness, and the orientations to happiness. Teaching and Teacher Education,&#13;
-32, 22-30.</mixed-citation>
-        </ref>
-        <ref id="ref12">
-          <label>12</label>
-          <mixed-citation>Crawford, J. R. Henry, J. D. (2004). The Positive and Negative Affect Schedule (PANAS): Construct&#13;
-Validity, Measurement Properties and Normative Data in A Large Non-Clinical Sample, British Journal of Clinical Psychology, 43, 245-265.</mixed-citation>
-        </ref>
-        <ref id="ref13">
-          <label>13</label>
-          <mixed-citation>Cropanzano, R. Weiss, H. M. Hale, J. M. S. Reb, J. (2003). The structure of affect: reconsidering the&#13;
-relationship between negative and positive affectivity. Journal of Management, 29(6), 831-&#13;
-857.</mixed-citation>
-        </ref>
-        <ref id="ref14">
-          <label>14</label>
-          <mixed-citation>Dağlı, A. Baysal, N. (2016). Yaşam Doyumu Ölçeğinin Türkçe’ye Uyarlanması: Geçerlilik ve Güvenilirlik Çalışması, Elektronik Sosyal Bilimler Dergisi. 15 (59): 1250-1262.</mixed-citation>
-        </ref>
-        <ref id="ref15">
-          <label>15</label>
-          <mixed-citation>Datu, J. A. D. (2014). Forgiveness, gratitude and subjective well-being among Filipino adolescents.&#13;
-International Journal for the Advancement of Counselling, 36(3), 262- 273.</mixed-citation>
-        </ref>
-        <ref id="ref16">
-          <label>16</label>
-          <mixed-citation>Diener, E. (1984). Subjective well-being. Psychological Buletin, 95(3), 542-575.</mixed-citation>
-        </ref>
-        <ref id="ref17">
-          <label>17</label>
-          <mixed-citation>Diener, E. Emmons, R. A. Larsen, R. J. Griffin, S. (1985). The satisfaction with life scale. Journal of&#13;
-Personality Assessment, 49 (1), 71-75.</mixed-citation>
-        </ref>
-        <ref id="ref18">
-          <label>18</label>
-          <mixed-citation>Diener, E. (2000). Subjective well-being. The Science of Happiness and Proposal for a National&#13;
-Index, 55(1), 34-43.</mixed-citation>
-        </ref>
-        <ref id="ref19">
-          <label>19</label>
-          <mixed-citation>Diener, E. Seligman, M. E. (2002). Very happy people. Psychological science, 13(1), 81-84.</mixed-citation>
-        </ref>
-        <ref id="ref20">
-          <label>20</label>
-          <mixed-citation>Dillon, R. S. (2001). Self-forgiveness and self-respect. Ethics, 112(1), 53-83.</mixed-citation>
-        </ref>
-        <ref id="ref21">
-          <label>21</label>
-          <mixed-citation>Dost, M. T. (2007). Üniversite Öğrencilerinin Yaşam Doyumunun Bazı Değişkenlere Göre İncelenmesi, Pamukkale Üniversitesi Eğitim Fakültesi Dergisi, 2(22): 132-143.</mixed-citation>
-        </ref>
-        <ref id="ref22">
-          <label>22</label>
-          <mixed-citation>Droll, D. M. (1984). Forgiveness: Theory and Research. Unpublished doctoral dissertation. University of Nevada, Reno.</mixed-citation>
-        </ref>
-        <ref id="ref23">
-          <label>23</label>
-          <mixed-citation>Enright, R. (1996). “Counseling within the forgiveness triad: On forgiving, receiving forgiveness,&#13;
-and self forgiveness”, Counseling and Values, Vol.40, No.2, 107-126.</mixed-citation>
-        </ref>
-        <ref id="ref24">
-          <label>24</label>
-          <mixed-citation>Enright, R. D. &amp; Fitzgibbons, R. P. (2000). Helping clients forgive: An empirical guide for Resolving&#13;
-anger and restoring hope. Washington, DC: American Psychological Association.&#13;
-Fernandez-Abascal, E. G. Diaz, D. M. (2013). Affective induction and creative thiking. Creativity&#13;
-Research Journal, 25(2), 213-221.</mixed-citation>
-        </ref>
-        <ref id="ref25">
-          <label>25</label>
-          <mixed-citation>Friedman, P. H. Toussaint, L. L. (2006). The relationship between forgiveness, gratitude, distress,&#13;
-and well-being: An integrative review of the literature. International Journal of Healing and&#13;
-Caring, 6(2), 1-10.</mixed-citation>
-        </ref>
-        <ref id="ref26">
-          <label>26</label>
-          <mixed-citation>Gençöz, T. (2000). Pozitif ve Negatif Duygu Ölçeği: Geçerlik ve Güvenirlik Çalışması. Türk Psikoloji&#13;
-Dergisi, 15(46), 19-26.</mixed-citation>
-        </ref>
-        <ref id="ref27">
-          <label>27</label>
-          <mixed-citation>Gradisek, P. (2012). Character strengths and life satisfaction of Slovenian in-service and pre-service&#13;
-teachers. CEPS Journal: Center for Educational Policy Studies Journal, 2(3), 167-180.</mixed-citation>
-        </ref>
-        <ref id="ref28">
-          <label>28</label>
-          <mixed-citation>Gündoğar, D., Gül Sallan, S., Uskun, E., Demirci, S. Keçeci, D. (2007). “Üniversite Öğrencilerinde&#13;
-Yaşam Doyumunu Yordayan Etkenlerin İncelenmesi”, Klinik Psikiyatr, 10: 14-27.&#13;
-Güney, S. (2013). Davranış Bilimleri, 9. Basım, Nobel Yayınları, İstanbul.</mixed-citation>
-        </ref>
-        <ref id="ref29">
-          <label>29</label>
-          <mixed-citation>Hall, J. H. Fincham, F. D. (2005). Self-Forgiveness: The Stepchild of Forgiveness Research. Journal&#13;
-of Social and Clinical Psychology, 24, 621–637.</mixed-citation>
-        </ref>
-        <ref id="ref30">
-          <label>30</label>
-          <mixed-citation>Hampes, W. (2016). The relationship between humor styles and forgiveness. Europe’s Journal of&#13;
-Psychology, 12(3), 338-347.</mixed-citation>
-        </ref>
-        <ref id="ref31">
-          <label>31</label>
-          <mixed-citation>Hargrave, T. D. Sells, J. N. (1997). The development of a Forgiveness Scale. Journal of Marital and&#13;
-Family Therapy, 23(1), 41-62.</mixed-citation>
-        </ref>
-        <ref id="ref32">
-          <label>32</label>
-          <mixed-citation>Hayes, N. (2011). Psikolojiyi Anlamak. (Çev. Filiz Şar, Asiye Hekimoğlu), İstanbul: Optimist Yayınevi.&#13;
-Horsbrugh, H. J. N. (1974). Forgiveness. Canadian Journal of Philosophy, 4(2), 269-282.</mixed-citation>
-        </ref>
-        <ref id="ref33">
-          <label>33</label>
-          <mixed-citation>Kaleta, K. Mroz, J. (2018). Forgiveness and life satisfaction across different age groups in adults.&#13;
-Personality and Individual Differences, 17-23.</mixed-citation>
-        </ref>
-        <ref id="ref34">
-          <label>34</label>
-          <mixed-citation>Karadağ, Ş. (2019). Üniversite Öğrencilerinde Olumlu Düşünme Becerisinin Kişilerarası İletişim&#13;
-Becerisi ile İlişkisi. Anemon Muş Alparslan Üniversitesi Sosyal Bilimler, 131-136.</mixed-citation>
-        </ref>
-        <ref id="ref35">
-          <label>35</label>
-          <mixed-citation>Karasar, N. (1999). Bilimsel Araştırma Yöntemi. Nobel Yayın Dağıtım, 9.basım, Ankara.&#13;
-Kaya, Ö. S. Orçan, F. (2019). Mutluluğun empati, affetme ve yaşam doyumu arasındaki aracı rolü:&#13;
-Bir yol analizi. Bolu Abant İzzet Baysal Üniversitesi Eğitim Fakültesi Dergisi, 19 (2), 540-554.</mixed-citation>
-        </ref>
-        <ref id="ref36">
-          <label>36</label>
-          <mixed-citation>Kim, H.-Y. (2013). Statistical notes for clinical researchers: assessing normal distribution (2) using&#13;
-skewness and kurtosis. Restorative Dentistry &amp; Endodontics, 38(1), 52–54.</mixed-citation>
-        </ref>
-        <ref id="ref37">
-          <label>37</label>
-          <mixed-citation>Krause, N. Ellison, C. G. (2003). Forgiveness by God, forgiveness of others, and psychological&#13;
-well-being in late life. Journal for the Scientific Study of Religion, 42, 77–93.</mixed-citation>
-        </ref>
-        <ref id="ref38">
-          <label>38</label>
-          <mixed-citation>Maltby, J. Day, L. Barber, L. (2005). Forgiveness and happiness. The differing contexts of forgiveness using the distinction between hedonic and eudaimonic happiness. Journal of Happiness Studies, 6(1), 1-13.</mixed-citation>
-        </ref>
-        <ref id="ref39">
-          <label>39</label>
-          <mixed-citation>McCullough, M. E. Worthington Jr, E. L. Rachal, K. C. (1997). Interpersonal forgiving in close relationships. Journal of Personality and Social Psychology, 73(2), 321-336.</mixed-citation>
-        </ref>
-        <ref id="ref40">
-          <label>40</label>
-          <mixed-citation>McCullough, M. E. Rachal, K.C. Sandage, S. J. Worthington, E. L. Brown, S. W. Hight, T. L. (1998).&#13;
-Interpersonal forgiving in close relationships: II. Theoretical elaboration and measurment.&#13;
-Journal of Personality and Social Psychology, 75, 1586-1603.</mixed-citation>
-        </ref>
-        <ref id="ref41">
-          <label>41</label>
-          <mixed-citation>McCullough, M. E. (2001). Forgiving. In C.R. Snyder (Ed.), Coping With Stress: Effective People&#13;
-and Processes (s. 93-113). New York: Oxford University Press.&#13;
-Muchinsky, P. M. (2000). Emotions in The Workplace: The Neglect of Organizational Behavior.&#13;
-Journal of Organizational Behavior. 801-805.</mixed-citation>
-        </ref>
-        <ref id="ref42">
-          <label>42</label>
-          <mixed-citation>North, J. (1987). “Wrongdoing and forgiveness”, Philosophy, Vol. 62, No.242, 499-508.</mixed-citation>
-        </ref>
-        <ref id="ref43">
-          <label>43</label>
-          <mixed-citation>Özdevecioğlu, M. &amp; Doruk, N.Ç. (2009). Organizasyonlarda İş-Aile ve Aile İş Çatışmalarının Çalışanların İş ve Yaşam Tatminleri Üzerindeki Etkisi, Erciyes Üniversitesi İktisadi ve İdari Bilimler Fakültesi Dergisi, 33(1): 69-99.</mixed-citation>
-        </ref>
-        <ref id="ref44">
-          <label>44</label>
-          <mixed-citation>Özer, M. Özsoy Karabulut, Ö. (2003). Yaşlılarda Yaşam Doyumu, Derleme, Ege Üniversitesi, Hemşirelik Yüksekokulu, Halk Sağlığı Hemşireliği Anabilim Dalı, İzmir, Türk Geriatri Dergisi, 6&#13;
-(2): 72-74.</mixed-citation>
-        </ref>
-        <ref id="ref45">
-          <label>45</label>
-          <mixed-citation>Pareek, S. &amp; Jain, M. (2012). Subjective well-being in relation to altruism and forgiveness among&#13;
-school going adolescents, International Journal of Psychology and Behavioral Sciences, 2(5),&#13;
-138-141.</mixed-citation>
-        </ref>
-        <ref id="ref46">
-          <label>46</label>
-          <mixed-citation>Peterson, C. Park, N. Seligman, M. E. (2005). Orientations to happiness and life satisfaction: The&#13;
-full life versus the empty life. Journal of happiness studies, 6(1), 25-41.</mixed-citation>
-        </ref>
-        <ref id="ref47">
-          <label>47</label>
-          <mixed-citation>Rye, M. S. Pargament, K. I. (2002). Forgiveness and romantic relationships in college: Can it heal&#13;
-the wounded heart?. Journal of Clinical Psychology, 58(4), 419-441.</mixed-citation>
-        </ref>
-        <ref id="ref48">
-          <label>48</label>
-          <mixed-citation>Sastre, M. T. M., Vinsonneau, G., Neto, F., Girard, M., &amp; Mullet, E. (2003). Forgivingness and satisfaction with life. Journal of Happiness Studies, 4(3), 323-335.</mixed-citation>
-        </ref>
-        <ref id="ref49">
-          <label>49</label>
-          <mixed-citation>Satıcı, S. A. (2016). Üniversite Öğrencilerinin Affetme, İntikam, Sosyal Bağlılık ve Öznel İyi Oluşları:&#13;
-Farklı Yapısal Modellerin Denenmesi Üzerine Bir Araştırma, Anadolu Üniversitesi, Eğitim&#13;
-Bilimleri Enstitüsü, Doktora Tezi, Eskişehir.</mixed-citation>
-        </ref>
-        <ref id="ref50">
-          <label>50</label>
-          <mixed-citation>Strelan, P. (2007). Who Forgive Others, Themselves and Situations? The Roles of Narcissism, Guilt,&#13;
-Self-Esteem and Agreeableness. Personality and Individual Differencess 42, 259-269.</mixed-citation>
-        </ref>
-        <ref id="ref51">
-          <label>51</label>
-          <mixed-citation>Tutar, H. (2015). Davranış Bilimleri, 2. Baskı, Seçkin Yayıncılık, Ankara.&#13;
-Thompson, L. Y. Snyder, C. R. Hoffman, L. Michael, S. T. Rasmussen, H. N. Billings, L. S. (2005).&#13;
-Dispositional forgiveness of self, others, and situations. Journal of Personality, 73, 313–359.</mixed-citation>
-        </ref>
-        <ref id="ref52">
-          <label>52</label>
-          <mixed-citation>Thoresen, C. E., Harris, A. H. S. ve Luskin, F. (2000). Forgiveness and Health: An UnansweredQuestion. In M. E. McCullough, K. I. Pargament, C. E. Thoresen (Eds.), Forgiveness: Theory,&#13;
-Research and Practice (pp. 254– 280). New York: Guilford Press.</mixed-citation>
-        </ref>
-        <ref id="ref53">
-          <label>53</label>
-          <mixed-citation>Topbaşoğlu, T. (2016). Yaşam doyumunun yordayıcısı olarak öfke ve affetme: affetmenin düzenleyici rolü. Yayımlanmamış yükseklisans tezi. Pamukkale Üniversitesi, Eğitim Bilimleri Enstitüsü, Denizli.&#13;
-Topbaşoğlu Altan, T. Çivitci, A. (2017). Öfke ve Yaşam Doyumu Arasındaki İlişkide Affetmenin&#13;
-Düzenleyici Rolü, Mehmet Akif Ersoy Üniversitesi Sosyal Bilimler Enstitüsü Dergisi, 9 (18),&#13;
-308-327.</mixed-citation>
-        </ref>
-        <ref id="ref54">
-          <label>54</label>
-          <mixed-citation>Toussaint, L. L. Williams, D. R. Musick, M. A. Everson, S. A. (2001). Forgiveness and health: Age differences&#13;
-in a U.S. probability sample. Journal of Adult Development, 8, 249–257.</mixed-citation>
-        </ref>
-        <ref id="ref55">
-          <label>55</label>
-          <mixed-citation>Tse, W. S. Yip, T. H. J. (2009). Relationship among dispositional forgiveness of others, interpersonal adjustment and psychological well-being: Implication for interpersonal theory of depression. Personality&#13;
-and Individual Differences, 46(3), 365-368.</mixed-citation>
-        </ref>
-        <ref id="ref56">
-          <label>56</label>
-          <mixed-citation>Türkoğlu, Z. (2014). Üniversite öğrencilerinin romantik ilişkilerinde sorun çözme becerileri ile affedici özellikleri (Yayımlanmamış Yüksek Lisans Tezi). Ondokuz Mayıs Üniversitesi, Eğitim Bilimleri Enstitüsü,&#13;
-Samsun.</mixed-citation>
-        </ref>
-        <ref id="ref57">
-          <label>57</label>
-          <mixed-citation>Watson, D. Clark, L. A. Tellegen, A. (1988). Development and Validation of Brief Measure of Positive and&#13;
-Negative Affect: The PANAS Scales. Journal of Personality and Social Psychology, 54(6), 1063-1070.</mixed-citation>
-        </ref>
-        <ref id="ref58">
-          <label>58</label>
-          <mixed-citation>Watson, D. (2000). Mood and Temperament, Guilford Press. New York.&#13;
-Wegner, D. M. (1997). When the antidote is the poison: Ironic mental control processes. Psychological Science, 8(3), 148-150.</mixed-citation>
-        </ref>
-        <ref id="ref59">
-          <label>59</label>
-          <mixed-citation>Worthington, E. L. Scherer, M. (2004). Forgiveness is an emotion-focused coping strategy that can reduce&#13;
-health risks and promote health resilience: Theory, review, and hypotheses. Psychology &amp; Health,&#13;
-19(3), 385-405.</mixed-citation>
-        </ref>
-        <ref id="ref60">
-          <label>60</label>
-          <mixed-citation>Yazıcıoğlu, Y. Erdoğan, S. (2004). Spss uygulamalı bilimsel araştırma yöntemleri. Ankara: Detay Yayıncılık.&#13;
-Yetim, Ü. (2001). Toplumdan Bireye Mutluluk Resimleri, İstanbul: Bağlam Yayınları.&#13;
-Ysseldyk, R. Matheson, K. Anisman, H. (2007). Rumination: Bridging a gap between forgivingness, vengefulness, and psychological health. Personality and Individual Differences, 42(8), 1573-1584.</mixed-citation>
-        </ref>
-        <ref id="ref61">
-          <label>61</label>
-          <mixed-citation>Zhu, H. (2015). Social support and affect balance mediate the association between forgiveness and life satisfaction. Social Indicators Research.</mixed-citation>
-        </ref>
-      </ref-list>
-    </back>
-  </article>
-  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Makale" dtd-version="1.0">
-    <front>
-      <journal-meta>
-        <journal-title-group>
-          <journal-title>Mutluluk Dergisi</journal-title>
-        </journal-title-group>
-        <issn pub-type="ppub">1234-1234</issn>
-        <issn pub-type="epub"/>
-      </journal-meta>
-      <article-meta>
-        <article-id pub-id-type="doi">10.32739/usmut.2023.9.15.100</article-id>
-        <title-group>
-          <article-title>Psikolojik Bakış Açısı ile Sosyal Medyada Benlik Sunumu</article-title>
-          <trans-title-group xml:lang="en">
-            <trans-title>Self -Presentation in Social Media from a Psychological Perspective</trans-title>
-          </trans-title-group>
-        </title-group>
-        <contrib-group>
-          <contrib contrib-type="author">
-            <name>
-              <surname>Deligöz</surname>
-              <given-names>Eda</given-names>
-            </name>
-            <aff>Üsküdar Üniversitesi</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0001-7037-5527</contrib-id>
-          </contrib>
-        </contrib-group>
-        <volume/>
-        <issue>15</issue>
-        <fpage>68</fpage>
-        <lpage>81</lpage>
-        <abstract>
-          <p>Araştırmanın amacı, internet kullanıcılarının sosyal medyada yer alırken gerçek benlik (real-self) sunumlarının farklılaşıyor olması ve bireylerin sosyal medya ortamlarında geçirdikleri kullanım sürelerinin artışıyla&#13;
-  gelişebilecek psikopatolojik durumları literatürde yer alan araştırmalar aracılığıyla açıklık getirmek ve incelemek olmuştur. Bu farklılaşma psikolojik kuramlar çerçevesinden açıklanmıştır. Araştırmada yer alan anahtarkelimeler, sosyal bilimlerde ve psikolojiyle ilişkili diğer disiplinlerde önemli görülmekte ve literatürde yeralan birçok çalışmaya konu olduğundan ve konu olmaya devam ettiğinden bahsedilebilir. Günümüzde “İnternet” kavramı sosyal medya (social media) ortamları ile eş anlamlı görülmekte ve toplumu oluşturan bireyler, çoğunlukla bulundukları topluluklarda sosyal medya hesaplarındaki profillerle kendilerini tanıtmakta,kullanıcıların öncelikleri sosyal medya profil hesaplarını arzuladıkları ideal benlik (ideal-self) bakış açısıylatasarlamaktır. Sosyal medya ortamlarında yer alan kullanıcılar profillerini, olmaya çalıştıkları ideal benlik(ideal- self) algılarına göre şekillendirmeye çalışırlar. Toplum içerisinde sergilenen gerçek benlik (real- self)sunumları ile sosyal medyadaki ideal benlik (ideal- self) sunumları arasındaki fark ve sonrasında bu farkınyol açacağı çatışmaların (psikopatolojik örüntülerin) irdelenmesinin önemli olduğundan bahsedilebilir. Buçatışma eklektik bir yol izlenerek psikolojik kuramlar ile açıklanmıştır. Araştırmanın yöntemi, çoğunlukla&#13;
-  sosyal bilimler başlığı altında yer alan çalışmaların literatür taraması yapılarak, psikolojik kuramsal perspektife dikkat edilerek oluşturulmaya çalışılmıştır. “İnternet”, “internet bağımlılığı”, “sosyal medya”, “benlik&#13;
-  sunumu” ve “benlik” gibi anahtar kavramlar disiplinler arası bir yaklaşımla literatür taraması yöntemiyleoluşturulmuştur. Multidisipliner bir yaklaşımı gerektiren kavramsal analizlere, teorik- kuramsal noktaları öne&#13;
-  çıkaran çalışmalar sayesiyle açıklık kazandırılmaya çalışılmıştır. Kimyasal olmayan yeni bir bağımlılık türü,“internet bağımlılığı” (internet addiction) birçok tez, makale, kitap ve çevirilerde yer almaktadır. Literatürdeki&#13;
-  bilimsel çalışmalarda, internetin aşırı bir biçimde kullanımının ve bunun sonucunda ortaya çıkan internetbağımlılığının yarattığı birçok problemden bahsedilmektedir. İnternetin aşırı bir biçimde kullanımı, bireyler üzerinde fizyolojik ve psikolojik olarak olumsuz sonuçlara neden olmaktadır. Araştırmanın sonucundainternet, sosyal medya, bilgisayarlar, akıllı taşınabilir cihazlar ve diğer tür teknolojik yeniliklerin bireylerde,&#13;
-  kullanıcılarda stres yaratan, gerçek benlikleri ile ideal benlikleri arasında çatışma yaşamalarına ve psikolojik bağımlılıklara neden olan unsurlar olduğundan bahsedilmektedir. İnternet ve beraberinde sosyal medyakullanıcılarının her geçen gün artması, hayatlarının her alanında sanal olarak ilerlemeleri, kullanıcıları sanalolmaya bağımlı kılar hale getirmektedir. Günümüz internet çağında çevrimiçi topluluklar artmakta, insanlariletişim ve sosyalleşme için çevrimiçi iletişime yönlenerek günlük aktivitelerinde işlevselliğin bozulması durumuyla karşılaşabilmektedir.</p>
-        </abstract>
-        <trans-abstract xml:lang="en">
-          <p>The aim of the research is to clarify and examine the psychopathological conditions that may develop with the increase in the duration of use of the individuals in social media environments, with the help of the studies in the literature. This differentiation has been explained within the framework of psychological theories. The keywords in the research are considered important in social sciences and other disciplines related topsychology, and it can be mentioned that they have been and continue to be the subject of many studies in the literature. Today, the concept of "Internet" is seen as synonymous with social media environments, and the individuals that make up the society mostly introduce themselves with the profiles on their social media accounts in the communities they are in, and the priorities of the users are to design their social media profile accounts with the ideal self-perspective they desire. Users in social media environments try to shape their profiles according to their ideal self-perceptions. It can be said that it is important to examine the difference between the real self-presentations in the society and the ideal self-presentations in the social media, and the conflicts (psychopathological patterns) that will result from this difference. This conflict has been explained by psychological theories following an eclectic path. The method of the research was tried to be formed by making a literature review of the studies mostly under the title of social sciences, paying attention to the psychological theoretical perspective. Key concepts such as “Internet”, “internet addiction”, “social media”, “self-presentation” and “self” were realized with an interdisciplinary literature review method. Conceptual analyzes that require a multidisciplinary approach and studies that highlight theoretical-theoretical points have been tried to be clarified. A new type of non-chemical addiction, "internet addiction", takes place in many theses, articles, books and translations. In the scientific studies in the literature, many problems caused by the excessive use of the internet and the resulting internet addiction are mentioned. Excessive use of the Internet causes physiological and psychological negative consequences on individuals. As a result of the research, it is mentioned that the internet, social media, computers, smart portable devices and other kinds of technological innovations are the factors that cause stress in individuals and users, conflict between their real selves and ideal selves, and psychological addictions. The increase in internet and social media users day by day and their virtual progress in every aspect of their lives make users addicted to being virtual. In today's internet age, online communities are increasing, people may face the deterioration of functionality in their daily activities by turning to online communication for communication and socialization..</p>
-        </trans-abstract>
-        <kwd-group xml:lang="tr">
-          <kwd>İnternet</kwd>
-          <kwd>Sosyal Medya</kwd>
-          <kwd>İnternet Bağımlılığı</kwd>
-          <kwd>Benlik</kwd>
-          <kwd>Benlik Sunumu</kwd>
-        </kwd-group>
-        <kwd-group xml:lang="en">
-          <kwd>Internet</kwd>
-          <kwd>Social Media</kwd>
-          <kwd>Internet Addiction</kwd>
-          <kwd>Self</kwd>
-          <kwd>Self-Presentation</kwd>
-        </kwd-group>
-      </article-meta>
-    </front>
-    <back>
-      <ref-list>
-        <ref id="ref1">
-          <label>1</label>
-          <mixed-citation>a</mixed-citation>
-        </ref>
-      </ref-list>
-    </back>
-  </article>
-  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Çeviri" dtd-version="1.0">
-    <front>
-      <journal-meta>
-        <journal-title-group>
-          <journal-title>Mutluluk Dergisi</journal-title>
-        </journal-title-group>
-        <issn pub-type="ppub">1234-1234</issn>
-        <issn pub-type="epub"/>
-      </journal-meta>
-      <article-meta>
-        <article-id pub-id-type="doi">10.32739/usmut.2023.9.15.101</article-id>
-        <title-group>
-          <article-title>Duygusal Kas-Güçlü Ebeveynler, Güçlü Çocuklar</article-title>
-          <trans-title-group xml:lang="en">
-            <trans-title>Emotional Muscle: Strong Parents, Strong Children</trans-title>
-          </trans-title-group>
-        </title-group>
-        <contrib-group>
-          <contrib contrib-type="author">
-            <name>
-              <surname>Novick</surname>
-              <given-names>Kerry Kelly</given-names>
+              <surname>Yildirim</surname>
+              <given-names>Murat</given-names>
             </name>
             <aff/>
             <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
           </contrib>
           <contrib contrib-type="author">
             <name>
-              <surname>Novick</surname>
-              <given-names>Jack</given-names>
+              <surname>A.</surname>
+              <given-names>Izaddin</given-names>
             </name>
             <aff/>
             <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
           </contrib>
-          <contrib contrib-type="translator">
-            <name>
-              <surname>Aybeniz</surname>
-              <given-names>Saadet</given-names>
-            </name>
-            <aff>Üsküdar Üniversitesi</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0001-9261-8913</contrib-id>
-          </contrib>
         </contrib-group>
-        <volume/>
-        <issue>15</issue>
-        <fpage>82</fpage>
-        <lpage>85</lpage>
+        <volume>1</volume>
+        <issue>1</issue>
+        <fpage>187</fpage>
+        <lpage>195</lpage>
         <abstract>
-          <p>Anne baba olmak her birey için oldukça önemli hem mutluluk verici hem de oldukça zorbir durumdur. Anne baba olacağını öğrenen kişiler için bu süreç belirsizliklerle dolu olan vekarmaşık bir süreci beraberinde getirir. Bu süreçte nasıl bir anne baba olacağını düşünmekde işleri oldukça zorlaştıran bir durumdur. Belirsizliklerin çoğunlukta olduğu bu süreçbaşlı başına zorlanan bir dönem olarak tarif edilmektedir. Bu süreci sağlıklı şekilde tamamlayabilmek için tıpkı fiziksel kasların güçlendirilmesi zor bir günün ardından daha rahatgünü tamamlamanıza yardımcı olacağı gibi duygusal kasların geliştirilmesi de zor geçenduygusal zamanların aşılmasında oldukça önemlidir.</p>
+          <p>Özet&#13;
+&#13;
+Bu araştırmanın amacı Mutluluk Korkusu Ölçeği&amp;rsquo;nin (MKÖ) Türkçe formunun psikometrik özelliklerinin incelenmesidir. Ölçeğin dilsel eşdeğerliği sağlandıktan sonra, güvenirlik ve geçerlik analizleri yapıldı. Ölçeğin yapı geçerliği açımlayıcı faktör analizi (N = 171) ve doğrulayıcı faktör analizi (N = 171) ile incelenmiştir. Sonuçlar, ölçeğin tek boyutlu olduğunu göstermiştir. Ayrıca, ölçeğin Türkçe formunun Cronbach alfa katsayısı 0.86 olarak saptanmıştır. Bunun yanı sıra, Pearson çarpım-moment korelasyon katsayısı analizi, Mutluluk Korkusu Ölçeği Pozitif Duygu Ölçeği, Yaşam Doyumu Ölçeği ve Öznel Mutluluk Ölçeği ile negatif korelasyonlar ve Negatif Duygu Ölçeği ile pozitif korelasyon göstererek, ölçüt bağıntılı geçerliğe ilişkin kabul edilebilir kanıtlara sahip olduğunu ortaya koymuştur. Bu sonuçlara göre, MKÖ Türkçe Formu Ölçeği&amp;rsquo;nin Türk kültüründe kullanılabilecek güvenilir ve geçerli bir ölçme aracı olduğunu göstermektedir. Elde edilen bulgular, mutluluk ve iyi oluş ile ilgili yapılacak teorik ve bilimsel çalışmaların geliştirilmesine olanak sağlamaktadır.&#13;
+&#13;
+Anahtar Kelimeler: Mutluluk Korkusu, Güvenirlik, Geçerlik, Açımlayıcı Faktör Analizi, Doğrulayıcı Faktör Analizi</p>
         </abstract>
-        <trans-abstract xml:lang="en">
-          <p>Becoming a parent is a very important, happy and difficult situation for every individual. For those who learn that they will become parents, this process brings along a complex process full of uncertainties. Thinking about how to be a parent in this process is also a situation that makes things very difficult. This process, which is characterized by uncertainties, is described as a difficult period in itself. In order to complete this process in a healthy way, just as strengthening the physical muscles will help you to complete the day more comfortably after a difficult day, developing emotional muscles is also very important in overcoming difficult emotional times.</p>
+        <trans-abstract xml:lang="English">
+          <p>Abstract&#13;
+&#13;
+The purpose of this study was to examine the psychometric properties of Turkish form of the Fear of Happiness Scale (FHS). After the linguistic equivalence of the scale was assured, reliability and validity analyses were performed. The factor structure of the scale was examined through exploratory factor analysis (N = 171) and confirmatory factor analysis (N = 171). The results indicated that FHS is unidimensional. The results also showed that the Turkish version of the FHS had Cronbach&amp;rsquo;s alpha value of 0.86. In addition to this, Pearson product-moment correlation analysis revealed that the scale had acceptable evidence of criterion-related validity by negatively correlating with measures of Positive Affect, Life Satisfaction and Subjective Happiness and positively correlating with measure of Negative Affect. These findings indicated that Turkish version of the FHS can be used as a reliable and valid measure in Turkish culture. The findings also facilitate the improvement of the theoretical and empirical research on happiness and well-being.</p>
         </trans-abstract>
-        <kwd-group xml:lang="tr"/>
-        <kwd-group xml:lang="en"/>
+        <kwd-group xml:lang="Türkçe"/>
+        <kwd-group xml:lang="English"/>
       </article-meta>
     </front>
     <back>
-      <ref-list>
-        <ref id="ref1">
-          <label>1</label>
-          <mixed-citation>-</mixed-citation>
-        </ref>
-      </ref-list>
+      <ref-list/>
     </back>
   </article>
 </articles>

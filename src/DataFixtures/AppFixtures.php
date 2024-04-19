@@ -15,30 +15,38 @@ class AppFixtures extends Fixture
 {
     public function __construct(UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager)
     {
-        $this->entitymanager = $entityManager;
+        $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
     }
 
     public function load(ObjectManager $manager): void
     {
         $user = new User();
-        $user->setEmail('sercan@gmail.com');
+        $user->setEmail('yt@mail.com');
         $hashedPassword = $this->passwordHasher->hashPassword($user, '123qwe');
 
         $user->setPassword($hashedPassword);
         $user->setIsAdmin(true);
         $user->setIsActive(true);
-        $user->setName('sercan');
-        $user->setSurname('köse');
-        $role = $manager->getRepository(Role::class)->find(RoleParam::ROLE_ADMIN_ID);
-        dd($hashedPassword, $role);
-        if ($role !== null) {
-            $user->addRoles($role);
-        } else {
-            throw new \Exception('Role not found.');
-        }
-        $user->addRoles($role);
-        $this->entitymanager->persist($user);
+        $user->setIsVerified(true);
+        $user->setName('yt');
+        $user->setSurname('admin');
+        $manager->persist($user);
+        $manager->flush();
+
+        //----------------------------------
+        $role = new Role();
+        $roleAdmin = new Role();
+        $roleAdmin->setRoleName('ROLE_ADMIN');
+        $roleEditor = new Role();
+        $roleEditor->setRoleName('ROLE_EDITOR');
+        $roleOperator = new Role();
+        $roleOperator->setRoleName('ROLE_OPERATOR');
+
+
+        $manager->persist($roleAdmin);
+        $manager->persist($roleEditor);
+        $manager->persist($roleOperator);
         $manager->flush();
     }
 }
