@@ -81,8 +81,6 @@ class AdminController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            $role = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_USER]);
-            $newuser->addRoles($role);
             $this->entityManager->persist($newuser);
             $this->entityManager->flush();
 

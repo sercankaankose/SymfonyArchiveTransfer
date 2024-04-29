@@ -314,6 +314,7 @@
             background-color: #fff3cd !important; /* Sarı renk */
         }
 
+
         .input-group {
             position: relative;
         }
@@ -327,7 +328,6 @@
             right: 0;
             top: 0;
         }
-
     </style>
 {% endblock %}
 
@@ -370,14 +370,17 @@
                     </div>
                     <div class="col doi">
                         <div class="form-label">{{ form_label(form.doi) }}</div>
-                        <div class="form-widget input-group">
-                            {{ form_widget(form.doi, {'attr': {'class': 'form-control'}}) }}
-                            <button style="padding: 10px; margin-top: 1px" type="button" class="btn btn-secondary"
-                                    id="doiButton">Veri Çek
-                            </button>
+                        <div class="input-group">
+                            {{ form_widget(form.doi, {'attr': {'class': 'form-control', 'aria-describedby':'basic-addon2'}}) }}
+                            <div class="input-group-append">
+                                <button style="padding: 11px; border-radius: 3px; z-index: 1000;" type="button" class="btn btn-secondary" id="doiButton">Veri Çek</button>
+                            </div>
                         </div>
                         <div class="form-error">{{ form_errors(form.doi) }}</div>
                     </div>
+
+
+
 
 
                     <div class="row">
@@ -726,7 +729,31 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.tr.min.js"></script>
+    <script>
+        document.getElementById("doiButton").addEventListener("click", function () {
+            var doiInput = document.getElementById("article_form_doi");
+            var doi = doiInput.value.trim(); // DOI'yi alırken boşlukları kaldırıyoruz
 
+            // DOI'yi alırken başındaki "Doi: " ifadesini kaldırıyoruz
+            if (doi.startsWith("Doi: ")) {
+                doi = doi.substring(5); // "Doi: " ifadesini kaldırıyoruz
+            }
+
+            // DOI'yi fetch işlemine devam etmek için kullanabiliriz
+            fetch('https://api.crossref.org/works/' + doi)
+                .then(response => response.json())
+                .then(data => {
+                    var abstract = data.message.abstract;
+                    var title = data.message.title;
+                    var pageRange = data.message.page;
+                    var authors = data.message.author;
+
+                    // DOI'den alınan bilgileri kullanarak gerekli işlemleri yapabiliriz
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+    </script>
     <script>
         $(document).ready(function () {
             $('.js-datepicker').datepicker({
@@ -736,7 +763,20 @@
         });
     </script>
 
-
+<script>
+    document.getElementById("article_form_doi").addEventListener("input", function() {
+        var dois = this.value.match(/Doi:\s*(.*)/i);
+        if (dois && dois.length > 1) {
+            this.value = dois[1];
+        }
+    });
+    document.getElementById("article_form_translations_0_abstract").addEventListener("input", function() {
+        var text = this.value.trim();
+        if (text.startsWith("<jats:p>") && text.endsWith("</jats:p>")) {
+            this.value = text.slice(7, -8);
+        }
+    });
+</script>
     {#    <script>$(document).ready(function () { #}
     {#            $("#article_form_doi").on("change", function () { #}
     {#                var doi = $(this).val(); #}
@@ -766,109 +806,10 @@
     {#        }); #}
     {#        </script> #}
     <script>
-        // document.getElementById("doiButton").addEventListener("click", function () {
-        //     var doi = document.getElementById("article_form_doi").value;
-        //
-        //     fetch('https://api.crossref.org/works/' + doi)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             var abstract = data.message.abstract;
-        //             var title = data.message.title;
-        //             var pageRange = data.message.page;
-        //             var authors = data.message.author;
-        //
-        //             // Tüm çeviri form inputlarını seç
-        //             var translationInputs = document.querySelectorAll("[id^='article_form_translations_']");
-        //
-        //             // En küçük rakama sahip olan çeviri formunu bul
-        //             var minTranslationIndex = Infinity;
-        //             translationInputs.forEach(function (input) {
-        //                 var index = parseInt(input.id.split('_')[3]);
-        //                 if (index < minTranslationIndex) {
-        //                     minTranslationIndex = index;
-        //                 }
-        //             });
-        //
-        //             // En küçük rakama sahip çeviri formunun inputlarını doldur
-        //             var abstractInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_abstract");
-        //             var titleInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_title");
-        //             var pageRangeInput = document.getElementById("article_form_pageRange");
-        //
-        //             if (abstractInput && titleInput) {
-        //                 abstractInput.value = abstract;
-        //                 titleInput.value = title;
-        //             } else {
-        //                 console.error("Abstract or title input not found!");
-        //             }
-        //             pageRangeInput.value = pageRange;
-        //         })
-        //         .catch(error => console.error('Error:', error));
-        // });
 
-//         document.getElementById("doiButton").addEventListener("click", function () {
-//             var doi = document.getElementById("article_form_doi").value;
-//
-//             fetch('https://api.crossref.org/works/' + doi)
-//                 .then(response => response.json())
-//                 .then(data => {
-//                     var abstract = data.message.abstract;
-//                     var title = data.message.title;
-//                     var pageRange = data.message.page;
-//                     var authors = data.message.author;
-//
-//                     // Tüm çeviri form inputlarını seç
-//                     var translationInputs = document.querySelectorAll("[id^='article_form_translations_']");
-//
-//                     // En küçük rakama sahip olan çeviri formunu bul
-//                     var minTranslationIndex = Infinity;
-//                     translationInputs.forEach(function (input) {
-//                         var index = parseInt(input.id.split('_')[3]);
-//                         if (index < minTranslationIndex) {
-//                             minTranslationIndex = index;
-//                         }
-//                     });
-//
-//                     // En küçük rakama sahip çeviri formunun inputlarını doldur
-//                     var abstractInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_abstract");
-//                     var titleInput = document.getElementById("article_form_translations_" + minTranslationIndex + "_title");
-//                     var pageRangeInput = document.getElementById("article_form_pageRange");
-//
-//                     if (abstractInput && titleInput) {
-//                         abstractInput.value = abstract;
-//                         titleInput.value = title;
-//                     } else {
-//                         console.error("Abstract or title input not found!");
-//                     }
-//                     pageRangeInput.value = pageRange;
-//
-// // Varolan index numaralarını al
-//                     var existingIndexes = [];
-//                     translationInputs.forEach(function(input) {
-//                         var index = parseInt(input.id.split('_')[3]);
-//                         existingIndexes.push(index);
-//                     });
-//
-// // Varolan index numaralarını küçükten büyüğe doğru sırala
-//                     existingIndexes.sort(function(a, b) {
-//                         return a - b;
-//                     });
-//
-// // Yazar bilgilerini ekleyin
-//                     existingIndexes.forEach(function(index) {
-//                         var author = authors[index];
-//                         var authorFirstNameInput = document.getElementById("article_form_authors_" + index + "_firstname");
-//                         var authorLastNameInput = document.getElementById("article_form_authors_" + index + "_lastname");
-//
-//                         if (authorFirstNameInput && authorLastNameInput) {
-//                             authorFirstNameInput.value = author.given;
-//                             authorLastNameInput.value = author.family;
-//                         } else {
-//                             console.error("Author inputs not found for index: " + index);
-//                         }
-//                     });
-//                 })
-//                 .catch(error => console.error('Error:', error));
-//         });
+        //bu sondan bir önceki
+
+
         document.getElementById("doiButton").addEventListener("click", function () {
             var doi = document.getElementById("article_form_doi").value;
 
@@ -876,6 +817,8 @@
                 .then(response => response.json())
                 .then(data => {
                     var abstract = data.message.abstract;
+                    var cleanedAbstract = abstract.replace(/<jats:p>|<\/jats:p>/gi, ''); // Temizlenmiş abstract
+
                     var title = data.message.title;
                     var pageRange = data.message.page;
                     var authors = data.message.author;
@@ -898,7 +841,7 @@
                     var pageRangeInput = document.getElementById("article_form_pageRange");
 
                     if (abstractInput && titleInput) {
-                        abstractInput.value = abstract;
+                        abstractInput.value = cleanedAbstract; // Temizlenmiş abstract'i doldur
                         titleInput.value = title;
                     } else {
                         console.error("Abstract or title input not found!");
@@ -906,55 +849,62 @@
                     pageRangeInput.value = pageRange;
 
                     // Yazar bilgilerini ekleyin
-                    var authorInputsExist = true;
-                    var authorIndex = 0;
-                    while (authorInputsExist) {
-                        var authorFirstNameInput = document.getElementById("article_form_authors_" + authorIndex + "_firstname");
-                        var authorLastNameInput = document.getElementById("article_form_authors_" + authorIndex + "_lastname");
-
-                        if (!authorFirstNameInput || !authorLastNameInput) {
-                            // Eksik bir input alanı bulundu, yeni bir input alanı oluştur
-                            // createNewAuthorInput(authorIndex, authors[authorIndex]);
-                            $(document).ready(function () {
-                                var authorsContainer = $('#authorContainer');
-                                var authorTemplate = $('#authorTemplate').html();
-
-                                $('#addAuthorButton').click(function () {
-                                    var authorsCount = authorsContainer.find('.card').length;
-                                    var newAuthor = authorTemplate.replace(/new/g, authorsCount);
-                                    authorsContainer.append(newAuthor);
-                                });
-                            });
-                        }
-
-                        authorIndex++;
-
-                        // Kontrol edilecek bir sonraki index numarasına sahip input alanı var mı?
-                        authorInputsExist = document.getElementById("article_form_authors_" + authorIndex + "_firstname") &&
-                            document.getElementById("article_form_authors_" + authorIndex + "_lastname");
+                    for (var i = 0; i < authors.length; i++) {
+                        createOrUpdateAuthorInput(i, authors[i]);
                     }
                 })
                 .catch(error => console.error('Error:', error));
         });
 
-        function createNewAuthorInput(index, author) {
-
-            newAuthorFirstNameInput.id = "article_form_authors_" + index + "_firstname";
-            newAuthorFirstNameInput.value = author.given || "";
-            newAuthorFirstNameInput.value = author.given || "";
-            newAuthorLastNameInput.id = "article_form_authors_" + index + "_lastname";
-            newAuthorLastNameInput.value = author.family || "";
-        }
-        $(document).ready(function authorNew() {
-            var authorsContainer = $('#authorContainer');
-            var authorTemplate = $('#authorTemplate').html();
-
-            $('#addAuthorButton').click(function () {
-                var authorsCount = authorsContainer.find('.card').length;
-                var newAuthor = authorTemplate.replace(/new/g, authorsCount);
-                authorsContainer.append(newAuthor);
+        // Yeni bir yazar için input alanı oluşturan fonksiyon
+        // Yazar input alanlarının en yüksek indeks numarasını bulan fonksiyon
+        function findMaxAuthorIndex() {
+            var authorInputs = document.querySelectorAll("[id^='article_form_authors_']");
+            var maxIndex = -1;
+            authorInputs.forEach(function (input) {
+                var index = parseInt(input.id.split('_')[3]);
+                if (index > maxIndex) {
+                    maxIndex = index;
+                }
             });
-        });
+            return maxIndex;
+        }
+
+        // Yeni bir yazar için input alanı oluşturan ve uygun indeks numarasını kullanarak yapan fonksiyon
+        function createOrUpdateAuthorInput(index, authorData) {
+            var authorFirstNameInput = document.getElementById("article_form_authors_" + index + "_firstname");
+            var authorLastNameInput = document.getElementById("article_form_authors_" + index + "_lastname");
+            var authorOrcidInput = document.getElementById("article_form_authors_" + index + "_orcId");
+
+            if (!authorFirstNameInput || !authorLastNameInput) {
+                var maxIndex = findMaxAuthorIndex();
+                createNewAuthorInput(maxIndex + 1);
+                authorFirstNameInput = document.getElementById("article_form_authors_" + (maxIndex + 1) + "_firstname");
+                authorLastNameInput = document.getElementById("article_form_authors_" + (maxIndex + 1) + "_lastname");
+                authorOrcidInput = document.getElementById("article_form_authors_" + (maxIndex + 1) + "_orcId");
+            }
+
+            // Yazar bilgilerini input alanlarına yaz
+            authorFirstNameInput.value = authorData.given;
+            authorLastNameInput.value = authorData.family;
+            authorOrcidInput.value = authorData.ORCID.replace("http://orcid.org/", ""); // ORCID'den "http://orcid.org/" kısmını çıkar
+        }
+
+        function createNewAuthorInput(index) {
+            var authorsContainer = document.getElementById('authorContainer');
+            var authorTemplate = document.getElementById('authorTemplate').innerHTML;
+
+            // Yeni yazar için bir indeks numarası oluştur
+            var newIndex = index;
+
+            // Template'deki placeholderları yeni yazar bilgileriyle değiştir
+            var newAuthorHTML = authorTemplate.replace(/article_form_authors_new/g, 'article_form_authors_' + newIndex);
+            newAuthorHTML = newAuthorHTML.replace(/{authorIndex}/g, newIndex);
+
+            // Yeni input alanını ekle
+            authorsContainer.insertAdjacentHTML('beforeend', newAuthorHTML);
+        }
+
     </script>
 
 

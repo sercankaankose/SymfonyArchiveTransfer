@@ -22,8 +22,11 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
+
                 'attr' => [
                     'class' => 'form-control',
+                    'autocomplete' => 'off',
+
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -37,7 +40,9 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete' => 'off',
+
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -48,7 +53,9 @@ class RegistrationFormType extends AbstractType
             ->add('surname', TextType::class, [
                 'label' =>'Soyad',
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'autocomplete' => 'off',
+
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -59,7 +66,7 @@ class RegistrationFormType extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'attr' => [
-                    'autocomplete' => 'new-password',
+                    'autocomplete' => 'off',
                     'class' => 'form-control',
                 ],
                 'constraints' => [

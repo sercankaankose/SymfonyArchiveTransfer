@@ -40,11 +40,11 @@ class AuthorFormType extends AbstractType
                 'attr' => ['class' => 'form-control col half',
                     'autocomplete' => 'off',
                 ],
-                'label' => 'Orc Id',
+                'label' => 'Orcid',
                 'required' => false,
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/\d{4}-\d{4}-\d{4}-\d{4}$/',
+                        'pattern' => '/\d{4}-\d{4}-\d{4}-\d{3}[0-9xX]$/',
                         'message' => 'Orc ID formatı geçerli değil. Doğru format: 0000-0000-0000-0000',
                     ]),
                 ],

@@ -421,7 +421,11 @@ class HomepageController extends AbstractController
                 $contribNode->appendChild($nameNode);
 //institute
                 $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+
                 $contribNode->appendChild($affNode);
+
+                $emailNode = $xmlDoc->createElement('email', $author->getEmail());
+                $contribNode->appendChild($emailNode);
 //orcid
                 $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $author->getOrcId());
                 $contribIdNode->setAttribute('contrib-id-type', 'orcid');
@@ -881,7 +885,8 @@ Scorgie, K., Wilgosh, L., & Sobsey, D. (2004). The Experience of Transformation 
             $this->entityManager->flush();
             //-*-------------------------------------------
 
-            $this->redirectToRoute('article_edit', ['id' => $newArticle->getId()]);
+            return $this->redirectToRoute('article_edit', ['id' => $newArticle->getId()]);
+
         }
 
         return $this->render('article_add.html.twig', [
@@ -970,7 +975,7 @@ Scorgie, K., Wilgosh, L., & Sobsey, D. (2004). The Experience of Transformation 
             $this->entityManager->persist($issue);
 
             $this->entityManager->flush();
-            return new RedirectResponse($this->generateUrl('article_edit', ['id' => $article->getId()]));
+            return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
 
         }
 

@@ -2,119 +2,52 @@
 <articles>
   <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
     <front>
-      <journal-meta>
-        <journal-title-group>
-          <journal-title>balo dergisi</journal-title>
-        </journal-title-group>
-        <issn pub-type="ppub"/>
-        <issn pub-type="epub">1234-1234</issn>
-      </journal-meta>
       <article-meta>
-        <article-id pub-id-type="doi"/>
+        <article-id pub-id-type="doi">10.32739/usmut.2023.8.14.89</article-id>
         <title-group>
-          <article-title>Rekabetçi Psikomotor Oyunlarında Öznel İyi Oluş: Nitel Bir Yaklaşım</article-title>
-          <trans-title-group xml:lang="">
-            <trans-title>Subjective Well-Being in Competitive Psychomotor Games: A Qualitative Approach</trans-title>
-          </trans-title-group>
-        </title-group>
-        <contrib-group/>
-        <volume>1</volume>
-        <issue>1</issue>
-        <fpage>196</fpage>
-        <lpage>211</lpage>
-        <abstract>
-          <p>Özet&#13;
-&#13;
-Oyunlardaki katılımcılarda öznel iyi oluşu (ÖİO) geliştirmek, beden eğitim öğretmenleri için ilginç bir kaynak teşkil etmektedir. Bu çalışma görev veya egoya yönelik, bireysel rekabetçi psikomotor oyunlarında katılımcılarda (yakın ilişki, otonomi, uzmanlık ve anlamla ilgili olarak) ÖİO durumlarına yol açan oyunların yapısal özelliklerini (iç mantık) ve oyuncuların öznel özelliklerini incelemektir. Çalışmaya beden eğitimi ve spor bilimleri bölümünde okuyan 218 birinci sınıf üniversite öğrencisi katılmıştır. Seans başına beş bireysel oyun olmak üzere, öğrenciler iki seans almıştır. Katılımcılar her bir oyundan sonra ölçekleri cevaplandırarak duygusal deneyimlerinden bahsetmiştir. Altı uzman tarafından gerçekleştirilen içerik analizi, ÖİO&amp;rsquo;yu her bir oyunun yapısal yönleriyle ilişkilendirmiştir: Eğlenceli bir oyun, hoş veya nahoş bir yarışma ve zaferin kazanılma biçimi (sayı- yakın/ezici; frekans- ilk kez/tekrarlanan; beklenmedik; geri dönüş yapma). ÖİO ayrıca kişiyle (strateji ve çaba), rakiple (beceriler ve özellikler) ve grupla (ortam) ilgili üç öznel boyuta atfedilmiştir.&#13;
-&#13;
-Anahtar kelimeler: Doyum, Bireysel Oyun, Rekabetçi Seçim, İçerik Analizi, Duygusal Deneyim</p>
-        </abstract>
-        <trans-abstract xml:lang="">
-          <p>Abstract&#13;
-&#13;
-Fostering subjective well-being (SWB) in participants in games is an interesting resource for physical education teachers. This study examines the structural traits (internal logic) of games and the subjective traits (external logic, individual and group) of players, oriented towards the task or the ego, that provoke states of SWB (related to affiliation, autonomy, mastery and meaning) in participants in individual competitive psychomotor games. Two hundred and eighteen first-year undergraduates pursuing a physical education and sports science degree took part in the study. The students received two sessions consisting of five individual games each per session. The participants completed questionnaires after each game, giving accounts of their emotional experiences. The content analysis performed by six experts related SWB to the structural aspects of each game: a fun game, a pleasant or unpleasant competition, and the way victory was achieved (score - close/crushing; frequency - first time/repeated; unexpected; making a comeback). SWB also referred to three subjective aspects related to oneself (strategy and effort), to the rival (skills and characteristics) and to the group (climate).</p>
-        </trans-abstract>
-        <kwd-group xml:lang=""/>
-        <kwd-group xml:lang=""/>
-      </article-meta>
-    </front>
-    <back>
-      <ref-list/>
-    </back>
-  </article>
-  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
-    <front>
-      <journal-meta>
-        <journal-title-group>
-          <journal-title>balo dergisi</journal-title>
-        </journal-title-group>
-        <issn pub-type="ppub"/>
-        <issn pub-type="epub">1234-1234</issn>
-      </journal-meta>
-      <article-meta>
-        <article-id pub-id-type="doi"/>
-        <title-group>
-          <article-title>Meaning Making in Rural Appalachia: Age and Gender Patterns in Seven Measures of Meaning</article-title>
-          <trans-title-group xml:lang="Türkçe">
-            <trans-title>Appalachia Kırsalında Anlam Kurma: Anlamın Yedi Ölçütündeki Yaş ve Cinsiyet Örüntüleri</trans-title>
+          <article-title>Yaşam Kalitesi Terapisi ve Bağımlılıkta Kullanımı: İki Olgu Örneği</article-title>
+          <trans-title-group xml:lang="English">
+            <trans-title>Quality of Life Therapy And Usage in Addiction: Two Case Examples</trans-title>
           </trans-title-group>
         </title-group>
         <contrib-group>
           <contrib contrib-type="author">
             <name>
-              <surname>Hamby</surname>
-              <given-names>Sherry</given-names>
+              <surname>Başabak Bhais</surname>
+              <given-names>Aslı Zeynep</given-names>
             </name>
-            <aff>University of the South and Life Paths Appalachian Research Center</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
-          </contrib>
-          <contrib contrib-type="author">
-            <name>
-              <surname>Segura</surname>
-              <given-names>Anna</given-names>
-            </name>
-            <aff>Universitat de Barcelona</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
-          </contrib>
-          <contrib contrib-type="author">
-            <name>
-              <surname>Taylor</surname>
-              <given-names>Elizabeth</given-names>
-            </name>
-            <aff>University of the South</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
-          </contrib>
-          <contrib contrib-type="author">
-            <name>
-              <surname>Grych</surname>
-              <given-names>John</given-names>
-            </name>
-            <aff>Marquette University</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
-          </contrib>
-          <contrib contrib-type="author">
-            <name>
-              <surname>Banyard</surname>
-              <given-names>Victoria</given-names>
-            </name>
-            <aff>University of New Hampshire</aff>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+            <aff/>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0003-2712-3142</contrib-id>
           </contrib>
         </contrib-group>
-        <volume>1</volume>
+        <volume/>
         <issue>1</issue>
-        <fpage>168</fpage>
-        <lpage>186</lpage>
-        <trans-abstract xml:lang="Türkçe">
-          <p>İnsanlar yaşamda çok çeşitli kaynaklardan anlam çıkarır ama anlam kurmanın örüntülerini bireyler arasında değişiklik göstermesi hakkında çok az şey bilinmektedir. Bu çalışma anlamın yedi ölçütündeki yaş ve cinsiyet örüntülerini incelemektedir: Amaç hissiyatı, iyimserlik, dini veya ruhani katılım, aile bakımı, ahlak ve ahlaki standartlar, kendi kendine ve ilişki yönelimli anlam kurma. Bildiğimiz kadarıyla bu çalışma bu konuda yapılmış en büyük çalışmalardan biridir; bu da yaş ve cinsiyet arasındaki eğri-çizgisel yaş örüntü ve etkileşimlerini keşfetmemize olanak sağlamaktadır. Örneklem, üç güney Amerikan eyaletinin kırsal topluluklarında seçilmiş,ergenler ve yetişkinlerden oluşan 2565 katılımcıdan (%63,9 kadın) meydana gelmektedir. Katılımcılar anlam kurmanın güçlü yönlerini ölçen öz rapor ölçeklerini tamamlamıştır. Genel olarak analizler, anlam kurmanın çoğu güçlü yönünün hayat boyunca, ergenlikten orta yetişkinliğe doğru arttığını, ergenlik boyunca yüksek olan kendi kendine yönelimli etkinliklerin daha sonra azaldığını göstermiştir. Anlam kurmanın güçlü yönlerinin çeşitli türlerinde kadınlar, erkeklerden daha yüksek puanlar bildirmiştir ama erkeklerin iyimserlik puanları daha yüksektir. Yaştaki bazı eğri-çizgisel örüntülere dikkat çekilmiştir; bunlar daha önce belirlenmemiş, anlam kurmadaki dönüş noktalarına veya düzlüklere işaret etmektedir. Önleme ve müdahale programları dönüş noktalarının veya anlam kurmadaki diğer yaş ve cinsiyet örüntülerinin değerlendirmelerinden faydalanabilir. Örneğin, bir nüfusun kimlik gelişimi veya aile rollerine daha yatkın olup olmadığının fark edilmesi, programlamaya rehberlik edebilir. Gelecek araştırmalar araştırılan anlam türlerini artırmaya devam edebilir.&#13;
-&#13;
-Anahtar Kelimeler: Yaş Eğilimleri, Gelişim, Anlam Kurma, Kırsal, Güçlü Yönler, Cinsiyet Farklılıkları</p>
-        </trans-abstract>
+        <fpage>80</fpage>
+        <lpage>92</lpage>
         <abstract>
+          <p>Dünya Sağlık Örgütü tarafından yapılan tanıma göre yaşam kalitesi “bir bireyin değerleri ve yaşadığı kültür içerisinde, hedefleri, beklentileri, standartları ve istekleri ile ilişkili olarak yaşamında bulunduğu noktaya dair algısıdır” (WHOQOL Group, 1995). Kişinin sadece hastalık durumunun olmaması değil, bedensel, zihinsel ve sosyal açıdan ihtiyaçlarının karşılandığı “iyi olma hali”nde olmasıdır. Bu tanımıyla yaşam kalitesi kişinin subjektif değerlendirmesine bağlıdır. Yani kişinin yaşamının gerçek koşullarından çok yaşamına dair öznel değerlendirmelerine bağlı olduğu ifade edilmektedir. Buna göre yaşam kalitesini arttırmak için kişinin yaşam standartlarından memnun olması beklenir (Bobes vd, 1997). Yaşam kalitesi ve yaşam doyumu birbiriyle yakından ilişkili iki kavramdır. Genel olarak yaşam kalitesi kişinin iş, ilişkiler, keyif alanları, yaşam standartları gibi alanlarda olmak istediği ile var olan durumu arasındaki farka bağlı yaşadığı doyuma bağlıdır. Kişinin bu alanlara bakışı, değerleri ve hedefleri, yaşamdan alacağı doyumu etkilemektedir (Frisch, 2006). Bu tanıma göre mutluluğu belirleyen şey sadece kişinin gerçek yaşam koşulları değil aynı zamanda bu koşulları algılama şekli, beklentileri ve hedefleridir. Bu yazıda yaşam kalitesinin önemi ve yaşam kalitesini arttırmaya yönelik geliştirilen Yaşam Kalitesi Terapisi hakkında bilgi vermek ve bu terapinin kullanıldığı iki farklı olgu örneğini aktarmak amaçlanmıştır.</p>
+        </abstract>
+        <trans-abstract xml:lang="English">
           <p>Abstract&#13;
 &#13;
-People derive meaning in life from a wide variety of sources, but little is known about how patterns of meaning making vary across individuals. The current study examined age and gender patterns in seven measures of meaning: sense of purpose, optimism, religious or spiritual involvement, family care, morals and ethical standards, self-oriented, and relationship-oriented meaning making. As far as we are aware, this study is one of the largest studies ever conducted on this topic, allowing us to explore curvilinear age patterns and interactions between age and gender. The sample comprised 2565 participants (63.9% females), including adolescents and adults, who were recruited from rural communities of 3 Southern U.S. states. Participants completed self-report measures assessing meaning-making strengths. Overall, analyses indicated that most meaning-making strengths increase across the lifespan, from adolescence to middle adulthood, except for self-oriented activities, which were highest during adolescence and then declined. Females reported higher scores in several types of meaning-making strengths than males, but males reported more optimism. Some curvilinear patterns in age were noted, suggesting turning points or plateaus in meaning making, which have not been previously identified. Prevention and intervention programs may benefit from consideration of turning points and other age and gender patterns in meaning making. For example, recognizing whether a population is likely to be more involved in identity development or family roles could help guide programming. Future research could continue to expand the types of meaning studied.</p>
-        </abstract>
+                    According to the World Health Organization, quality of life is “an individual's perception of&#13;
+                    where they are in life in relation to their goals, expectations, standards and aspirations within&#13;
+                    their values and culture” (WHOQOL Group, 1995). It is not only the absence of a disease state,&#13;
+                    but also the "well-being" where physical, mental and social needs are met. With this definition,&#13;
+                    quality of life depends on the subjective evaluation of the person. In other words, it is stated&#13;
+                    that it depends on the subjective evaluations of one's life rather than the real conditions of his&#13;
+                    life. Accordingly, in order to increase the quality of life, the person is expected to be satisfied&#13;
+                    with their living standards (Bobes et al, 1997). Quality of life and life satisfaction are two&#13;
+                    closely related concepts. In general, the quality of life depends on the satisfaction that a person&#13;
+                    experiences depending on the difference between the state he wants to be and the current state. A&#13;
+                    person's view of these areas, values and goals affect the satisfaction he will get from life&#13;
+                    (Frisch, 2006). According to this definition, what determines happiness is not only the person's&#13;
+                    real life conditions, but also the way they perceive these conditions, their expectations and goals.&#13;
+                    In this article, it is aimed to give information about the importance of quality of life and the&#13;
+                    Quality of Life Therapy developed to increase it, and to present two different case examples in&#13;
+                    which this therapy was used.</p>
+        </trans-abstract>
         <kwd-group xml:lang="Türkçe"/>
         <kwd-group xml:lang="English"/>
       </article-meta>
@@ -125,54 +58,228 @@ People derive meaning in life from a wide variety of sources, but little is know
   </article>
   <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
     <front>
-      <journal-meta>
-        <journal-title-group>
-          <journal-title>balo dergisi</journal-title>
-        </journal-title-group>
-        <issn pub-type="ppub"/>
-        <issn pub-type="epub">1234-1234</issn>
-      </journal-meta>
       <article-meta>
-        <article-id pub-id-type="doi"/>
+        <article-id pub-id-type="doi">10.32739/usmut.2023.8.14.85</article-id>
         <title-group>
-          <article-title>Mutluluk Korkusu Ölçeği Türkçe Formu’nun Psikometrik Özellikleri</article-title>
+          <article-title>Examination of The Relationship Between Exercise Addiction and Childhood Trauma</article-title>
           <trans-title-group xml:lang="English">
-            <trans-title>Psychometric Properties of Turkish Form of the Fear of Happiness Scale</trans-title>
+            <trans-title>Examination of The Relationship Between Exercise Addiction and Childhood Trauma</trans-title>
           </trans-title-group>
         </title-group>
         <contrib-group>
           <contrib contrib-type="author">
             <name>
-              <surname>Yildirim</surname>
-              <given-names>Murat</given-names>
+              <surname>Sarıyer</surname>
+              <given-names>Erva</given-names>
             </name>
             <aff/>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+            <email>huseyin.unubol@uskudar.edu.tr</email>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0003-0850-218X</contrib-id>
           </contrib>
           <contrib contrib-type="author">
             <name>
-              <surname>A.</surname>
-              <given-names>Izaddin</given-names>
+              <surname>Ünübol</surname>
+              <given-names>Hüseyin</given-names>
             </name>
             <aff/>
-            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+            <email>erva.kurtul@st.uskudar.edu.tr</email>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0003-4404-6062</contrib-id>
           </contrib>
         </contrib-group>
-        <volume>1</volume>
+        <volume/>
         <issue>1</issue>
-        <fpage>187</fpage>
-        <lpage>195</lpage>
+        <fpage>6</fpage>
+        <lpage>23</lpage>
         <abstract>
-          <p>Özet&#13;
-&#13;
-Bu araştırmanın amacı Mutluluk Korkusu Ölçeği&amp;rsquo;nin (MKÖ) Türkçe formunun psikometrik özelliklerinin incelenmesidir. Ölçeğin dilsel eşdeğerliği sağlandıktan sonra, güvenirlik ve geçerlik analizleri yapıldı. Ölçeğin yapı geçerliği açımlayıcı faktör analizi (N = 171) ve doğrulayıcı faktör analizi (N = 171) ile incelenmiştir. Sonuçlar, ölçeğin tek boyutlu olduğunu göstermiştir. Ayrıca, ölçeğin Türkçe formunun Cronbach alfa katsayısı 0.86 olarak saptanmıştır. Bunun yanı sıra, Pearson çarpım-moment korelasyon katsayısı analizi, Mutluluk Korkusu Ölçeği Pozitif Duygu Ölçeği, Yaşam Doyumu Ölçeği ve Öznel Mutluluk Ölçeği ile negatif korelasyonlar ve Negatif Duygu Ölçeği ile pozitif korelasyon göstererek, ölçüt bağıntılı geçerliğe ilişkin kabul edilebilir kanıtlara sahip olduğunu ortaya koymuştur. Bu sonuçlara göre, MKÖ Türkçe Formu Ölçeği&amp;rsquo;nin Türk kültüründe kullanılabilecek güvenilir ve geçerli bir ölçme aracı olduğunu göstermektedir. Elde edilen bulgular, mutluluk ve iyi oluş ile ilgili yapılacak teorik ve bilimsel çalışmaların geliştirilmesine olanak sağlamaktadır.&#13;
-&#13;
-Anahtar Kelimeler: Mutluluk Korkusu, Güvenirlik, Geçerlik, Açımlayıcı Faktör Analizi, Doğrulayıcı Faktör Analizi</p>
+          <p>This study was conducted to examine whether there is a relationship between exercise addiction and childhood traumas. Sociodemographic Information Form, Exercise Addiction Inventory, Childhood Trauma Questionnaire (CTQ-28), Alcohol Use Disorder Identification Test (AUDIT) and Fagerström Test for Nicotine Dependence (FTND) prepared by the researcher were applied to the participants in the study. For the study, 3747 male and female volunteers completed the Exercise Addiction Inventory. Among these volunteers, the Alcohol Use Disorder Identification Test was administered to 1756 people, the Fagerström Test for Nicotine Dependence to 1076 people, and the Childhood Trauma Questionnaire to 935 people. In the analysis, it was seen that there was no relationship between exercise addiction and childhood traumas. In addition, when exercise addiction and different sociodemographic characteristics were examined together, the addiction scores of the participants who were male, young, had a lower income level, were single, had a lower education level, and used alcohol and reported harmful alcohol use were found to be significantly higher. Addiction status did not differ significantly according to BMI, smoking and smoking addiction, place of residence, history of psychiatric treatment.</p>
         </abstract>
         <trans-abstract xml:lang="English">
           <p>Abstract&#13;
 &#13;
-The purpose of this study was to examine the psychometric properties of Turkish form of the Fear of Happiness Scale (FHS). After the linguistic equivalence of the scale was assured, reliability and validity analyses were performed. The factor structure of the scale was examined through exploratory factor analysis (N = 171) and confirmatory factor analysis (N = 171). The results indicated that FHS is unidimensional. The results also showed that the Turkish version of the FHS had Cronbach&amp;rsquo;s alpha value of 0.86. In addition to this, Pearson product-moment correlation analysis revealed that the scale had acceptable evidence of criterion-related validity by negatively correlating with measures of Positive Affect, Life Satisfaction and Subjective Happiness and positively correlating with measure of Negative Affect. These findings indicated that Turkish version of the FHS can be used as a reliable and valid measure in Turkish culture. The findings also facilitate the improvement of the theoretical and empirical research on happiness and well-being.</p>
+                    This study was conducted to examine whether there is a relationship between exercise addiction and&#13;
+                    childhood traumas. Sociodemographic Information Form, Exercise Addiction Inventory, Childhood Trauma&#13;
+                    Questionnaire (CTQ-28), Alcohol Use Disorder Identification Test (AUDIT) and Fagerström Test for&#13;
+                    Nicotine Dependence (FTND) prepared by the researcher were applied to the participants in the study.&#13;
+                    For the study, 3747 male and female volunteers completed the Exercise Addiction Inventory. Among&#13;
+                    these volunteers, the Alcohol Use Disorder Identification Test was administered to 1756 people, the&#13;
+                    Fagerström Test for Nicotine Dependence to 1076 people, and the Childhood Trauma Questionnaire to&#13;
+                    935 people. In the analysis, it was seen that there was no relationship between exercise addiction&#13;
+                    and childhood traumas. In addition, when exercise addiction and different sociodemographic&#13;
+                    characteristics were examined together, the addiction scores of the participants who were male,&#13;
+                    young, had a lower income level, were single, had a lower education level, and used alcohol and&#13;
+                    reported harmful alcohol use were found to be significantly higher. Addiction status did not differ&#13;
+                    significantly according to BMI, smoking and smoking addiction, place of residence, history of&#13;
+                    psychiatric treatment.</p>
+        </trans-abstract>
+        <kwd-group xml:lang="Türkçe"/>
+        <kwd-group xml:lang="English"/>
+      </article-meta>
+    </front>
+    <back>
+      <ref-list/>
+    </back>
+  </article>
+  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
+    <front>
+      <article-meta>
+        <article-id pub-id-type="doi">10.32739/usmut.2022.7.13.11</article-id>
+        <title-group>
+          <article-title>Özel Gereksinimi Olan Çocuğa Sahip Ailelerde Psikolojik Sağlamlık Üzerine Sistematik Bir Derleme</article-title>
+        </title-group>
+        <contrib-group>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Akoğlu</surname>
+              <given-names>Bahar</given-names>
+            </name>
+            <aff/>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-1457-2531</contrib-id>
+          </contrib>
+        </contrib-group>
+        <volume/>
+        <issue>1</issue>
+        <fpage>47</fpage>
+        <lpage>56</lpage>
+        <abstract>
+          <p>Çalışma özel gereksinimi olan çocuğa sahip ailelerde psikolojik sağlamlık üzerine yapılmış araştırmaların sistematik bir derlemesini yapmak amacıyla gerçekleştirilmiştir. Çalışmada; özel gereksinimi olan çocukların ailelerinde psikolojik sağlamlık konusunda gerçekleştirilmiş yayınların literatüre kazandırdıkları perspektifler, ulusal ve uluslararası yayınlarda birbirini tamamlayan ve birbiriyle çelişen sonuçlar, ilgili konuya yönelik yaklaşık son 10 yıldır bilimsel araştırmalarda neler yapıldığı özetlenmiştir. Çalışma kapsamında 2013-2021 yılları arasında yapılmış 42 araştırmadan gerekli elemeler yapılarak, psikolojik sağlamlık düzeyini konu alan 10 çalışma değerlendirilmiştir. Bu amaç doğrultusunda ScienceDirect, Dergipark, Yükseköğretim Kurulu Başkanlığı Tez Merkezi gibi elektronik platformlarda yayınlanmış olan bilimsel araştırmaların başlıklarında ve anahtar kelimelerinde özel gereksinimli çocuk, otizm, zihinsel yetersizlik, psikolojik sağlamlık kelimeleri Türkçe ve İngilizce olarak taratılmıştır. Verilerin bir araya getirilmesinde bir araştırma özet formu hazırlanmıştır. Yayınlanmış araştırmaların karşılaştırılması sonucunda, yüksek eğitim düzeyi olan ve yüksek gelir düzeyine sahip ailelerde psikolojik sağlamlık düzeyinin yüksek bulunduğu görülmüştür. Araştırmaların önemli bir kısmında özel gereksinimli çocuğu olan ailelerin psikolojik sağlamlık düzeyinin orta düzeyde olduğu gözlenirken; normal gelişim gösteren çocukların ailelerinin psikolojik sağlamlık düzeyi ile karşılaştırıldığında psikolojik sağlamlık düzeylerinin daha düşük olduğu bilgilerine ulaşılmıştır. Çocukta meydana gelen duygusal ve davranışsal problemler ile ebeveynlerin psikolojik sağlamlık düzeyi arasında ilişki görülmektedir. Araştırmalar sonucunda sosyal kaynakların ailelerin psikolojik sağlamlık düzeyi üzerinde koruyucu bir unsur olduğu kanısına varılmıştır. Ebeveynlerin psikolojik sağlamlık düzeyi yüksek olduğunda aile tatmini ve pozitif algıların da yükseldiği sonucuna varılmıştır. Psikolojik sağlamlık bir tampon görevindedir. Alanyazındaki bilgiler ışığında özel gereksinimi olan çocuğa sahip aileler için çocuktaki semptomları etkili şekilde nasıl yöneteceklerini öğreten müdahalelerin fayda sağlayabileceği, bilhassa otizm spektrum bozukluğu tanısı olan çocuklarda oluşan davranışsal problemler için tasarlanmış eğitimlerin ve danışmanlık hizmetlerinin ebeveynlerin psikolojik sağlamlık düzeylerini arttırabileceği öngörülmektedir.</p>
+        </abstract>
+        <kwd-group xml:lang="Türkçe"/>
+      </article-meta>
+    </front>
+    <back>
+      <ref-list/>
+    </back>
+  </article>
+  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
+    <front>
+      <article-meta>
+        <article-id pub-id-type="doi">10.32739/usmut.2023.8.14.87</article-id>
+        <title-group>
+          <article-title>Öz Şefkat ve Bilinçli Farkındalık Arasındaki İlişkinin İncelenmesi</article-title>
+          <trans-title-group xml:lang="English">
+            <trans-title>Examining the Relationship Between Self-Compassion and Mindful Awareness</trans-title>
+          </trans-title-group>
+        </title-group>
+        <contrib-group>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Taşkın</surname>
+              <given-names>Özgenur</given-names>
+            </name>
+            <aff/>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0001-9008-257X</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Kocadağ</surname>
+              <given-names>Zeynel Abidin</given-names>
+            </name>
+            <aff/>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0001-6049-117X</contrib-id>
+          </contrib>
+        </contrib-group>
+        <volume/>
+        <issue>1</issue>
+        <fpage>39</fpage>
+        <lpage>53</lpage>
+        <abstract>
+          <p>Öz şefkat zorluklarla baş ederken bireyin kendisine karşılıksız ilgi, nezaket ve kabul göstermesidir (Neff, 2003). Bilinçli farkındalık kavramı ise yaşantıların sürekli olarak ana odaklandığı bir mekanizmayı ifade eder (Brown ve Ryan, 2003). Bu çalışmanın amacı Bilinçli farkındalık ve öz şefkat kavramlarının demografik verilerden nasıl etkilendiğini tespit etmek ve bilinçli farkındalık ile öz şefkat arasındaki ilişkiyi belirlemektir. Bu araştırmada Bilinçli Farkındalık Ölçeği Kısa Formu’nun Türkçe versiyonu ve Öz Şefkat Ölçeği Kısa Formu Türkçe versiyonunun her yaş grubu, her iki cinsiyet, her meslek grubu, daha önce psikolojik destek alıp almama durumu, son zamanlarda umutsuz hissedip hissetmeme durumu üzerindeki psikometrik özelliklerini incelemek amaçlanmıştır. Bu amaçla çalışmaya örneklem hesabı yapılarak farklı popülasyondan 155 katılımcı katılmıştır. Veriler SPSS 25.0 paket programı uygulanarak analiz sağlanmıştır. Çalışma sonuçları incelenirken tanımlayıcı istatistiksel metotlar, Independent t testi, One Way Anova Testi ve Pearson korelasyon analizi kullanılmıştır. Elde edilen sonuçlarda öz şefkat ile bilinçli farkındalıkta bazı alanlarda ortak bir ivme kazanılırken bazı alanlarda ise bir bağdaşıklık olmadığı tespit edilmiştir.</p>
+        </abstract>
+        <trans-abstract xml:lang="English">
+          <p>Abstract&#13;
+&#13;
+                    Self-compassion is the individual's showing unconditional interest, kindness and acceptance to&#13;
+                    himself while coping with difficulties (Neff, 2003). The concept of mindfulness, on the other hand,&#13;
+                    refers to a mechanism in which experiences are constantly focused on the moment. In this study, it&#13;
+                    is aimed to examine the psychometric properties of the Turkish version of the Conscious Awareness&#13;
+                    Scale Short Form and the Turkish version of the Self-Compassion Scale by looking at all age groups,&#13;
+                    both genders, each occupational group, whether they received psychological support before, and&#13;
+                    whether they felt hopeless recently. With the intention of this, 155 participants from different&#13;
+                    populations in the study by making a sample calculation. The data were analyzed using the SPSS 25.0&#13;
+                    package program. Descriptive statistical methods, Independent t test, One Way Anova Test and Pearson&#13;
+                    correlation analysis were used while evaluating the study data. In the results obtained, it was&#13;
+                    determined that while self-compassion and mindfulness gained a common momentum in some areas, there&#13;
+                    was no coherence in some areas.</p>
+        </trans-abstract>
+        <kwd-group xml:lang="Türkçe"/>
+        <kwd-group xml:lang="English"/>
+      </article-meta>
+    </front>
+    <back>
+      <ref-list/>
+    </back>
+  </article>
+  <article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" article-type="Bilinmeyen" dtd-version="1.0">
+    <front>
+      <article-meta>
+        <article-id pub-id-type="doi">10.32739/usmut.2023.8.14.88</article-id>
+        <title-group>
+          <article-title>Covid-19 Salgınının Mutluluğun Üç Boyutu Üzerine Etkileri</article-title>
+          <trans-title-group xml:lang="English">
+            <trans-title>The Effects of the Covid-19 Pandemic on the Three Dimensions of Happiness</trans-title>
+          </trans-title-group>
+        </title-group>
+        <contrib-group>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Özay</surname>
+              <given-names>Berivan</given-names>
+            </name>
+            <aff/>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-2644-4211</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Mollavelioğlu</surname>
+              <given-names>M. Şükrü</given-names>
+            </name>
+            <aff/>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0002-0633-4525</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Aydın</surname>
+              <given-names>Necati</given-names>
+            </name>
+            <aff/>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/0000-0001-9828-6382</contrib-id>
+          </contrib>
+        </contrib-group>
+        <volume/>
+        <issue>1</issue>
+        <fpage>54</fpage>
+        <lpage>79</lpage>
+        <abstract>
+          <p>İktisat genel bir ifade ile bireylerin refahının nasıl artırılacağı sorunsalı üzerinde durmaktadır. Bu ise Neo-klasik iktisat düşüncesi açısından, tüketicilerin fayda maksimizasyonu, üreticilerin ise kâr maksimizasyonu amacıyla hareket etmeleriyle sağlanmaktadır. Üreticiler ile tüketicilerin bunu sağlamaya çalışırken rasyonel davrandıkları kabul edilmektedir. Bu açıdan kısaca serbest piyasa sisteminin hazları maksimum kılmakla, insanı mutlu kılabileceği varsayımı üzerinde durduğu ifade edilebilir. Ancak mutluluğun tek kaynağının bu haz duygusuna bağlı olmadığı, bunun yanında hayata ilişkin anlam ve mana boyutlarının da mutluluğu artırıcı etkileri olduğu düşünülmektedir. Easterlin Paradoksu ve Maslow ihtiyaçlar hiyerarşisinin üst katmanları buna ilişkin bir takım önemli ipuçları sağlamaktadır. Bu çalışmada, Covid-19 salgınının mutluluğun boyutları üzerindeki etkisi incelenmektedir. Mutluluğun boyutları olarak haz (hedonik), mana (eudeimonik) ve maneviyat (g-donik) boyutları ele alınmaktadır. Van ili örneğinden hareketle anket çalışması yapılmış, elde edilen veriler Regresyon, Korelasyon ve Anova testi ile değerlendirilmiştir. Bulgular maneviyatı yüksek bireylerin salgının ağır psikolojik etkilerinden çok fazla etkilenmediğini, geleceğe karşı daha az kaygılı olduklarını, lüks tüketim alışkanlıklarının fazla olmadığını, salgın sürecinde harcama eğilimlerini azalttıklarını göstermektedir. Hazcı bireylerin salgının yıkıcı etkilerinden en fazla etkilenen bireyler olduğu sonucuna ulaşılırken, mutluluğun anlam boyutundaki bireylerin salgının olumsuz etkilerinden, maneviyat boyutundaki bireylerden daha fazla etkilendiği ancak hazcı bireylerden nispeten daha az etkilendiği elde edilen bulgulardandır.</p>
+        </abstract>
+        <trans-abstract xml:lang="English">
+          <p>Abstract&#13;
+&#13;
+                    In general, economics focuses on the problem of how to increase the welfare of individuals. In terms&#13;
+                    of Neo-classical economics, this is achieved by consumers acting for utility maximization and&#13;
+                    producers acting for profit maximization. It is accepted that producers and consumers act rationally&#13;
+                    while trying to achieve this. In this respect, it can be briefly stated that the free market system&#13;
+                    emphasizes the assumption that it can make people happy by maximizing pleasures. However, it is&#13;
+                    thought that the only source of happiness is not dependent on this sense of pleasure, besides, the&#13;
+                    meaning and meaning dimensions of life have happiness-enhancing effects. The Easterlin Paradox and&#13;
+                    the upper layers of Maslow's hierarchy of needs provide some important clues in this regard. In this&#13;
+                    respect, this study examines the effect of the Covid-19 epidemic on the dimensions of happiness. The&#13;
+                    dimensions of happiness are pleasure (hedonic), mana (eudeimonic) and spirituality (g-donic)&#13;
+                    dimensions. Based on the Van province sample, a survey was conducted and the data obtained were&#13;
+                    evaluated with Regression, Correlation and Anova tests. The findings show that individuals with high&#13;
+                    spirituality are not affected by the heavy psychological effects of the epidemic, they are less&#13;
+                    worriedabout the future, their luxury consumption habits are not much, and they reduce their&#13;
+                    spending tendencies during the epidemic. While it was concluded that hedonistic individuals were the&#13;
+                    individuals most affected by the devastating effects of the epidemic, it is one of the findings that&#13;
+                    individuals in the meaning dimension of happiness were more affected by the negative effects of the&#13;
+                    epidemic than individuals in the spiritual dimension, but relatively less affected by hedonistic&#13;
+                    individuals.</p>
         </trans-abstract>
         <kwd-group xml:lang="Türkçe"/>
         <kwd-group xml:lang="English"/>

@@ -48,19 +48,20 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
-        $roles = $token->getRoleNames();
+        // Kullanıcı oturum açtıktan sonra, yönlendirme hedefi
+        $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
 
-        foreach ($roles as $role) {
-            if ($role === RoleParam::ROLE_ADMIN) {
-                return new RedirectResponse($this->urlGenerator->generate('dashboard_admin'));
-            }
+        // Kullanıcının rolünü kontrol et
+        if ($this->authorizationChecker->isGranted(RoleParam::ROLE_ADMIN)) {
+            // Eğer kullanıcı admin ise, admin dashboard sayfasına yönlendir
+            return new RedirectResponse($this->urlGenerator->generate('dashboard_admin'));
         }
+
+        // Eğer kullanıcı admin değilse, varsayılan olarak ana sayfaya yönlendir
         return new RedirectResponse($this->urlGenerator->generate('app_homepage'));
-
     }
+
+
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);

@@ -33,7 +33,7 @@ class TranslatorFormType extends AbstractType
             ])
             ->add('orcId', TextType::class, [
                 'attr' => ['class' => 'form-control col half'],
-                'label' => 'Orc Id',
+                'label' => 'Orcid',
                 'required' => false,
                 'constraints' => [
                     new Regex([
