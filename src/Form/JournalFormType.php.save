@@ -48,8 +48,7 @@ class JournalFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^\d{4}-\d{3}([0-9]|x|X)$/',
-
+                        'pattern' => '/^\d{4}-\d{4}$/',
                         'message' => 'Lütfen geçerli bir Issn Giriniz (örneğin: 1234-5678).',
                     ]),
                 ],
@@ -62,7 +61,8 @@ class JournalFormType extends AbstractType
                 ],
                 'constraints' => [
                     new Regex([
-                        'pattern' => '/^\d{4}-\d{3}([0-9]|x|X)$/',
+                                                'pattern' => '/^\d{4}-\d{3}([0-9]|x)$/',
+
                         'message' => 'Lütfen geçerli bir E-Issn Giriniz (örneğin: 1234-5678).',
                     ]),
                 ],

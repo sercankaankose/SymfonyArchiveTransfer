@@ -126,15 +126,6 @@ class ParseXmlCommand extends Command
                 }
 
                 $primaryLang = isset($article['primary-language']) ? trim($article['primary-language']) : '';
-                $langCodes = [
-                    'tr' => '001',
-                    'en' => '002',
-                    'ge' => '003',
-                    'es' => '004',
-                    'ar' => '005',
-                    'ru' => '006',
-                    'fa' => '007',
-                ];
                 if (!is_string($primaryLang) || empty($primaryLang)) {
                     array_push($issueErrors, "Birincil dil bilgisini gözden geçirin.");
                 }
@@ -335,7 +326,7 @@ class ParseXmlCommand extends Command
             $fileName = sprintf('%s-%s-%s-%s-%s.pdf', $journalId, $issueId, $issueYear, $issueNumber, $uniqName);
             $fileName = pathinfo($fileName, PATHINFO_FILENAME);
 
-            $uploadPath = 'var/journal/';
+            $uploadPath = '/usr/share/nginx/data/journal/';
 
             $journalFolder = $uploadPath . $journalId;
             $filesystem = new Filesystem();

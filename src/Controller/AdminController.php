@@ -397,7 +397,35 @@ class AdminController extends AbstractController
             $this->addFlash('danger', 'Dergi Bulunamadı.');
             return $this->redirectToRoute('admin_journal_management');
         }
+$issues = $journal->getIssues();
+        foreach ($issues as $issue){
+            $articles = $issue->getArticles();
+            foreach ($articles as $article) {
+                $translations = $article->getTranslations();
+                $authors = $article->getAuthors();
+                $translators = $article->getTranslators();
+                $citations = $article->getCitations();
 
+                foreach ($translations as $translation) {
+                    $this->entityManager->remove($translation);
+                }
+                foreach ($authors as $author) {
+                    $this->entityManager->remove($author);
+                }
+                foreach ($translators as $translator) {
+                    $this->entityManager->remove($translator);
+                }
+                foreach ($citations as $citation) {
+                    $this->entityManager->remove($citation);
+                }
+                $this->entityManager->flush();
+
+                $this->entityManager->remove($article);
+                $this->entityManager->flush();
+            }
+            $this->entityManager->remove($issue);
+            $this->entityManager->flush();
+        }
         $this->entityManager->remove($journal);
         $this->entityManager->flush();
         $this->addFlash('success', 'Dergi Silme İşlemi Başarılı');

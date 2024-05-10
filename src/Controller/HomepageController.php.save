@@ -34,21 +34,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\BreadCrumbService;
-use Symfony\Component\Security\Core\Security;
 
 
 class HomepageController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private BreadCrumbService $breadcrumbService;
-    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, BreadCrumbService $breadcrumbService, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, BreadCrumbService $breadcrumbService)
     {
         $this->entityManager = $entityManager;
         $this->breadcrumbService = $breadcrumbService;
-        $this->security = $security;
-	
     }
 
     #[Route('/', name: 'app_homepage')]
@@ -339,7 +335,7 @@ class HomepageController extends AbstractController
             $articleNode->setAttribute('xmlns:mml', 'http://www.w3.org/1998/Math/MathML');
             $articleNode->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
             $articleNode->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-            $articleNode->setAttribute('article-type', $articleType);
+            $articleNode->setAttribute('article-type', $typeModifier->mapArticleType($articleType));
             $articleNode->setAttribute('dtd-version', '1.0');
 
             $frontNode = $xmlDoc->createElement('front');
@@ -645,9 +641,6 @@ class HomepageController extends AbstractController
         $pdfFileName = trim($article->getFulltext(), $path);
         $pdfFileName = $article->getFulltext();
 
-	$filePath = '/usr/share/nginx/data/';
-	$pdfFileName = str_replace($filePath, '', $pdfFileName);
-
         $form = $this->createForm(ArticleFormType::class, $article);
         $form->handleRequest($request);
         /** @var Articles $data */
@@ -663,16 +656,6 @@ class HomepageController extends AbstractController
 
             foreach ($data->getTranslations() as $newTranslation) {
                 if (!empty($newTranslation->getTitle())) {
-
- 		    $title = html_entity_decode($newTranslation->getTitle(), ENT_QUOTES | ENT_HTML5);
-                    $abstract = html_entity_decode($newTranslation->getAbstract(), ENT_QUOTES | ENT_HTML5);
-
-                    $title = str_replace(["                    ","\r", "\n", '&#13;'], '', $newTranslation->getTitle());
-                    $abstract = str_replace(["                    ","\r", "\n", '&#13;'], '', $newTranslation->getAbstract());
-
-                    $newTranslation->setTitle($title);
-                    $newTranslation->setAbstract($abstract);
-
                     $newTranslation->setArticle($article);
                     $this->entityManager->persist($newTranslation);
                 }
@@ -711,9 +694,6 @@ class HomepageController extends AbstractController
             foreach ($citations as $newCitation) {
                 if (!empty($newCitation->getReferance())) {
                     $newCitation->setArticle($article);
-		    $referance = str_replace(["                    ","\r", "\n", '&#13;'], '', $newCitation->getReferance());
-                    $newCitation->setReferance($referance);
-
                     $newCitation->setRow($index);
                     $index++;
                     if (!$newCitation->getId()) {
@@ -727,14 +707,6 @@ class HomepageController extends AbstractController
             foreach ($citat as $value) {
                 $this->entityManager->remove($value);
             }
-	    /** @var User $user */
-            $user = $this->security->getUser();
-            $article->setEditor($user);
-            $utc_now = new \DateTime('now', new \DateTimeZone('UTC'));
-
-            $now = $utc_now->setTimezone(new \DateTimeZone('Europe/Istanbul')); 
-            $article->setModificationDate($now);
-
             $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
             $article->setStatus(ArticleStatusParam::EDITED);
             $this->entityManager->persist($article);
@@ -1103,7 +1075,7 @@ Route('article/{id}/{status}', name: 'article_pdf_error')]
     $pdfDirectory = '/usr/share/nginx/data/journal/';
     $pdfPath = $filename;
     if (!file_exists($pdfPath)) {
-        throw $this->createNotFoundException('The file does not exist');
+        throw $this->createNotFoundException('Dosya Bulunamadı');
     }
 
     $sanitizedFilename = str_replace(['/', '\\'], '_', $filename);

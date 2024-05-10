@@ -91,6 +91,8 @@
                                 <th style="text-align: center">Dil</th>
                                 <th>Sayfalar</th>
                                 <th style="text-align: center">Durum</th>
+				<th style="text-align: center">Düzenleme Tarihi</th>
+                                <th style="text-align: center">Düzenleyen</th>
                                 <th style="text-align: right; "></th>
                             </tr>
                             </thead>
@@ -141,6 +143,18 @@
                                         </td>
                                     {% else %}
                                         <td>--</td>
+                                    {% endif %}
+
+                                    {% if article.modificationDate %}
+                                        <td>{{ article.modificationDate|date(' d-m-Y H:i') }}</td>
+                                    {% else %}
+                                        <td>-</td>
+                                    {% endif %}
+
+                                    {% if article.editor %}
+                                        <td>{{ article.editor.name }} {{ article.editor.surname }}</td>
+                                    {% else %}
+                                        <td>-</td>
                                     {% endif %}
 
                                     <td style="text-align: right;">
@@ -196,6 +210,8 @@
                             {% else %}
                                 <tr>
                                     <td colspan="3">Makale Bulunamadı...</td>
+                                    <td colspan="3"></td>
+				    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>

@@ -57,10 +57,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'person', targetEntity: JournalUser::class)]
     private Collection $journalUsers;
 
+    #[ORM\OneToMany(mappedBy: 'editor', targetEntity: Articles::class)]
+    private Collection $articles;
+
     public function __construct()
     {
         $this->userRoles = new ArrayCollection();
         $this->journalUsers = new ArrayCollection();
+        $this->articles = new ArrayCollection();
 
     }
 
@@ -236,6 +240,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($journalUser->getPerson() === $this) {
                 $journalUser->setPerson(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Articles>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Articles $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setEditor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Articles $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getEditor() === $this) {
+                $article->setEditor(null);
             }
         }
 

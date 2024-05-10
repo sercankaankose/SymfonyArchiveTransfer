@@ -116,7 +116,7 @@ class ArticleFormType extends AbstractType
                 'placeholder' => [
                     'year' => 'Yıl', 'month' => 'Ay', 'day' => 'Gün',
                 ],
-//                'format' => 'YYYY-mm-dd',
+                'format' => 'dd-mm-YYYY',
 
                 'label' => 'Geliş Tarihi',
                 'required' => false,
@@ -132,6 +132,8 @@ class ArticleFormType extends AbstractType
                 'attr' => ['class' => 'js-datepicker wide-input',
                     'autocomplete' => 'off',
 ],
+                'format' => 'dd-mm-YYYY',
+
                 'html5' => false,
                 'required' => false,
             ]);

@@ -73,6 +73,12 @@ class Articles
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $accepted_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?User $editor = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $ModificationDate = null;
+
 
     public function __construct()
     {
@@ -362,6 +368,30 @@ class Articles
     public function setAcceptedDate(?\DateTimeInterface $accepted_date): static
     {
         $this->accepted_date = $accepted_date;
+
+        return $this;
+    }
+
+    public function getEditor(): ?User
+    {
+        return $this->editor;
+    }
+
+    public function setEditor(?User $editor): static
+    {
+        $this->editor = $editor;
+
+        return $this;
+    }
+
+    public function getModificationDate(): ?\DateTimeInterface
+    {
+        return $this->ModificationDate;
+    }
+
+    public function setModificationDate(?\DateTimeInterface $ModificationDate): static
+    {
+        $this->ModificationDate = $ModificationDate;
 
         return $this;
     }

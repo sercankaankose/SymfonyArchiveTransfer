@@ -7,7 +7,33 @@
           rel="stylesheet"/>
 
     <style>
-        body {
+.nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nav-pills .nav-item {
+    display: inline-block; /* Butonları yatay hizada göster */
+    
+}
+
+
+.btn-group-lg {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start; 
+            align-items: center;
+            flex: 0 0 25%; 
+
+        }
+
+        .btn-group-lg .btn {
+            margin-right: 5px; 
+        }
+
+      
+
+	body {
             overflow-x: hidden;
         }
 
@@ -193,7 +219,7 @@
         }
 
         .form-container .row .col.doi {
-            flex: 0 0 47%;
+            flex: 0 0 51%;
         }
 
         .form-container .row .col.shortTitle {
@@ -239,7 +265,7 @@
         }
 
         .form-container .row .col.prange {
-            flex: 0 0 25%;
+            flex: 0 0 20%;
 
         }
 
@@ -267,9 +293,23 @@
         .nav-pills .nav-link {
             background-color: #e7eaef;
             color: #0a58ca;
+            
+            display: inline-flex;
+            list-style: none;
             height: 50px;
-            width: 225px;
+            width: 100%;
             border-radius: 3px;
+            text-align:center;
+
+        }
+	.nav-item {
+            flex-grow: 1;
+        }
+	.nav-link {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .nav-pills .nav-link.active,
@@ -598,7 +638,11 @@
 
         <div class="iframe-container" style="margin-right: -14px">
             {# Assuming $article is available in your template #}
-            <iframe src="{{ path('article_pdf', { 'filename': article.fulltext|url_encode }) }}"></iframe>
+ {#            <iframe src="{{ path('article_pdf', { 'filename': article.fulltext|url_encode }) }}"></iframe> #}
+
+          {#   <iframe src="{{ path('article_pdf', { 'filename': article.fulltext }) }}"></iframe> #}
+            <iframe src="{{ asset(pdfFile) }}"></iframe>
+
         </div>
     </div>
     <div class="modal fade" id="deleteJournalModal" tabindex="-1" role="dialog"
@@ -1027,8 +1071,9 @@
                     }
                 } else {
                     translatorTab.disabled = true;
-                    translatorTab.style.backgroundColor = 'rgb(237,237,238)';
-                    translatorTab.style.color = 'rgb(154,32,32)';
+                    translatorTab.style.backgroundColor = '#e7eaef';
+                    $('#translatorTab').fadeOut(); // Çevirmen tabını gizle
+
 
                     translatorTab.disabled = true;
                     translatorTab.setAttribute('aria-selected', 'false');
@@ -1043,6 +1088,17 @@
 
                     translatorPane.classList.remove('show', 'active');
                 }
+            }
+        });
+    </script>
+ <script>
+        $('#articleType').on('input', function() {
+            var articleType = $(this).val();
+
+                if (articleType == 57) {
+                $('#translatorTab').fadeIn();
+            } else {
+                $('#translatorTab').fadeOut(); 
             }
         });
     </script>
@@ -1322,3 +1378,4 @@
 
 {% endblock %}
 {% block title %}Makale Düzenle{% endblock %}
+
