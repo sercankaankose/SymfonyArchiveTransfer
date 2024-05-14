@@ -11,7 +11,7 @@ class PasswordPolicyValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint) : void
     {
-        if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[-_\.]).{5,15}$/', $value)) {
+        if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d).{5,15}$/', $value)) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

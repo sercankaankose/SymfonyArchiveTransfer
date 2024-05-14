@@ -21,6 +21,37 @@
             #deleteJournalModal {
                 margin-top: 150px;
             }
+            .button-42 {
+                background-color: initial;
+                background-image: linear-gradient(-180deg, #1c5b3e, #198753);
+                border-radius: 3px;
+                box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+                color: #FFFFFF;
+                cursor: pointer;
+                display: inline-block;
+                font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+                height: 38px;
+                line-height: 40px;
+                outline: 0;
+                overflow: hidden;
+                padding: 0 12px;
+                /*margin-top: 0.5px;*/
+                pointer-events: auto;
+                position: relative;
+                text-align: center;
+                touch-action: manipulation;
+                user-select: none;
+                -webkit-user-select: none;
+                white-space: nowrap;
+                z-index: 9;
+                border: 0;
+                transition: box-shadow .2s;
+            }
+
+            .button-42:hover {
+                /*box-shadow: #198754 0 3px 8px;*/
+                color: #fff;
+            }
         </style>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
@@ -38,24 +69,59 @@
                             <thead>
                             <tr>
                                 <th>Dergi İsmi</th>
-                                <th >Issn</th>
-                                <th >E-issn</th>
-
+                                <th>Issn</th>
+                                <th>E-issn</th>
+                                <th style="text-align: center;">Tüm Sayılar</th>
+                                <th style="text-align: center;">Kontrol Edilmiş Sayılar</th>
+                                <th style="text-align: center;">Hatalı Sayılar</th>
                                 <th style="text-align: right; "></th>
                             </tr>
                             </thead>
                             <tbody>
 
                             {% for journal in journals %}
+
+
+                                    {% set status_all_count = 0 %}
+                                    {% set status_editRequired_count = 0 %}
+                                    {% set status_edited_count = 0 %}
+                                    {% set status_error_count = 0 %}
+
+                                    {% for issue in journal.issues %}
+                                            {% set status_all_count = status_all_count + 1 %}
+                                        {% if issue.status == '001' %}
+                                            {% set status_editRequired_count = status_editRequired_count + 1 %}
+                                        {% elseif issue.status == '002' %}
+                                            {% set status_edited_count = status_edited_count + 1 %}
+                                        {% elseif issue.status == '003' %}
+                                            {% set status_error_count = status_error_count + 1 %}
+                                        {% endif %}
+                                    {% else %}
+                                    {% endfor %}
                                 <tr>
-                                    <td>{{ journal.name }}</td>
-                                    <td>{{ journal.issn }}</td>
-                                    <td>{{ journal.eIssn }}</td>
+                                <td>{{ journal.name }}</td>
+                                <td>{{ journal.issn }}</td>
+                                <td>{{ journal.eIssn }}</td>
+
+                                    <td style="text-align: center">{{ status_all_count }}</td>
+                                    <td style="text-align: center">{{ status_edited_count }}</td>
+                                    <td style="text-align: center">{{ status_error_count }}</td>
+
+
                                     <td style="text-align: right">
-                                        <div class="btn-group">
-                                            <a href="{{ path('journal_issues', {'id': journal.id}) }}" class="btn btn-primary">Sayılar</a>
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        {% if status_edited_count > 0 %}
+                                            <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: -3px">Dışa Aktar</a>
+
+                                        {% endif %}
+                                        {% set status_all_count = 0 %}
+                                        {% set status_edited_count = 0 %}
+                                        {% set status_error_count = 0 %}
+
+                                        <div style="display: inline-flex; justify-content: space-between;">
+                                            <a href="{{ path('journal_issues', {'id': journal.id}) }}"
+                                               class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
+                                            <div class="dropdown" style="border-radius: 3px">
+                                                <button class="btn btn-secondary dropdown-toggle" style="border-radius: 3px; margin-left: 1px" type="button"
                                                         id="dropdownMenuButton" data-bs-toggle="dropdown"
                                                         aria-haspopup="true" aria-expanded="false">
                                                     <i class="bi bi-three-dots"></i>
@@ -63,10 +129,12 @@
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <a class="dropdown-item"
                                                        href="{{ path('admin_journal_edit', {'id': journal.id}) }}">Düzenle</a>
-                                                    <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal"
+                                                    <a class="dropdown-item" type="button" href="#"
+                                                       data-bs-toggle="modal"
                                                        onclick="openDeleteModal({{ journal.id }})"
                                                        data-bs-target="#deleteJournalModal"
-                                                       data-target="#deleteJournalModal" data-id="{{ journal.id }}">Sil</a>
+                                                       data-target="#deleteJournalModal"
+                                                       data-id="{{ journal.id }}">Sil</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -76,6 +144,10 @@
                             {% else %}
                                 <tr>
                                     <td colspan="3">Dergi Bulunamadı...</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
@@ -172,11 +244,14 @@
                 searchBuilder: true,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                    info:           " _TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                    sInfoPostFix: ""
+
                 },
 
                 columnDefs: [
                     {type: 'yesy', targets: [1, 2]},
-                    {orderable: false, targets: [3]},
+                    {orderable: false, targets: [6]},
 
                     {"name": "name", "targets": 0},
                     {"name": "issn", "targets": 1},

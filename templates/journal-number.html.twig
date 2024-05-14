@@ -21,6 +21,7 @@
             #deleteIssueModal {
                 margin-top: 150px;
             }
+
             /* CSS */
             .button-42 {
                 background-color: initial;
@@ -31,11 +32,12 @@
                 cursor: pointer;
                 display: inline-block;
                 font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
-                height: 39px;
+                height: 38px;
                 line-height: 40px;
                 outline: 0;
                 overflow: hidden;
                 padding: 0 12px;
+                /*margin-top: 0.5px;*/
                 pointer-events: auto;
                 position: relative;
                 text-align: center;
@@ -49,36 +51,39 @@
             }
 
             .button-42:hover {
-                box-shadow: #198754 0 3px 8px;
+                /*box-shadow: #198754 0 3px 8px;*/
                 color: #fff;
             }
+
             td,
-            th{
-                text-align: center; /* Tablo hücrelerini ortala */
-                vertical-align: middle; /* Dikey hizalama */
+            th {
+                text-align: center;
+                vertical-align: middle;
             }
 
-            /* Tablo hücrelerine padding ekleme */
+
             .table td {
-                padding: 8px; /* İhtiyaca göre ayarlayabilirsiniz */
+                padding: 8px;
             }
 
             .table {
                 border-collapse: collapse;
                 border-spacing: 0;
             }
+
             .badge {
                 display: flow;
                 line-height: unset;
-                font-size: 14px; /* Badgelerin font boyutu */
-                padding: 8px 12px; /* Badgelerin içeriğe boşluk ekleyerek boyutunu ayarlama */
+                font-size: 14px;
+                padding: 8px 12px;
             }
         </style>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <h1>{{ journal.name }} Sayıları</h1>
                 <div class="m-3">
-                    <a href="{{ path('journal_issue_add',{'id': journal.id}) }}" class="btn btn-lg btn-dark" style="margin-right: -13px">Yeni Sayı
+                    <a href="{{ path('journal_issue_add',{'id': journal.id}) }}" class="btn btn-lg btn-dark"
+                       style="margin-right: -13px">Yeni Sayı
                         Ekle</a>
                 </div>
 
@@ -93,7 +98,11 @@
                                 <th style="text-align: center; ">Sayı Yılı</th>
                                 <th style="text-align: center; ">Cilt</th>
                                 <th style="text-align: center; ">Sayı</th>
-                                <th style="text-align: center; ">Durum</th>
+                                <th style="text-align: center; ">Sayı Durumu</th>
+                                <th style="text-align: center;">Toplam Makale</th>
+                                <th style="text-align: center;">Kontrol Edilmiş Makale</th>
+                                <th style="text-align: center;">Hatalı Makale</th>
+
                                 <th style="text-align: right; "></th>
                             </tr>
                             </thead>
@@ -101,67 +110,116 @@
 
                             {% for issue in issues %}
                                 <tr>
+                                    {% set status_all_count = 0 %}
+                                    {% set status_editRequired_count = 0 %}
+                                    {% set status_edited_count = 0 %}
+                                    {% set status_error_count = 0 %}
+
+                                    {% for article in issue.articles %}
+                                        {% set status_all_count = status_all_count + 1 %}
+                                        {% if article.status == '001' %}
+                                            {% set status_editRequired_count = status_editRequired_count + 1 %}
+                                        {% elseif article.status == '002' %}
+                                            {% set status_edited_count = status_edited_count + 1 %}
+                                        {% elseif article.status == '003' %}
+                                            {% set status_error_count = status_error_count + 1 %}
+                                        {% endif %}
+                                    {% else %}
+                                    {% endfor %}
                                     <td>{{ issue.year }}</td>
                                     <td>{{ issue.volume }}</td>
                                     <td>{{ issue.number }}</td>
                                     {% if issue.status == '000' %}
-                                        <td><span class="badge bg-secondary">İncelemede</span></td>
+
+                                        <td><span class="badge bg-secondary"
+                                                  style=" color: white ;border-radius: 3px; padding: 15px;padding-top: 5px;padding-bottom: 5px; display:inline-flex;">İncelemede</span>
+                                        </td>
                                     {% elseif issue.status == '001' %}
-                                        <td><span class="badge text-bg-warning"
-                                                  style=" ">Düzenlenmeli</span></td>
+                                        <td><span class=" "
+                                                  style=" font-size: 15px; background-color: #ffc107; color: white ;border-radius: 3px; padding: 7px; display:inline;">Düzenlenmeli</span>
+                                        </td>
                                     {% elseif issue.status == '002' %}
                                         <td><span class="badge text-bg-success"
-                                                  style="">Kontrol Edildi</span></td>
+                                                  style=" color: white ;border-radius: 3px; padding: 8px; display:inline;">Kontrol Edildi </span>
+                                        </td>
                                     {% elseif issue.status == '003' %}
-                                        <td><span class="badge text-bg-danger">Hatalı</span></td>
+                                        <td><span class="badge text-bg-danger"
+                                                  style=" color: white ;border-radius: 3px; padding: 13px; padding-top: 5px; padding-bottom: 5px; display:inline;">Hatalı</span>
+                                        </td>
                                     {% else %}
                                         <td>--</td>
                                     {% endif %}
+                                    <td style="text-align: center">{{ status_all_count }}</td>
+                                    <td style="text-align: center">{{ status_edited_count }}</td>
+                                    <td style="text-align: center">{{ status_error_count }}</td>
+
+                                    {% set status_status_all_count = 0 %}
+                                    {% set status_edited_count = 0 %}
+                                    {% set status_error_count = 0 %}
+
                                     <td style="text-align: right">
-                                        {% if issue.status == '002' %}
+                                        <div style="display: inline-flex; justify-content: space-between;">
 
-                                            <a class="btn button-42"
-                                               href="{{ path('issue_export', {'id': issue.id}) }}">Dışa Aktar</a>
+                                            {% if issue.status == '002' %}
 
-                                        {% else %}
-                                        {% endif %}
-                                        <div class="btn-group">
-                                             {% if issue.xml %}
-                                                {% if issue.status == '000' %}
+                                                <a class="btn button-42"
+                                                   href="{{ path('issue_export', {'id': issue.id}) }}"
+                                                   style="flex: 1; margin-right: 1px">Dışa Aktar</a>
 
-                                                    {% else %}
-                                                        <a class="btn btn-primary" style="text-align: right; border-radius: 3px"
-                                                           href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a
-                                                {% endif %}
                                             {% else %}
-                                                <a class="btn btn-primary" style="text-align: right; border-radius: 3px"
-                                                   href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a>
-
                                             {% endif %}
-
-                                            <div class="dropdown" >
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                        id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" style="border-radius: 3px">
-                                                    <i class="bi bi-three-dots"></i>
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item"
-                                                       href="{{ path('journal_issue_edit', {'id': issue.id}) }}">Düzenle</a>
-                                                    <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal"
-                                                       onclick="openDeleteModal({{ issue.id }})"
-                                                       data-bs-target="#deleteJournalModal"
-                                                       data-target="#deleteJournalModal" data-id="{{ issue.id }}">Sil</a>
+                                            <div class="btn-group" style="flex: 1; ">
+                                                {% if issue.xml %}
                                                     {% if issue.status == '000' %}
 
-                                                    <a class="dropdown-item" href="{{ path('journal_issue_xml_edit', {'id': issue.id}) }}">
-                                                        Xml Düzenle
-                                                    </a>
-                                                    {% endif %}
+                                                    {% else %}
 
+                                                        <a class="btn btn-primary"
+                                                           style="text-align: center; border-radius: 3px; width: 100%;"
+                                                           href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a
+                                                    {% endif %}
+                                                {% else %}
+                                                    <a class="btn btn-primary"
+                                                       style="text-align: center; border-radius: 3px; width: 100%;"
+                                                       href="{{ path('articles_list', {'id': issue.id}) }}">Makaleler</a>
+
+                                                {% endif %}
+
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                            id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                            aria-haspopup="true" aria-expanded="false"
+                                                            style="border-radius: 3px; margin-left: 1px">
+                                                        <i class="bi bi-three-dots"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item"
+                                                           href="{{ path('journal_issue_edit', {'id': issue.id}) }}">Düzenle</a>
+                                                        <a class="dropdown-item" type="button" href="#"
+                                                           data-bs-toggle="modal"
+                                                           onclick="openDeleteModal({{ issue.id }})"
+                                                           data-bs-target="#deleteJournalModal"
+                                                           data-target="#deleteJournalModal"
+                                                           data-id="{{ issue.id }}">Sil</a>
+                                                        {% if issue.status == '000' %}
+
+                                                            <a class="dropdown-item"
+                                                               href="{{ path('journal_issue_xml_edit', {'id': issue.id}) }}">
+                                                                Xml Düzenle
+                                                            </a>
+                                                        {% elseif issue.status == '003' %}
+                                                            <a class="dropdown-item"
+                                                               href="{{ path('journal_issue_xml_edit', {'id': issue.id}) }}">
+                                                                Xml Düzenle
+                                                            </a>
+                                                        {% else %}
+                                                        {% endif %}
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </td>
                                 </tr>
                             {% else %}
                                 <tr>
@@ -262,11 +320,14 @@
                 searchBuilder: true,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                    info: " _TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                    sInfoPostFix: ""
+
                 },
                 order: [[2, 'asc']],
                 columnDefs: [
                     {type: 'yesy', targets: []},
-                    {orderable: false, targets: [4]},
+                    {orderable: false, targets: [7]},
                 ],
             });
         </script>

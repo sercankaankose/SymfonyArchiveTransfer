@@ -73,6 +73,7 @@ class ParseXmlCommand extends Command
         $data = $encoder->decode($xmlContent, 'xml');
 
         if ($this->validateXml($data, $issue)) {
+
             $output->writeln('XML başarılı şekilde veritabanına aktarılmıştır.');
         } else {
             $issue->setStatus('XmlValidateFail');

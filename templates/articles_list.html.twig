@@ -34,13 +34,13 @@
             }
 
             td {
-                text-align: center; /* Tablo hücrelerini ortala */
-                vertical-align: middle; /* Dikey hizalama */
+                text-align: center;
+                vertical-align: middle;
             }
 
             /* Tablo hücrelerine padding ekleme */
             .table td {
-                padding: 8px; /* İhtiyaca göre ayarlayabilirsiniz */
+                padding: 8px;
             }
 
             .table {
@@ -52,21 +52,52 @@
             .badge {
                 display: flow;
                 line-height: unset;
-                font-size: 14px; /* Badgelerin font boyutu */
-                padding: 8px 12px; /* Badgelerin içeriğe boşluk ekleyerek boyutunu ayarlama */
+                font-size: 14px;
+                padding: 8px 12px;
             }
 
             .popover {
-                border: 1px solid rgba(0, 0, 0, 0.2); /* Kenarlık rengi */
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Gölgelendirme */
-                background-color: white; /* Popovers arka plan rengi */
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background-color: white;
             }
 
             .popover-content {
-                color: black; /* Metin rengi */
-                font-size: 14px; /* Yazı tipi boyutu */
+                color: black;
+                font-size: 14px;
             }
 
+            .button-42 {
+                background-color: initial;
+                background-image: linear-gradient(-180deg, #1c5b3e, #198753);
+                border-radius: 3px;
+                box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+                color: #FFFFFF;
+                cursor: pointer;
+                display: inline-block;
+                font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+                height: 38px;
+                line-height: 40px;
+                outline: 0;
+                overflow: hidden;
+                padding: 0 12px;
+                /*margin-top: 0.5px;*/
+                pointer-events: auto;
+                position: relative;
+                text-align: center;
+                touch-action: manipulation;
+                user-select: none;
+                -webkit-user-select: none;
+                white-space: nowrap;
+                z-index: 9;
+                border: 0;
+                transition: box-shadow .2s;
+            }
+
+            .button-42:hover {
+                /*box-shadow: #198754 0 3px 8px;*/
+                color: #fff;
+            }
         </style>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
@@ -75,8 +106,8 @@
                     <a href="{{ path('article_add',{'id': issues.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
                     </a>
 
-{#                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi#}
-{#                        İşaretle</a>#}
+                    {#                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi #}
+                    {#                        İşaretle</a> #}
                 </div>
 
             </div>
@@ -91,7 +122,7 @@
                                 <th style="text-align: center">Dil</th>
                                 <th>Sayfalar</th>
                                 <th style="text-align: center">Durum</th>
-				<th style="text-align: center">Düzenleme Tarihi</th>
+                                <th style="text-align: center">Düzenleme Tarihi</th>
                                 <th style="text-align: center">Düzenleyen</th>
                                 <th style="text-align: right; "></th>
                             </tr>
@@ -117,8 +148,8 @@
                                     {% elseif article.primaryLanguage == '005' %}
                                         <td>Arapça</td>
                                     {% elseif article.primaryLanguage == '006' %}
-                                        <td>Rusça</td>
                                     {% elseif article.primaryLanguage == '007' %}
+                                        <td>Rusça</td>
                                         <td>Farsça</td>
                                     {% else %}
                                         <td>Türkçe</td>
@@ -126,13 +157,13 @@
                                     <td>{{ article.firstPage }} - {{ article.lastPage }}</td>
 
                                     {% if article.status == '0' %}
-                                        <td><span class="badge bg-gray">Beklemede</span></td>
+                                        <td><span class="badge bg-gray" style=" color: white ;border-radius: 3px; padding: 7px; display:inline;">Beklemede</span></td>
                                     {% elseif article.status == '001' %}
                                         <td><span class="badge bg-warning"
-                                                  style=" ">Düzenlenmeli</span></td>
+                                                  style=" color: white ;border-radius: 3px; padding: 7px; display:inline;">Düzenlenmeli</span></td>
                                     {% elseif article.status == '002' %}
                                         <td><span class="badge text-bg-success"
-                                                  style="">Kontrol Edildi</span></td>
+                                                  style=" color: white ;border-radius: 3px; padding: 7px; display:inline;">Kontrol Edildi</span></td>
                                     {% elseif article.status == '003' %}
                                         <td>
                                             <span class="badge text-bg-danger" tabindex="0" data-bs-toggle="popover"
@@ -156,62 +187,35 @@
                                     {% else %}
                                         <td>-</td>
                                     {% endif %}
+                                    <td style="text-align: right">
+                                        <div style="display: inline-flex; justify-content: space-between;">
+                                            {% if issues.status == '002' %}
+                                                <a class="btn button-42" href="{{ path('article_export', {'id': article.id}) }}" style="flex: 1; margin-right: 1px">Dışa Aktar</a>
+                                            {% else %}
+                                            {% endif %}
 
-                                    <td style="text-align: right;">
-                                        {#                                        <div style="display: flex; justify-content: flex-end; align-items: center;"> #}
-                                        {#                                            <div style="margin-right: 5px;"> #}
-                                        {#                                                <a class="btn btn-dark" href="{{ path('article_edit', {'id': article.id}) }}">Düzenle</a> #}
-                                        {#                                            </div> #}
+                                            <div class="btn-group" style="flex: 1; ">
+                                                <a class="btn btn-dark" style="text-align: right; border-radius: 2px; width: 100%;" href="{{ path('article_edit', {'id': article.id}) }}">Düzenle</a>
 
-                                        {#                                            <div> #}
-                                        {#                                                <div class="dropdown"> #}
-                                        {#                                                    <button class="btn btn-secondary dropdown-toggle" type="button" #}
-                                        {#                                                            id="dropdownMenuButton" data-bs-toggle="dropdown" #}
-                                        {#                                                            aria-haspopup="true" aria-expanded="false"> #}
-                                        {#                                                        <i class="bi bi-three-dots"></i> #}
-                                        {#                                                    </button> #}
-                                        {#                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> #}
-                                        {#                                                        <a class="dropdown-item" href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf Güncelle</a> #}
-                                        {#                                                        <a class="dropdown-item" type="button" href="#" #}
-                                        {#                                                           data-bs-toggle="modal" #}
-                                        {#                                                           onclick="openDeleteModal({{ article.id }})" #}
-                                        {#                                                           data-bs-target="#deleteArticleModal" #}
-                                        {#                                                           data-target="#deleteArticleModal" #}
-                                        {#                                                           data-id="{{ article.id }}">Sil</a> #}
-                                        {#                                                    </div> #}
-                                        {#                                                </div> #}
-                                        {#                                            </div> #}
-                                        {#                                        </div> #}
-                                        <div class="btn-group">
-                                            <a class="btn btn-dark" style="text-align: right; border-radius: 4px"
-                                               href="{{ path('article_edit', {'id': article.id}) }}">Düzenle</a>
-
-                                            <div class="dropdown" style="border-radius: 2px">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button"
-                                                        id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
-                                                    <i class="bi bi-three-dots"></i>
-                                                </button>
-                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <a class="dropdown-item"
-                                                       href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf
-                                                        Güncelle</a>
-                                                    <a class="dropdown-item" type="button" href="#"
-                                                       data-bs-toggle="modal"
-                                                       onclick="openDeleteModal({{ article.id }})"
-                                                       data-bs-target="#deleteArticleModal"
-                                                       data-target="#deleteArticleModal"
-                                                       data-id="{{ article.id }}">Sil</a>
+                                                <div class="dropdown" style="border-radius: 2px; width: 100%;">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button"  style="border-radius: 2px; margin-left:1px; width: 100%; id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%;">
+                                                        <i class="bi bi-three-dots"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf Güncelle</a>
+                                                        <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal" onclick="openDeleteModal({{ article.id }})" data-bs-target="#deleteArticleModal" data-target="#deleteArticleModal" data-id="{{ article.id }}">Sil</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
+
                                 </tr>
                             {% else %}
                                 <tr>
                                     <td colspan="3">Makale Bulunamadı...</td>
                                     <td colspan="3"></td>
-				    <td colspan="3"></td>
+                                    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
@@ -335,6 +339,9 @@
                 searchBuilder: true,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                    info:           " _TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                    sInfoPostFix: ""
+
                 },
                 order: [[2, 'asc']],
                 columnDefs: [

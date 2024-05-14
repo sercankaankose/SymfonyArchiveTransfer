@@ -8,12 +8,17 @@ use App\Entity\JournalUser;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Form\JournalUserAssigmentType;
+use App\Params\IssueStatusParam;
 use App\Params\RoleParam;
 use App\Form\JournalFormType;
 use App\Form\RegistrationFormType;
 use App\Service\BreadCrumbService;
+use App\Util\TypeModifier;
 use Doctrine\ORM\EntityManagerInterface;
+use DOMDocument;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -397,9 +402,14 @@ class AdminController extends AbstractController
             $this->addFlash('danger', 'Dergi Bulunamadı.');
             return $this->redirectToRoute('admin_journal_management');
         }
-$issues = $journal->getIssues();
-        foreach ($issues as $issue){
+        $issues = $journal->getIssues();
+        foreach ($issues as $issue) {
             $articles = $issue->getArticles();
+            $xmlFilePath = $issue->getXml();
+
+            if ($xmlFilePath && file_exists($xmlFilePath)) {
+                unlink($xmlFilePath);
+            }
             foreach ($articles as $article) {
                 $translations = $article->getTranslations();
                 $authors = $article->getAuthors();
@@ -417,6 +427,24 @@ $issues = $journal->getIssues();
                 }
                 foreach ($citations as $citation) {
                     $this->entityManager->remove($citation);
+                }
+                $pdfFilePath = $article->getFulltext();
+
+                if ($pdfFilePath && file_exists($pdfFilePath)) {
+                    unlink($pdfFilePath);
+                }
+
+                $pdfFolderPath = substr($pdfFilePath, 0, strrpos($pdfFilePath, '/'));
+
+                if (is_dir($pdfFolderPath)) {
+                    if (count(scandir($pdfFolderPath)) == 2) {
+                        $filesystem = new Filesystem();
+                        try {
+                            $filesystem->remove($pdfFolderPath);
+                        } catch (FileException $e) {
+                            return new Response($e->getMessage());
+                        }
+                    }
                 }
                 $this->entityManager->flush();
 
@@ -465,7 +493,283 @@ $issues = $journal->getIssues();
         ]);
     }
 
+    #[Route('journal/{id}/export', name: 'journal_export')]
+    public function issueExport($id): Response
+    {
+        $journal = $this->entityManager->getRepository(Journal::class)->find($id);
+        $issues = $this->entityManager->getRepository(Issues::class)->findBy(['journal' => $journal, 'status' => IssueStatusParam::EDITED]);
+        $xmlDoc = new DOMDocument('1.0', 'UTF-8');
+        $xmlDoc->formatOutput = true;
+        $issueNode = $xmlDoc->createElement('issues');
+        $journalName = $journal->getName();
 
+        foreach ($issues as $issue) {
+            $articles = $issue->getArticles();
+
+            $articlesNode = $xmlDoc->createElement('articles');
+
+            foreach ($articles as $article) {
+//            $articlesNode->appendChild($articleNode);
+
+                $articleType = $article->getType();
+                $doi = $article->getDoi();
+                $fPage = $article->getFirstPage();
+                $lPage = $article->getLastPage();
+                $primaryLang = $article->getPrimaryLanguage();
+                $typeModifier = new TypeModifier();
+
+                // <article> öğesini oluştur
+                $articleNode = $xmlDoc->createElement('article');
+//                $articleNode->setAttribute('xmlns:mml', 'http://www.w3.org/1998/Math/MathML');
+//                $articleNode->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+//                $articleNode->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+                $articleNode->setAttribute('article-type', $articleType);
+                $articleNode->setAttribute('dtd-version', '1.0');
+
+                $frontNode = $xmlDoc->createElement('front');
+                $journalMetaNode = $xmlDoc->createElement('journal-meta');
+
+                $journalTitleGroupNode = $xmlDoc->createElement('journal-title-group');
+                $journalMetaNode->appendChild($journalTitleGroupNode);
+
+//issn
+                $journalIssnNode = $xmlDoc->createElement('issn', $journal->getIssn());
+                $journalIssnNode->setAttribute('pub-type', 'ppub');
+                $journalMetaNode->appendChild($journalIssnNode);
+
+// eissn
+                $journalEissnNode = $xmlDoc->createElement('issn', $journal->getEIssn());
+                $journalEissnNode->setAttribute('pub-type', 'epub');
+                $journalMetaNode->appendChild($journalEissnNode);
+
+//dergi adı
+                $journalTitleNode = $xmlDoc->createElement('journal-title', $journalName);
+                $journalTitleGroupNode->appendChild($journalTitleNode);
+
+//journal meta buraya kadar
+
+                $articleMetaNode = $xmlDoc->createElement('article-meta');
+                $articleIdNode = $xmlDoc->createElement('article-id', $doi);
+                $articleIdNode->setAttribute('pub-id-type', 'doi');
+                $articleMetaNode->appendChild($articleIdNode);
+
+                $articleTitleGroupNode = $xmlDoc->createElement('title-group');
+
+                $translations = $article->getTranslations();
+
+                foreach ($translations as $translation) {
+                    // Ana dil ile aynı olan çeviriyi doğrudan <article-title> içine ekleyin
+                    if ($primaryLang == $translation->getLocale()) {
+                        $articleTitleNode = $xmlDoc->createElement('article-title', $translation->getTitle());
+                        $articleTitleGroupNode->appendChild($articleTitleNode);
+                    }
+                }
+
+                $hasTranslations = $translations->count() > 1;
+
+// Ana dil ile aynı olmayan çevirileri <trans-title-group> içine ekleyin
+                if ($hasTranslations) {
+                    foreach ($translations as $translation) {
+                        if ($primaryLang != $translation->getLocale()) { // Ana dil ile aynı olmayan çeviriler
+
+                            $articleTransTitleGroupNode = $xmlDoc->createElement('trans-title-group');
+                            $articleTransTitleGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                            $articleTransTitleNode = $xmlDoc->createElement('trans-title', $translation->getTitle());
+                            $articleTransTitleGroupNode->appendChild($articleTransTitleNode);
+                        }
+                    }
+
+                    $articleTitleGroupNode->appendChild($articleTransTitleGroupNode);
+                }
+
+                $articleMetaNode->appendChild($articleTitleGroupNode);
+
+
+                //yazar sekmesi
+                $contribGroupNode = $xmlDoc->createElement('contrib-group');
+                $authors = $article->getAuthors();
+                foreach ($authors as $author) {
+                    $contribNode = $xmlDoc->createElement('contrib');
+                    $contribNode->setAttribute('contrib-type', 'author');
+//isim soyad
+                    $nameNode = $xmlDoc->createElement('name');
+                    $surnameNode = $xmlDoc->createElement('surname', $author->getLastname());
+                    $nameNode->appendChild($surnameNode);
+                    $givenNameNode = $xmlDoc->createElement('given-names', $author->getFirstname());
+                    $nameNode->appendChild($givenNameNode);
+                    $contribNode->appendChild($nameNode);
+//institute
+                    $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+
+                    $contribNode->appendChild($affNode);
+
+                    $emailNode = $xmlDoc->createElement('email', $author->getEmail());
+                    $contribNode->appendChild($emailNode);
+//orcid
+                    $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $author->getOrcId());
+                    $contribIdNode->setAttribute('contrib-id-type', 'orcid');
+                    $contribNode->appendChild($contribIdNode);
+
+                    $contribGroupNode->appendChild($contribNode);
+                }
+                //çevirmen sekmesi
+                $translators = $article->getTranslators();
+                foreach ($translators as $translator) {
+                    $contribNode = $xmlDoc->createElement('contrib');
+                    $contribNode->setAttribute('contrib-type', 'translator');
+//isim soyad
+                    $nameNode = $xmlDoc->createElement('name');
+                    $surnameNode = $xmlDoc->createElement('surname', $translator->getLastname());
+                    $nameNode->appendChild($surnameNode);
+                    $givenNameNode = $xmlDoc->createElement('given-names', $translator->getFirstname());
+                    $nameNode->appendChild($givenNameNode);
+                    $contribNode->appendChild($nameNode);
+
+//institute
+                    $affNode = $xmlDoc->createElement('aff', $translator->getInstitute());
+                    $contribNode->appendChild($affNode);
+//orcid
+                    $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $translator->getOrcId());
+                    $contribIdNode->setAttribute('contrib-id-type', 'orcid');
+                    $contribNode->appendChild($contribIdNode);
+
+                    $contribGroupNode->appendChild($contribNode);
+                }
+                $articleMetaNode->appendChild($contribGroupNode);
+//pubdate
+                if ($article->getReceivedDate() && $article->getAcceptedDate()) {
+                    $receivedDate = $article->getReceivedDate()->format('Y-m-d');
+                    $historyNode = $xmlDoc->createElement('history');
+
+                    // Received Date Node
+                    $dateReceivedNode = $xmlDoc->createElement('date');
+                    $dateReceivedNode->setAttribute('date-type', 'received');
+                    $dateReceivedNode->setAttribute('iso-8601-date', $receivedDate);
+
+                    // Day Node
+                    $dayReceivedNode = $xmlDoc->createElement('day', $article->getReceivedDate()->format('d'));
+                    $dateReceivedNode->appendChild($dayReceivedNode);
+
+                    // Month Node
+                    $monthReceivedNode = $xmlDoc->createElement('month', $article->getReceivedDate()->format('m'));
+                    $dateReceivedNode->appendChild($monthReceivedNode);
+
+                    // Year Node
+                    $yearReceivedNode = $xmlDoc->createElement('year', $article->getReceivedDate()->format('Y'));
+                    $dateReceivedNode->appendChild($yearReceivedNode);
+
+                    // Append Received Date Node to history node
+                    $historyNode->appendChild($dateReceivedNode);
+
+                    // Accepted Date Node
+                    $acceptedDate = $article->getAcceptedDate()->format('Y-m-d');
+                    $dateAcceptedNode = $xmlDoc->createElement('date');
+                    $dateAcceptedNode->setAttribute('date-type', 'accepted');
+                    $dateAcceptedNode->setAttribute('iso-8601-date', $acceptedDate);
+
+                    // Day Node
+                    $dayAcceptedNode = $xmlDoc->createElement('day', $article->getAcceptedDate()->format('d'));
+                    $dateAcceptedNode->appendChild($dayAcceptedNode);
+
+                    // Month Node
+                    $monthAcceptedNode = $xmlDoc->createElement('month', $article->getAcceptedDate()->format('m'));
+                    $dateAcceptedNode->appendChild($monthAcceptedNode);
+
+                    // Year Node
+                    $yearAcceptedNode = $xmlDoc->createElement('year', $article->getAcceptedDate()->format('Y'));
+                    $dateAcceptedNode->appendChild($yearAcceptedNode);
+
+                    // Append Accepted Date Node to history node
+                    $historyNode->appendChild($dateAcceptedNode);
+
+                    // Append history node to appropriate parent node (like $articleMetaNode)
+                    $articleMetaNode->appendChild($historyNode);
+                }
+
+
+                //volume
+                $volumeNode = $xmlDoc->createElement('volume', $issue->getVolume());
+                $articleMetaNode->appendChild($volumeNode);
+//sayı
+                $numberNode = $xmlDoc->createElement('issue', $issue->getNumber());
+                $articleMetaNode->appendChild($numberNode);
+//birinci sayfa
+                $fpageNode = $xmlDoc->createElement('fpage', $fPage);
+                $articleMetaNode->appendChild($fpageNode);
+//ikinci sayfa
+                $lpageNode = $xmlDoc->createElement('lpage', $lPage);
+                $articleMetaNode->appendChild($lpageNode);
+
+//abstract
+                foreach ($translations as $translation) {
+                    if ($article->getPrimaryLanguage() == $translation->getLocale()) {
+                        $abstractNode = $xmlDoc->createElement('abstract');
+                        $pNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+                        $abstractNode->appendChild($pNode);
+                        $articleMetaNode->appendChild($abstractNode);
+                    } else {
+                        $transAbstractNode = $xmlDoc->createElement('trans-abstract');
+                        $transAbstractNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                        $pTransNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+
+//                    $pTransNode = $xmlDoc->createElement('p', $translation->getAbstract());
+                        $transAbstractNode->appendChild($pTransNode);
+                        $articleMetaNode->appendChild($transAbstractNode);
+                    }
+                }
+                foreach ($translations as $translation) {
+                    $kwdGroupNode = $xmlDoc->createElement('kwd-group');
+                    $kwdGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                    foreach ($translation->getKeywords() as $keyword) {
+                        $kwdNode = $xmlDoc->createElement('kwd', $keyword);
+                        $kwdGroupNode->appendChild($kwdNode);
+                    }
+                    $articleMetaNode->appendChild($kwdGroupNode);
+                }
+
+                $frontNode->appendChild($articleMetaNode);
+
+                $articleNode->appendChild($frontNode);
+
+                $back = $xmlDoc->createElement('back');
+                $refListNode = $xmlDoc->createElement('ref-list');
+                foreach ($article->getCitations() as $citation) {
+                    $refNode = $xmlDoc->createElement('ref');
+                    $refNode->setAttribute('id', 'ref' . $citation->getRow());
+
+                    $label = $xmlDoc->createElement('label', $citation->getRow());
+                    $refNode->appendChild($label);
+                    $mixedCitationNode = $xmlDoc->createElement('mixed-citation', htmlspecialchars($citation->getReferance(), ENT_XML1));
+                    $refNode->appendChild($mixedCitationNode);
+
+                    $refListNode->appendChild($refNode);
+
+                }
+                $back->appendChild($refListNode);
+                $articleNode->appendChild($back);
+                $articlesNode->appendChild($articleNode);
+            }
+            $issueNode->appendChild($articlesNode);
+// <articles> kök öğesini XML dokümanına ekle
+            $xmlDoc->appendChild($issueNode);
+        }
+// XML içeriğini bir değişkene atayın
+        $xmlContent = $xmlDoc->saveXML();
+        $fileName = 'exported_articles.xml';
+        $file = fopen($fileName, 'w');
+        fwrite($file, $xmlContent);
+        fclose($file);
+
+// Dosyayı indirme olarak kullanıcıya sun
+        $response = new Response(file_get_contents($fileName));
+        $response->headers->set('Content-Type', 'application/xml');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+
+        return $response;
+    }
 
 
 }
