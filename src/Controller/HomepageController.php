@@ -906,7 +906,9 @@ class HomepageController extends AbstractController
 
 // XML içeriğini bir değişkene atayın
         $xmlContent = $xmlDoc->saveXML();
-        $fileName = 'exported_articles.xml';
+        $journalSlug = $this->convertToSlug($journal->getName());
+        $articleSlug = $this->convertToSlug($article->getTranslations()->findFirst());
+        $fileName = 'exported_article.xml';
         $file = fopen($fileName, 'w');
         fwrite($file, $xmlContent);
         fclose($file);
@@ -964,9 +966,10 @@ class HomepageController extends AbstractController
                     $title = html_entity_decode($newTranslation->getTitle(), ENT_QUOTES | ENT_HTML5);
                     $abstract = html_entity_decode($newTranslation->getAbstract(), ENT_QUOTES | ENT_HTML5);
 
-                    $title = str_replace(["                    ", "\r", "\n", '&#13;'], '', $newTranslation->getTitle());
-                    $abstract = str_replace(["                    ", "\r", "\n", '&#13;'], '', $newTranslation->getAbstract());
-
+                    $title = str_replace(["                    ", "\r", "&#13;", "\n", '&#13;'], '', $newTranslation->getTitle());
+                    $abstract = str_replace(["                    ", "\r", "&#13;","\n", '&#13;'], '', $newTranslation->getAbstract());
+                    $title = str_replace('&rsquo;',"'",$title);
+                    $abstract = str_replace('&rsquo;',"'",$abstract);
                     $newTranslation->setTitle($title);
                     $newTranslation->setAbstract($abstract);
 
@@ -1008,7 +1011,9 @@ class HomepageController extends AbstractController
             foreach ($citations as $newCitation) {
                 if (!empty($newCitation->getReferance())) {
                     $newCitation->setArticle($article);
-                    $referance = str_replace(["                    ", "\r", "\n", '&#13;'], '', $newCitation->getReferance());
+                    $referance = str_replace(["                    ", "&#13;","\r", "\n", '&#13;'], '', $newCitation->getReferance());
+                    $referance = str_replace('&rsquo;',"'",$referance);
+
                     $newCitation->setReferance($referance);
 
                     $newCitation->setRow($index);
@@ -1493,6 +1498,19 @@ class HomepageController extends AbstractController
         return $newFileName;
     }
 
+    function convertToSlug($text)
+    {
+        $trChars = array('Ç' => 'C', 'ç' => 'c', 'Ğ' => 'G', 'ğ' => 'g', 'İ' => 'I', 'ı' => 'i', 'Ö' => 'O', 'ö' => 'o', 'Ş' => 'S', 'ş' => 's', 'Ü' => 'U', 'ü' => 'u');
+
+        $text = str_replace(array_keys($trChars), array_values($trChars), $text);
+        $text = preg_replace('/\s+/', '-', $text);
+        $text = strtolower($text);
+        $text = preg_replace('/[^a-z0-9-]/', '', $text);
+        $text = preg_replace('/-+/', '-', $text);
+        $text = trim($text, '-');
+
+        return $text;
+    }
 //    private function generateArticleXMLContent($article, $issue): DOMElement
 //    {
 //        $xmlDoc = new DOMDocument('1.0', 'UTF-8');

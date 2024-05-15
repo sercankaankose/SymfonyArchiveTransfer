@@ -81,26 +81,6 @@ class ChangePasswordFormType extends AbstractType
     }
 }
 
-class YourCustomPasswordValidation extends ConstraintValidator
-{
-    private $passwordHasher;
-
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
-    {
-        $this->passwordHasher = $passwordHasher;
-    }
-
-    public function validate($value, Constraint $constraint)
-    {//çalışmıyor
-        $user = $this->context->getObject()->getUser();
-
-        if (!$this->passwordHasher->isPasswordValid($user, $value)) {
-            $this->context->buildViolation($constraint->message)
-                ->addViolation();
-        }
-    }
-}
-
 //    public function validateCurrentPassword($currentPassword, ExecutionContextInterface $context)
 //    {
 //        $form = $context->getObject();

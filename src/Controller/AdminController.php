@@ -500,13 +500,13 @@ class AdminController extends AbstractController
         $issues = $this->entityManager->getRepository(Issues::class)->findBy(['journal' => $journal, 'status' => IssueStatusParam::EDITED]);
         $xmlDoc = new DOMDocument('1.0', 'UTF-8');
         $xmlDoc->formatOutput = true;
-        $issueNode = $xmlDoc->createElement('issues');
+        $issueNode = $xmlDoc->createElement('journal');
         $journalName = $journal->getName();
 
         foreach ($issues as $issue) {
             $articles = $issue->getArticles();
 
-            $articlesNode = $xmlDoc->createElement('articles');
+            $articlesNode = $xmlDoc->createElement('issue');
 
             foreach ($articles as $article) {
 //            $articlesNode->appendChild($articleNode);
@@ -755,7 +755,7 @@ class AdminController extends AbstractController
         }
 // XML içeriğini bir değişkene atayın
         $xmlContent = $xmlDoc->saveXML();
-        $fileName = 'exported_articles.xml';
+        $fileName = 'exported_issues.xml';
         $file = fopen($fileName, 'w');
         fwrite($file, $xmlContent);
         fclose($file);
