@@ -30,7 +30,7 @@ class JournalUserAssigmentType extends AbstractType
                 ],
             ])
             ->add('ROLE_EDITOR', CheckboxType::class, [
-                'label' => 'EDİTÖR',
+                'label' => 'Editör',
                 'required' => false,
             ])
             ->add('ROLE_OPERATOR', CheckboxType::class, [

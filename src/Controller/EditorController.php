@@ -11,7 +11,7 @@ class EditorController extends AbstractController
     #[Route('/editor', name: 'dashboard_editor')]
     public function index(): Response
     {
-        return $this->render('editor/index.html.twig', [
+        return $this->render('editor/homepage.html.twig', [
             'controller_name' => 'EditorController',
         ]);
     }

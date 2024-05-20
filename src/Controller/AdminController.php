@@ -17,6 +17,7 @@ use App\Util\TypeModifier;
 use Doctrine\ORM\EntityManagerInterface;
 use DOMDocument;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +27,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('ROLE_ADMIN')]
+#[IsGranted('ROLE_SYSTEM_OPERATOR')]
 class AdminController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -58,7 +59,7 @@ class AdminController extends AbstractController
     #[Route('/admin/user-management', name: 'admin_user_management')]
     public function userManagement(): Response
     {
-        $allusers = $this->entityManager->getRepository(User::class)->findBy(["is_admin" => false]);
+        $allusers = $this->entityManager->getRepository(User::class)->findAll();
         $breadcrumb = $this->breadcrumbService->createUserManagementBreadcrumb();
 
 
@@ -140,6 +141,7 @@ class AdminController extends AbstractController
 
         $form = $this->createForm(JournalUserAssigmentType::class);
         $form->handleRequest($request);
+
         $role_editor = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_EDITOR]);
         $role_operator = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_OPERATOR]);
 
@@ -209,7 +211,59 @@ class AdminController extends AbstractController
         ]);
     }
 
+    //sistem operatörü atama
+    #[Route('/admin/assigment/{id}/system-operator', name: 'admin_system_operator_assing')]
+    public function userSystemOperatorAssign($id): Response
+    {
+        $roleSystemOperator = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_SYSTEM_OPERATOR]);
+        $user = $this->entityManager->getRepository(User::class)->find($id);
 
+
+        if ($user === null) {
+            $this->addFlash('danger', 'Böyle bir kullanıcı Bulunamadı');
+            return $this->redirectToRoute('admin_user_management');
+        }
+
+        $user->addRoles($roleSystemOperator);
+        $user->setIsAdmin(true);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+
+        $this->addFlash('success', $user->getName() . ' ' . $user->getSurname() . ' Sistem Operatörü Olarak Atanmıştır.');
+        return $this->redirectToRoute('admin_user_management');
+    }
+
+    //admin yetkileri silme
+    #[Route('/admin/delete/{id}/role', name: 'admin_system_operator_delete')]
+    public function userSystemOperatorDelete($id): Response
+    {
+        $roleSystemOperator = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_SYSTEM_OPERATOR]);
+        $roleAdmin = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_ADMIN]);
+        $user = $this->entityManager->getRepository(User::class)->find($id);
+
+
+        if ($user === null) {
+            $this->addFlash('danger', 'Böyle bir kullanıcı Bulunamadı');
+            return $this->redirectToRoute('admin_user_management');
+        }
+        if ($user->getEmail() === 'sadik.guler@yt.com.tr') {
+            $this->addFlash('danger', 'Bu kullanıcının yetkileri silinemez');
+            return $this->redirectToRoute('admin_user_management');
+
+        }
+        $user->removeRole($roleSystemOperator);
+        $user->removeRole($roleAdmin);
+        $user->setIsAdmin(false);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+
+        $this->addFlash('success', $user->getName() . ' ' . $user->getSurname() . ' Admin Yetkileri Alınmıştır.');
+        return $this->redirectToRoute('admin_user_management');
+    }
+
+    // kullanıcının atandığı dergiler
     #[Route('/admin/assigned/{id}', name: 'admin_assigned_journal_list')]
     public function adminAssignedJournal($id)
     {
@@ -233,6 +287,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    //ajax dergi
     #[Route("/search_journals", name: "search_journals")]
     public function searchJournals(Request $request)
     {
@@ -248,6 +303,7 @@ class AdminController extends AbstractController
         return new JsonResponse($journalNames);
     }
 
+    //ajax kullanıcı
     #[Route("/search_user", name: "search_user")]
     public function searchUsers(Request $request)
     {
@@ -263,6 +319,7 @@ class AdminController extends AbstractController
         return new JsonResponse($userNames);
     }
 
+    //atanmış rol silme
     #[Route('/admin/assigned/{id}/{role}', name: 'admin_assigned_journal_delete')]
     public function adminAssignedJournalDeleteFunc($id, $role)
     {
@@ -303,15 +360,16 @@ class AdminController extends AbstractController
 //-----------------------------------------------------------------
     //DERGİ İŞLEMLERİ
 
-//Dergi paneli
+//Dergi listesi paneli
     #[Route('/admin/journal-management', name: 'admin_journal_management')]
-    public function journalManagement(): Response
+    public function journalManagement(Security $security): Response
     {
-
+        $user = $security->getUser();
         $all_journal = $this->entityManager->getRepository(Journal::class)->findAll();
         $breadcrumb = $this->breadcrumbService->createJournalManagementBreadcrumb();
         return $this->render('admin/journal/journal_management.html.twig', [
             'journals' => $all_journal,
+            'user' => $user,
             'breadcrumb' => $breadcrumb,
         ]);
     }
@@ -504,6 +562,7 @@ class AdminController extends AbstractController
         $journalName = $journal->getName();
 
         foreach ($issues as $issue) {
+
             $articles = $issue->getArticles();
 
             $articlesNode = $xmlDoc->createElement('issue');

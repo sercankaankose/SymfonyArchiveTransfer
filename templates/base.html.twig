@@ -145,13 +145,13 @@
                              class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#"></a></li>
-                        {% if 'ROLE_ADMIN' in app.user.roles %}
+                        <li><a class="dropdown-item" href="{{ path('app_homepage') }}">Anasayfa</a></li>
+
+                        {% if 'ROLE_SYSTEM_OPERATOR' in app.user.roles or 'ROLE_ADMIN' in app.user.roles %}
                             <li><a class="dropdown-item" href="{{ path('dashboard_admin') }}">Admin Paneli</a></li>
-                        {% else %}
                         {% endif %}
 
-                        <li><a class="dropdown-item" href="#"></a></li>
+
                         <li><a class="dropdown-item" href="{{ path('app_change_password') }}">Şifre Değiştir</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -169,7 +169,7 @@
 
 {% if app.user %}
     {% if breadcrumb is not empty %}
-        <div class="breadcrumb-container mt-1" style="border-bottom: 1px solid">
+        <div class="breadcrumb-container mt-0" style="border-bottom: 1px solid; ">
             <nav aria-label="breadcrumb">
                 <div class="container">
                     <ol class="breadcrumb">

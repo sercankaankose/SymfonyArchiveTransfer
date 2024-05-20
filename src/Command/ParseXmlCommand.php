@@ -53,6 +53,10 @@ class ParseXmlCommand extends Command
         if (!$issue) {
             $output->writeln('Bekleyen bir sayı bulunamadı.');
             return Command::SUCCESS;
+        }else {
+            $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
+            $this->entityManager->persist($issue);
+            $this->entityManager->flush();
         }
         $xmlFile = $issue->getXml();
 //        $xmlFile = '/home/vboxuser/ArchiveTransfer/'.$xmlFile;
@@ -163,9 +167,9 @@ class ParseXmlCommand extends Command
                         $this->validateCitations($citations, $newarticle, $errors);
                     }
                 }
-                if (!empty($errors)) {
-                    $newarticle->setErrors($errors);
-                }
+//                if (!empty($errors)) {
+////                    $newarticle->setErrors($errors);
+//                }
 
                 $issue->setStatus(ArticleStatusParam::EDIT_REQUIRED);
                 $newarticle->setStatus(ArticleStatusParam::EDIT_REQUIRED);

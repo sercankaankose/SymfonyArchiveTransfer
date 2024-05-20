@@ -21,8 +21,30 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $roleNames = [
+            RoleParam::ROLE_ADMIN,
+            RoleParam::ROLE_EDITOR,
+            RoleParam::ROLE_OPERATOR,
+            RoleParam::ROLE_SYSTEM_OPERATOR,
+        ];
+
+        foreach ($roleNames as $roleName) {
+            $existingRole = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => $roleName]);
+
+            if (!$existingRole) {
+                $newRole = new Role();
+                $newRole->setRoleName($roleName);
+                $manager->persist($newRole);
+            }
+        }
+
+        $manager->flush();
+
+
         $user = new User();
         $user->setEmail('yt@mail.com');
+        $existingUser =  $this->entityManager->getRepository(User::class)->findOneBy(['email'=> $user->getEmail()]);
+
         $hashedPassword = $this->passwordHasher->hashPassword($user, '123qwe');
 
         $user->setPassword($hashedPassword);
@@ -31,22 +53,14 @@ class AppFixtures extends Fixture
         $user->setIsVerified(true);
         $user->setName('yt');
         $user->setSurname('admin');
+        $adminRole = $manager->getRepository(Role::class)->findOneBy(['role_name'=> RoleParam::ROLE_ADMIN]);
+        $user->addRoles($adminRole);
+       if (!$existingUser){
         $manager->persist($user);
         $manager->flush();
-
-        //----------------------------------
-        $role = new Role();
-        $roleAdmin = new Role();
-        $roleAdmin->setRoleName('ROLE_ADMIN');
-        $roleEditor = new Role();
-        $roleEditor->setRoleName('ROLE_EDITOR');
-        $roleOperator = new Role();
-        $roleOperator->setRoleName('ROLE_OPERATOR');
-
-
-        $manager->persist($roleAdmin);
-        $manager->persist($roleEditor);
-        $manager->persist($roleOperator);
-        $manager->flush();
     }
+        //----------------------------------
+
+    }
+
 }

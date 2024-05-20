@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\JournalUser;
+use App\Params\RoleParam;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,29 @@ class JournalUserRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, JournalUser::class);
+    }
+
+    public function findByRoleOperator($user): array
+    {
+        return $this->createQueryBuilder('ju')
+            ->innerJoin('ju.role', 'r')
+            ->where('ju.person = :user')
+            ->andWhere('r.role_name = :role')
+            ->setParameter('user', $user)
+            ->setParameter('role', RoleParam::ROLE_OPERATOR)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findByRoleEditor($user): array
+    {
+        return $this->createQueryBuilder('ju')
+            ->innerJoin('ju.role', 'r')
+            ->where('ju.person = :user')
+            ->andWhere('r.role_name = :role')
+            ->setParameter('user', $user)
+            ->setParameter('role', RoleParam::ROLE_EDITOR)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

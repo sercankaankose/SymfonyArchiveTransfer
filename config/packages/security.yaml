@@ -40,18 +40,18 @@ security:
     # Note: Only the *first* access control that matches will be used
 
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/editor, roles: ROLE_EDITOR }
-        - { path: ^/operator, roles: ROLE_OPERATOR }
+        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_SYSTEM_OPERATOR] }
+#        - { path: ^/editor, roles: ROLE_EDITOR }
+#        - { path: ^/operator, roles: ROLE_OPERATOR }
         - { path: ^/login, roles: [  ] }
         - { path: ^/, roles: IS_AUTHENTICATED }
 
         # config/packages/security.yaml
     role_hierarchy:
-        ROLE_ADMIN: ROLE_EDITOR
-        ROLE_EDITOR: ROLE_USER
-        ROLE_OPERATOR: ROLE_USER
-        ROLE_USER: IS_AUTHENTICATED_FULLY
+        ROLE_ADMIN: ROLE_SYSTEM_OPERATOR
+#        ROLE_EDITOR: ROLE_USER
+#        ROLE_OPERATOR: ROLE_USER
+#        ROLE_USER: IS_AUTHENTICATED_FULLY
 
 when@test:
     security:

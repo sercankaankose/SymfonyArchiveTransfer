@@ -12,22 +12,26 @@
                 max-height: none;
                 overflow: auto;
             }
+
             header {
                 background-color: #f3f3f3;
             }
+
             #deleteUserModal {
                 margin-top: 150px;
             }
         </style>
 
-<div class="container">
+        <div class="container">
             <div class="d-flex justify-content-between align-items-center">
 
                 <h1>Kullanıcı İşlemleri</h1>
                 <div class="ml-3">
-                    <a href="{{ path('admin_user_add') }}" class="btn btn-lg btn-dark"><i class="bi bi-person-fill-add"></i> Kullanıcı Ekle</a>
+                    <a href="{{ path('admin_user_add') }}" class="btn btn-lg btn-dark"><i
+                                class="bi bi-person-fill-add"></i> Kullanıcı Ekle</a>
 
-                    <a class="btn btn-secondary btn-lg" href="{{ path('admin_assigment_journal') }}"><i class="bi bi-file-plus"></i> Dergi Atama</a>
+                    <a class="btn btn-secondary btn-lg" href="{{ path('admin_assigment_journal') }}"><i
+                                class="bi bi-file-plus"></i> Dergi Atama</a>
                 </div>
             </div>
             <div class="card shadow-lg" style="font-size: 20px;">
@@ -37,6 +41,7 @@
                         <tr>
                             <th style="text-align: center">İsim</th>
                             <th style="text-align: center">Email</th>
+                            <th style="text-align: center; ">Admin</th>
                             <th style="text-align: right; "></th>
                         </tr>
                         </thead>
@@ -45,26 +50,69 @@
                             <tr>
                                 <td>{{ user.name }} {{ user.surname }}</td>
                                 <td>{{ user.email }}</td>
-                                <td style="text-align: right">
-                                    <div class="btn-group">
-                                    {% if user.Isactive %}
-                                        <a class="btn btn-warning" href="{{ path('admin_assigned_journal_list', {'id': user.id}) }}"><i class="bi bi-journals"></i> Dergiler</a>
-                                        <a class="btn btn-secondary" type="button" href="#" data-bs-toggle="modal"
-                                           onclick="openDeleteModal({{ user.id }})"
-                                           data-bs-target="#deleteUserModal"
-                                           data-target="#deleteUserModal" data-id="{{ user.id }}">Pasifleştir</a>
+                                <td style="text-align: center">
+                                    {% if user.isAdmin == true %}
+                                        <span style="background-color: #0f5132; border-radius: 3px; color: #fff">&#10003;</span>
                                     {% else %}
-                                        <a class="btn btn-warning disabled" disabled="true" href="{{ path('admin_assigned_journal_list', {'id': user.id}) }}"><i class="bi bi-journals"></i> Dergiler</a>
-                                        <a type="button" class="btn btn-primary" href="{{ path('admin_user_active', {'id': user.id}) }}">
-                                            Aktifleştir
-                                        </a>
                                     {% endif %}
+                                </td>
+                                <td style="text-align: right">
+
+                                    <div style="display: inline-flex; justify-content: space-between;">
+                                        {% if user.Isactive %}
+                                            <a class="btn btn-warning" style="border-radius: 3px"
+                                               href="{{ path('admin_assigned_journal_list', {'id': user.id}) }}"><i
+                                                        class="bi bi-journals"></i> Dergiler</a>
+                                        {% else %}
+                                            <a class="btn btn-warning disabled" disabled="true"
+                                               href="{{ path('admin_assigned_journal_list', {'id': user.id}) }}"><i
+                                                        class="bi bi-journals"></i> Dergiler</a>
+                                        {% endif %}
+
+                                        <div class="dropdown" style="border-radius: 3px">
+                                            <button class="btn btn-secondary dropdown-toggle"
+                                                    style="border-radius: 3px; margin-left: 1px" type="button"
+                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                {% if user.IsActive %}
+                                                {% if not user.isAdmin %}
+                                                <a class="dropdown-item" type="button" href="#" data-bs-toggle="modal" onclick="openDeleteModal({{ user.id }})" data-bs-target="#deleteUserModal" data-target="#deleteUserModal" data-id="{{ user.id }}">Pasifleştir</a>
+                                                {% endif %}
+                                                {% else %}
+                                                {% if not user.isAdmin %}
+                                                <a class="dropdown-item" href="{{ path('admin_user_active', {'id': user.id}) }}">Aktifleştir</a>
+                                                {% endif %}
+                                                {% endif %}
+{#                                                <hr class="dropdown-divider">#}
+
+                                                {% if user.isAdmin %}
+                                                    <a class="dropdown-item" type="button" href="#"
+                                                       data-bs-toggle="modal"
+                                                       onclick="openDeleteRoleModal({{ user.id }})"
+                                                       data-bs-target="#deleteJournalModal"
+                                                       data-target="#deleteJournalModal"
+                                                       data-id="{{ user.id }}">Yetkilerini Sil</a>
+                                                {% else %}
+                                                    <a class="dropdown-item" type="button" href="#"
+                                                       data-bs-toggle="modal"
+                                                       onclick="openAssingModal({{ user.id }})"
+                                                       data-bs-target="#deleteJournalModal"
+                                                       data-target="#deleteJournalModal"
+                                                       data-id="{{ user.id }}">Sistem Operatörü Yap</a>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
                         {% else %}
                             <tr>
                                 <td colspan="3">Kulanıcı Bulunamadı.</td>
+                                <td colspan="3"></td>
                                 <td colspan="3"></td>
                                 <td colspan="3"></td>
                             </tr>
@@ -82,16 +130,15 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteUserModalLabel"></h5>
+                        <h5 class="modal-title" id="UserModalLabel"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
-                    <div class="modal-body">
-                        Kullanıcıyı Pasifleştirmek istediğinizden emin misiniz?
+                    <div class="modal-body" id="UserModalBody">
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="deleteUserLink" class="btn btn-primary" data-bs-dismiss="modal">
-                           Pasifleştir
+
                         </button>
                     </div>
                 </div>
@@ -110,13 +157,48 @@
         <script>
             function openDeleteModal(journalId) {
                 var deleteUrl = "{{ path('admin_user_pasive', {'id': 'USER_ID'}) }}".replace('USER_ID', journalId);
-                document.getElementById('deleteUserModalLabel').textContent = 'Kullanıcıyı Pasifleştir';
+                document.getElementById('UserModalLabel').textContent = 'Kullanıcı Pasifleştirme';
+                document.getElementById('UserModalBody').textContent = 'Kullanıcıyı Pasifleştirmek İstediğinize emin misiniz ?';
+                document.getElementById('deleteUserLink').textContent = 'Pasifleştir';
                 document.querySelector('#deleteUserLink').setAttribute('href', deleteUrl);
                 var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
                 deleteModal.show();
 
                 document.getElementById('deleteUserLink').addEventListener('click', function () {
                     window.location.href = deleteUrl;
+                });
+            }
+        </script>
+        <script>
+            function openAssingModal(journalId) {
+                var assingUrl = "{{ path('admin_system_operator_assing', {'id': 'USER_ID'}) }}".replace('USER_ID', journalId);
+                document.getElementById('UserModalLabel').textContent = 'Sistem Operatörü Atama';
+                document.getElementById('UserModalBody').textContent = 'Kullanıcı Sistem Operatörü Olarak Atansın mı ?';
+                document.getElementById('deleteUserLink').textContent = 'Atama Yap';
+
+                document.querySelector('#deleteUserLink').setAttribute('href', assingUrl);
+                var assingModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                assingModal.show();
+
+                document.getElementById('deleteUserLink').addEventListener('click', function () {
+                    window.location.href = assingUrl;
+                });
+            }
+
+        </script>
+        <script>
+            function openDeleteRoleModal(journalId) {
+                var assingUrl = "{{ path('admin_system_operator_delete', {'id': 'USER_ID'}) }}".replace('USER_ID', journalId);
+                document.getElementById('UserModalLabel').textContent = 'Yetki Sil';
+                document.getElementById('UserModalBody').textContent = 'Kullanıcı Yetkileri Silinsin mi ?';
+                document.getElementById('deleteUserLink').textContent = 'Sil';
+
+                document.querySelector('#deleteUserLink').setAttribute('href', assingUrl);
+                var assingModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                assingModal.show();
+
+                document.getElementById('deleteUserLink').addEventListener('click', function () {
+                    window.location.href = assingUrl;
                 });
             }
 
@@ -145,6 +227,9 @@
                 responsive: true,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
+                    info: " _TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                    sInfoPostFix: ""
+
                 },
             });
         </script>

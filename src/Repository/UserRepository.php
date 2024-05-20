@@ -52,10 +52,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function searchByName($term)
     {
         return $this->createQueryBuilder('u')
-            ->where('u.is_admin = :is_admin')
-            ->andWhere('u.is_active = :is_active')
+            ->Where('u.is_active = :is_active')
             ->andWhere('LOWER(u.name) LIKE LOWER(:term) OR LOWER(u.surname) LIKE LOWER(:term) OR LOWER(u.email) LIKE LOWER(:term)')
-            ->setParameter('is_admin', false)
             ->setParameter('is_active', true)
             ->setParameter('term', '%' . strtolower($term) . '%')
             ->getQuery()

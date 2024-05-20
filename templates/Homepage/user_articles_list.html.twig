@@ -103,7 +103,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h1>{{ journal.name }} {{ issues.number }}. Sayı Makaleleri</h1>
                 <div class="m-3 me-0">
-                    {% if 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
+                    {% if role == 'editor' or role == 'admin' %}
 
                         <a href="{{ path('article_add',{'id': issues.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
                         </a>
@@ -111,7 +111,6 @@
                     {#                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi #}
                     {#                        İşaretle</a> #}
                 </div>
-
             </div>
             <div class="card shadow-lg " style="font-size: 20px;">
                 <div class="card-body">
@@ -197,20 +196,23 @@
                                         <div style="display: inline-flex; justify-content: space-between;">
                                             {% if issues.status == '002' %}
                                                 {% if  role == 'admin' or role == 'editor' %}
-                                                <a class="btn button-42"
-                                                   href="{{ path('article_export', {'id': article.id}) }}"
-                                                   style="flex: 1; margin-right: 1px">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
-                                            {% endif %}
+                                                    <a class="btn button-42"
+                                                       href="{{ path('article_export', {'id': article.id}) }}"
+                                                       style="flex: 1; margin-right: 30px">Dışa Aktar<i
+                                                                class="bi bi-filetype-xml"></i></a>
+                                                {% endif %}
                                             {% else %}
                                             {% endif %}
-                                            {% if 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
 
-                                            {% elseif 'ROLE_OPERATOR' in user.roles  %}
                                             <div class="btn-group" style="flex: 1; ">
+                                                {% if role == 'operator' or role == 'editor' or role == 'admin' %}
                                                 <a class="btn btn-dark"
                                                    style="text-align: right; border-radius: 2px; width: 100%;"
-                                                   href="{{ path('article_edit', {'id': article.id, 'role': 'admin'}) }}">Düzenle</a>
+                                                   href="{{ path('article_edit', {'id': article.id, 'role': role}) }}">Düzenle</a>
+{#                                                {% if 'ROLE_EDITOR' in  user.roles %}#}
+                                                {% endif %}
 
+                                                {% if role == 'editor' or role == 'admin' %}
                                                 <div class="dropdown" style="border-radius: 2px; width: 100%;">
                                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                                             style="border-radius: 2px; margin-left:1px; width: 100%;"

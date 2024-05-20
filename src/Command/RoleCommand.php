@@ -13,8 +13,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'SetUserRole',
-    description: 'E-postaya Admin Rolü eklendi',
+    name: 'Admin',
+    description: 'Kullanıcı Admin Rolü eklendi',
 )]
 class RoleCommand extends Command
 {
@@ -29,9 +29,9 @@ class RoleCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('email', InputArgument::REQUIRED, 'User email to set the role for')
-            ->setDescription('Set a user role by email')
-            ->setHelp('This command sets a specific role for a user by email.');
+            ->addArgument('email', InputArgument::REQUIRED, 'email girmeniz gerekmektedir.')
+            ->setDescription('Rol Ataması Yapıldı.')
+            ->setHelp('Bu komut maili girilen kullanıcıya admin yetkisi verir.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -39,16 +39,18 @@ class RoleCommand extends Command
         $email = $input->getArgument('email');
         $userRepository = $this->entityManager->getRepository(User::class);
         $role = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_ADMIN]);
+        $rolesystem = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => RoleParam::ROLE_SYSTEM_OPERATOR]);
         $user = $userRepository->findOneBy(['email' => $email]);
 
         if ($user) {
             $user->setIsAdmin(true);
             $user->addRoles($role);
+            $user->addRoles($rolesystem);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $output->writeln('Role updated for user with email: ' . $email);
+            $output->writeln($email .' Kullanıcısı Admin yetkisi aldı');
         } else {
-            $output->writeln('User with email ' . $email . ' not found.');
+            $output->writeln( $email . ' Kullanıcı bulunamadı.');
         }
 
         return Command::SUCCESS;

@@ -21,6 +21,7 @@
             #deleteJournalModal {
                 margin-top: 150px;
             }
+
             .button-42 {
                 background-color: initial;
                 background-image: linear-gradient(-180deg, #1c5b3e, #198753);
@@ -55,15 +56,24 @@
         </style>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
-                <h1>Dergi İşlemleri</h1>
+                <h1>
+                    {% if role == 'operator' %}
+                        Operatörlük Yaptığım Dergiler
+                    {% endif %}
+                    {% if role == 'editor' %}
+                        Editörlük Yaptığım Dergiler
+
+                    {% endif %}
+                </h1>
                 <div class="m-3">
-                    <a href="{{ path('admin_journal_add') }}" class="btn btn-lg btn-dark">Dergi Ekle</a>
+                    {% if user.roles == 'ROLE_MODERATOR' %}
+                        <a href="{{ path('admin_journal_add') }}" class="btn btn-lg btn-dark">Dergi Ekle</a>
+                    {% endif %}
                 </div>
 
             </div>
             <div class="card shadow-lg " style="font-size: 20px;">
                 <div class="card-body">
-
                     <div class="container_table" style="overflow: hidden;">
                         <table class="table" id="myTable">
                             <thead>
@@ -79,29 +89,29 @@
                             </thead>
                             <tbody>
 
-                            {% for journal in journals %}
+                            {% for journalUser in journalUsers %}
 
 
-                                    {% set status_all_count = 0 %}
-                                    {% set status_editRequired_count = 0 %}
-                                    {% set status_edited_count = 0 %}
-                                    {% set status_error_count = 0 %}
+                                {% set status_all_count = 0 %}
+                                {% set status_editRequired_count = 0 %}
+                                {% set status_edited_count = 0 %}
+                                {% set status_error_count = 0 %}
 
-                                    {% for issue in journal.issues %}
-                                            {% set status_all_count = status_all_count + 1 %}
-                                        {% if issue.status == '001' %}
-                                            {% set status_editRequired_count = status_editRequired_count + 1 %}
-                                        {% elseif issue.status == '002' %}
-                                            {% set status_edited_count = status_edited_count + 1 %}
-                                        {% elseif issue.status == '003' %}
-                                            {% set status_error_count = status_error_count + 1 %}
-                                        {% endif %}
-                                    {% else %}
-                                    {% endfor %}
+                                {% for issue in journalUser.journal.issues %}
+                                    {% set status_all_count = status_all_count + 1 %}
+                                    {% if issue.status == '001' %}
+                                        {% set status_editRequired_count = status_editRequired_count + 1 %}
+                                    {% elseif issue.status == '002' %}
+                                        {% set status_edited_count = status_edited_count + 1 %}
+                                    {% elseif issue.status == '003' %}
+                                        {% set status_error_count = status_error_count + 1 %}
+                                    {% endif %}
+                                {% else %}
+                                {% endfor %}
                                 <tr>
-                                <td>{{ journal.name }}</td>
-                                <td>{{ journal.issn }}</td>
-                                <td>{{ journal.eIssn }}</td>
+                                    <td>{{ journalUser.journal.name }}</td>
+                                    <td>{{ journalUser.journal.issn }}</td>
+                                    <td>{{ journalUser.journal.eIssn }}</td>
 
                                     <td style="text-align: center">{{ status_all_count }}</td>
                                     <td style="text-align: center">{{ status_edited_count }}</td>
@@ -109,36 +119,44 @@
 
 
                                     <td style="text-align: right">
-                                        {% if status_edited_count == status_all_count %}
-                                            {% if status_all_count == 0 %}
-                                                {% else %}
-                                                    <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: -3px; text-align: center">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
+                                            {% if status_edited_count > 0 %}
+                                                {% if role == 'editor' %}
+                                                <a class="btn button-42"
+                                                   href="{{ path('journal_export', {'id': journalUser.journal.id}) }}"
+                                                   style="flex: 1; margin-right: -3px; text-align: center">Dışa Aktar<i
+                                                            class="bi bi-filetype-xml"></i></a>
                                             {% endif %}
-
                                         {% endif %}
                                         {% set status_all_count = 0 %}
                                         {% set status_edited_count = 0 %}
                                         {% set status_error_count = 0 %}
 
                                         <div style="display: inline-flex; justify-content: space-between;">
-                                            <a href="{{ path('journal_issues', {'id': journal.id}) }}"
-                                               class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
-                                            {% if 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
+                                            {% if role == 'editor' %}
+                                                                                            <a href="{{ path('editor_journal_issues', {'id': journalUser.journal.id}) }}"
+                                                                                                                                   class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
+                                            {% elseif role == 'operator' %}
+                                                <a href="{{ path('operator_journal_issues', {'id': journalUser.journal.id}) }}"
+                                                   class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
+                                            {% endif %}
+
+                                            {% if role == 'editor' %}
                                                 <div class="dropdown" style="border-radius: 3px">
-                                                    <button class="btn btn-secondary dropdown-toggle" style="border-radius: 3px; margin-left: 1px" type="button"
+                                                    <button class="btn btn-secondary dropdown-toggle"
+                                                            style="border-radius: 3px; margin-left: 1px" type="button"
                                                             id="dropdownMenuButton" data-bs-toggle="dropdown"
                                                             aria-haspopup="true" aria-expanded="false">
                                                         <i class="bi bi-three-dots"></i>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="dropdown-item"
-                                                           href="{{ path('admin_journal_edit', {'id': journal.id}) }}">Düzenle</a>
-                                                        <a class="dropdown-item" type="button" href="#"
-                                                           data-bs-toggle="modal"
-                                                           onclick="openDeleteModal({{ journal.id }})"
-                                                           data-bs-target="#deleteJournalModal"
-                                                           data-target="#deleteJournalModal"
-                                                           data-id="{{ journal.id }}">Sil</a>
+                                                           href="{{ path('admin_journal_edit', {'id': journalUser.journal.id}) }}">Düzenle</a>
+{#                                                        <a class="dropdown-item" type="button" href="#"#}
+{#                                                           data-bs-toggle="modal"#}
+{#                                                           onclick="openDeleteModal({{ journalUser.journal.id }})"#}
+{#                                                           data-bs-target="#deleteJournalModal"#}
+{#                                                           data-target="#deleteJournalModal"#}
+{#                                                           data-id="{{ journalUser.journal.id }}">Sil</a>#}
                                                     </div>
                                                 </div>
                                             {% endif %}
@@ -151,9 +169,6 @@
                             {% else %}
                                 <tr>
                                     <td colspan="3">Dergi Bulunamadı...</td>
-                                    <td colspan="3"></td>
-                                    <td colspan="3"></td>
-                                    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
@@ -250,14 +265,14 @@
                 searchBuilder: true,
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json',
-                    info:           " _TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
+                    info: " _TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",
                     sInfoPostFix: ""
 
                 },
 
                 columnDefs: [
                     {type: 'yesy', targets: [1, 2]},
-                    {orderable: false, targets: [6]},
+                    {orderable: false, targets: []},
 
                     {"name": "name", "targets": 0},
                     {"name": "issn", "targets": 1},

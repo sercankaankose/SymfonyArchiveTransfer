@@ -337,7 +337,8 @@
         }
 
         header {
-            margin-top: -1%
+            margin-top: -1%;
+            background-color: #f3f3f3;
         }
 
         disabled {
@@ -387,10 +388,12 @@
                 <a class="btn btn-danger btn-lg" onclick="openDeleteModal()" style="margin-top: -10px;"
                    data-toggle="modal" data-target="#pdfErrorModal"><i class="bi bi-exclamation-triangle-fill"></i>PDF
                     Hatası Bildir</a>
+                {%if role == 'editor' or role == 'admin' %}
                 <a class="btn btn-warning btn-lg" href="{{ path('article_Pdf_Change', {'id': article.id}) }}"
                    style="margin-top: -10px; color: #fff3cd; border:#373a41 solid 1px">
                     <i class="bi bi-box-arrow-in-down"></i> Pdf Güncelle
                 </a>
+                {% endif %}
                 <button type="submit" name="save_and_return" class="btn btn-success btn-lg" style=" margin-top: -10px;">
                     <i
                             class="bi bi-file-earmark-check"></i>Kaydet
@@ -898,7 +901,7 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
-        });
+        %});
 
         // Yeni bir yazar için input alanı oluşturan fonksiyon
         // Yazar input alanlarının en yüksek indeks numarasını bulan fonksiyon
