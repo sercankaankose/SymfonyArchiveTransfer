@@ -7,33 +7,32 @@
           rel="stylesheet"/>
 
     <style>
-.nav-pills {
-    display: flex;
-    flex-wrap: wrap;
-}
+        .nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
-.nav-pills .nav-item {
-    display: inline-block; /* Butonları yatay hizada göster */
-    
-}
+        .nav-pills .nav-item {
+            display: inline-block; /* Butonları yatay hizada göster */
+
+        }
 
 
-.btn-group-lg {
+        .btn-group-lg {
             display: flex;
             flex-direction: row;
-            justify-content: flex-start; 
+            justify-content: flex-start;
             align-items: center;
-            flex: 0 0 25%; 
+            flex: 0 0 25%;
 
         }
 
         .btn-group-lg .btn {
-            margin-right: 5px; 
+            margin-right: 5px;
         }
 
-      
 
-	body {
+        body {
             overflow-x: hidden;
         }
 
@@ -293,19 +292,21 @@
         .nav-pills .nav-link {
             background-color: #e7eaef;
             color: #0a58ca;
-            
+
             display: inline-flex;
             list-style: none;
             height: 50px;
             width: 100%;
             border-radius: 3px;
-            text-align:center;
+            text-align: center;
 
         }
-	.nav-item {
+
+        .nav-item {
             flex-grow: 1;
         }
-	.nav-link {
+
+        .nav-link {
             text-align: center;
             display: flex;
             align-items: center;
@@ -379,20 +380,22 @@
 
             {{ form_start(form, {'attr': {'id': 'myForm', 'novalidate' : 'novalidate'}}) }}
             {% if article.status == '003' %}
-
+{#            {% if role == 'admin' %}#}
                 <a class=" btn btn-danger button-34 mb-3 pt-2" type="button"
-                   href="{{ path('article_pdf_error_delete', {'id': article.id}) }}"><h5>PDF HATASI KALDIR</h5></a>
+                   href="{{ path('article_pdf_error_delete', {'id': article.id, 'role': role}) }}"><h5>PDF HATASI KALDIR</h5></a>
+
             {% else %}
             {% endif %}
-            <div class="btn-group-lg mt-1">
+            <div class="btn-group-lg mt-2">
                 <a class="btn btn-danger btn-lg" onclick="openDeleteModal()" style="margin-top: -10px;"
                    data-toggle="modal" data-target="#pdfErrorModal"><i class="bi bi-exclamation-triangle-fill"></i>PDF
                     Hatası Bildir</a>
-                {%if role == 'editor' or role == 'admin' %}
-                <a class="btn btn-warning btn-lg" href="{{ path('article_Pdf_Change', {'id': article.id}) }}"
-                   style="margin-top: -10px; color: #fff3cd; border:#373a41 solid 1px">
-                    <i class="bi bi-box-arrow-in-down"></i> Pdf Güncelle
-                </a>
+                {% if role == 'editor' or role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
+                    <a class="btn btn-warning btn-lg"
+                       href="{{ path('article_Pdf_Change', {'id': article.id, 'role': role}) }}"
+                       style="margin-top: -10px; color: #fff3cd; border:#373a41 solid 1px">
+                        <i class="bi bi-box-arrow-in-down"></i> Pdf Güncelle
+                    </a>
                 {% endif %}
                 <button type="submit" name="save_and_return" class="btn btn-success btn-lg" style=" margin-top: -10px;">
                     <i
@@ -416,14 +419,13 @@
                         <div class="input-group">
                             {{ form_widget(form.doi, {'attr': {'class': 'form-control', 'aria-describedby':'basic-addon2'}}) }}
                             <div class="input-group-append">
-                                <button style="padding: 11px; border-radius: 3px; z-index: 1000;" type="button" class="btn btn-secondary" id="doiButton">Veri Çek</button>
+                                <button style="padding: 11px; border-radius: 3px; z-index: 1000;" type="button"
+                                        class="btn btn-secondary" id="doiButton">Veri Çek
+                                </button>
                             </div>
                         </div>
                         <div class="form-error">{{ form_errors(form.doi) }}</div>
                     </div>
-
-
-
 
 
                     <div class="row">
@@ -641,9 +643,9 @@
 
         <div class="iframe-container" style="margin-right: -14px">
             {# Assuming $article is available in your template #}
- {#            <iframe src="{{ path('article_pdf', { 'filename': article.fulltext|url_encode }) }}"></iframe> #}
+            {#            <iframe src="{{ path('article_pdf', { 'filename': article.fulltext|url_encode }) }}"></iframe> #}
 
-          {#   <iframe src="{{ path('article_pdf', { 'filename': article.fulltext }) }}"></iframe> #}
+            {#   <iframe src="{{ path('article_pdf', { 'filename': article.fulltext }) }}"></iframe> #}
             <iframe src="{{ asset(pdfFile) }}"></iframe>
 
         </div>
@@ -659,35 +661,35 @@
                 <div class="modal-body">
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '0'}) }}"
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '0', 'role': role}) }}"
                                class="btn btn-danger d-flex align-items-center justify-content-between w-100">
                                 <span>Dosya Görüntülenmiyor</span>
                                 <i class="bi bi-file-earmark-excel"></i>
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '1'}) }}"
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '1', 'role': role}) }}"
                                class="btn btn-danger d-flex align-items-center justify-content-between w-100">
                                 <span>Makale Değil</span>
                                 <i class="bi bi-file-earmark-pdf"></i>
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '2'}) }}"
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '2', 'role': role}) }}"
                                class="btn btn-danger d-flex align-items-center justify-content-between w-100">
                                 <span>Yazı Bozuk Kopyalanıyor</span>
                                 <i class="bi bi-file-earmark-break"></i>
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '3'}) }}"
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '3', 'role': role}) }}"
                                class="btn btn-danger d-flex align-items-center justify-content-between w-100">
                                 <span>Yazı Seçilemiyor</span>
                                 <i class="bi bi-file-earmark-check"></i>
                             </a>
                         </li>
                         <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '4'}) }}"
+                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '4', 'role': role}) }}"
                                class="btn btn-danger d-flex align-items-center justify-content-between w-100">
                                 <span>Diğer</span>
                                 <i class="bi bi-file-earmark-check"></i>
@@ -810,49 +812,21 @@
         });
     </script>
 
-<script>
-    document.getElementById("article_form_doi").addEventListener("input", function() {
-        var dois = this.value.match(/Doi:\s*(.*)/i);
-        if (dois && dois.length > 1) {
-            this.value = dois[1];
-        }
-    });
-    document.getElementById("article_form_translations_0_abstract").addEventListener("input", function() {
-        var text = this.value.trim();
-        if (text.startsWith("<jats:p>") && text.endsWith("</jats:p>")) {
-            this.value = text.slice(7, -8);
-        }
-    });
-</script>
-    {#    <script>$(document).ready(function () { #}
-    {#            $("#article_form_doi").on("change", function () { #}
-    {#                var doi = $(this).val(); #}
-    {#                if (doi.trim() !== "") { #}
-    {#                    $.ajax({ #}
-    {#                        url: "/fetch-article", #}
-    {#                        type: "GET", #}
-    {#                        data: {doi: doi}, #}
-    {#                        dataType: "json", #}
-    {#                        success: function (response) { #}
-    {#                            // AJAX isteği başarılı olduğunda burası çalışır #}
-    {#                            // Gelen verileri kullanabiliriz #}
-    {#                            if (response.title && response.abstract) { #}
-    {#                                console.log("Title:", response.title); #}
-    {#                                console.log("Abstract:", response.abstract); #}
-    {#                            } else { #}
-    {#                                console.error("Title veya abstract bilgisi bulunamadı."); #}
-    {#                            } #}
-    {#                        }, #}
-    {#                        error: function (xhr, status, error) { #}
-    {#                            // Hata durumunda burası çalışır #}
-    {#                            console.error("Hata: ", error); #}
-    {#                        } #}
-    {#                    }); #}
-    {#                } #}
-    {#            }); #}
-    {#        }); #}
-    {#        </script> #}
     <script>
+        document.getElementById("article_form_doi").addEventListener("input", function () {
+            var dois = this.value.match(/Doi:\s*(.*)/i);
+            if (dois && dois.length > 1) {
+                this.value = dois[1];
+            }
+        });
+        document.getElementById("article_form_translations_0_abstract").addEventListener("input", function () {
+            var text = this.value.trim();
+            if (text.startsWith("<jats:p>") && text.endsWith("</jats:p>")) {
+                this.value = text.slice(7, -8);
+            }
+        });
+    </script>
+        <script>
 
         //bu sondan bir önceki
 
@@ -901,10 +875,9 @@
                     }
                 })
                 .catch(error => console.error('Error:', error));
-        %});
+        });
 
-        // Yeni bir yazar için input alanı oluşturan fonksiyon
-        // Yazar input alanlarının en yüksek indeks numarasını bulan fonksiyon
+
         function findMaxAuthorIndex() {
             var authorInputs = document.querySelectorAll("[id^='article_form_authors_']");
             var maxIndex = -1;
@@ -917,7 +890,6 @@
             return maxIndex;
         }
 
-        // Yeni bir yazar için input alanı oluşturan ve uygun indeks numarasını kullanarak yapan fonksiyon
         function createOrUpdateAuthorInput(index, authorData) {
             var authorFirstNameInput = document.getElementById("article_form_authors_" + index + "_firstname");
             var authorLastNameInput = document.getElementById("article_form_authors_" + index + "_lastname");
@@ -931,55 +903,28 @@
                 authorOrcidInput = document.getElementById("article_form_authors_" + (maxIndex + 1) + "_orcId");
             }
 
-            // Yazar bilgilerini input alanlarına yaz
             authorFirstNameInput.value = authorData.given;
             authorLastNameInput.value = authorData.family;
-            authorOrcidInput.value = authorData.ORCID.replace("http://orcid.org/", ""); // ORCID'den "http://orcid.org/" kısmını çıkar
+            authorOrcidInput.value = authorData.ORCID.replace("http://orcid.org/", "");
         }
 
         function createNewAuthorInput(index) {
             var authorsContainer = document.getElementById('authorContainer');
             var authorTemplate = document.getElementById('authorTemplate').innerHTML;
 
-            // Yeni yazar için bir indeks numarası oluştur
             var newIndex = index;
 
-            // Template'deki placeholderları yeni yazar bilgileriyle değiştir
             var newAuthorHTML = authorTemplate.replace(/article_form_authors_new/g, 'article_form_authors_' + newIndex);
             newAuthorHTML = newAuthorHTML.replace(/{authorIndex}/g, newIndex);
 
-            // Yeni input alanını ekle
             authorsContainer.insertAdjacentHTML('beforeend', newAuthorHTML);
         }
 
     </script>
 
 
-    {#    <script> #}
-    {#    bu kısım istediğim igibi değil buerayı düzenle    #}
-    {#        document.addEventListener('DOMContentLoaded', function () { #}
-    {#            checkFormValidity(); #}
-
-    {#            function checkFormValidity() { #}
-    {#                var tabs = document.querySelectorAll('.nav-link'); #}
-    {#                tabs.forEach(function(tab) { #}
-    {#                    var controlId = tab.getAttribute('data-bs-target').substring(1); // Remove '#' from the ID #}
-    {#                    var tabContent = document.getElementById(controlId); #}
-    {#                    var invalidInputs = tabContent.querySelectorAll('input:invalid'); #}
-
-    {#                    if (invalidInputs.length > 0) { #}
-    {#                        tab.style.backgroundColor = '#FFFF00'; // Sarı renk #}
-    {#                        tab.style.color = 'aliceblue'; #}
-    {#                    } else { #}
-    {#                        tab.style.backgroundColor = ''; #}
-    {#                        tab.style.color = ''; #}
-    {#                    } #}
-    {#                }); #}
-    {#            } #}
-    {#        }); #}
-    {#    </script> #}
-
-    <script>document.addEventListener('DOMContentLoaded', function () {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
             // articleType değiştiğinde translator kartlarını kontrol et
             $('#articleType').on('select2:select', function (e) {
                 var articleType = e.params.data.id; // Seçilen değeri al
@@ -990,19 +935,15 @@
                 }
             });
 
-            // translator kartlarını silmek için bir fonksiyon
             function deleteTranslatorCards() {
                 var translatorContainer = document.getElementById('translatorContainer');
-                // translatorContainer içindeki tüm kartları sil
                 translatorContainer.innerHTML = '';
             }
 
-            // translator kartını silmek için bir fonksiyon
             function deleteCard(element) {
                 var card = element.closest('.card');
                 var translatorContainer = document.getElementById('translatorContainer');
 
-                // Eğer kart translatorContainer içindeyse, sil
                 if (translatorContainer.contains(card)) {
                     card.remove();
                 }
@@ -1094,14 +1035,14 @@
             }
         });
     </script>
- <script>
-        $('#articleType').on('input', function() {
+    <script>
+        $('#articleType').on('input', function () {
             var articleType = $(this).val();
 
-                if (articleType == 57) {
+            if (articleType == 57) {
                 $('#translatorTab').fadeIn();
             } else {
-                $('#translatorTab').fadeOut(); 
+                $('#translatorTab').fadeOut();
             }
         });
     </script>

@@ -119,12 +119,15 @@
 
 
                                     <td style="text-align: right">
-                                            {% if status_edited_count > 0 %}
+                                            {% if status_edited_count == status_all_count %}
                                                 {% if role == 'editor' %}
-                                                <a class="btn button-42"
-                                                   href="{{ path('journal_export', {'id': journalUser.journal.id}) }}"
-                                                   style="flex: 1; margin-right: -3px; text-align: center">Dışa Aktar<i
-                                                            class="bi bi-filetype-xml"></i></a>
+                                                    {% if status_all_count == 0 %}
+                                                    {% else %}
+                                                        <a class="btn button-42"
+                                                           href="{{ path('journal_export', {'id': journalUser.journal.id}) }}"
+                                                           style="flex: 1; margin-right: 40px; text-align: center">Dışa Aktar<i
+                                                                    class="bi bi-filetype-xml"></i></a>
+                                                    {% endif %}
                                             {% endif %}
                                         {% endif %}
                                         {% set status_all_count = 0 %}
@@ -150,7 +153,8 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="dropdown-item"
-                                                           href="{{ path('admin_journal_edit', {'id': journalUser.journal.id}) }}">Düzenle</a>
+                                                           href="{{ path('admin_journal_edit', {'id': journalUser.journal.id, 'role': role}) }}">Düzenle</a>
+
 {#                                                        <a class="dropdown-item" type="button" href="#"#}
 {#                                                           data-bs-toggle="modal"#}
 {#                                                           onclick="openDeleteModal({{ journalUser.journal.id }})"#}
@@ -169,6 +173,9 @@
                             {% else %}
                                 <tr>
                                     <td colspan="3">Dergi Bulunamadı...</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>

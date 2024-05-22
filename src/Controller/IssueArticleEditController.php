@@ -9,7 +9,9 @@ use App\Entity\Journal;
 use App\Entity\User;
 use App\Form\ChangePasswordFormType;
 use App\Form\IssuesXmlFormType;
+use App\Form\JournalFormType;
 use App\Params\ArticleLanguageParam;
+use App\Repository\JournalUserRepository;
 use App\Util\TypeModifier;
 
 use App\Entity\Translations;
@@ -45,21 +47,351 @@ class IssueArticleEditController extends AbstractController
     private EntityManagerInterface $entityManager;
     private BreadCrumbService $breadcrumbService;
     private $security;
+    private $journalUserRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, BreadCrumbService $breadcrumbService, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, BreadCrumbService $breadcrumbService, Security $security, JournalUserRepository $journalUserRepository,)
     {
         $this->entityManager = $entityManager;
         $this->breadcrumbService = $breadcrumbService;
         $this->security = $security;
-
+        $this->journalUserRepository = $journalUserRepository;
     }
+
+
+    //    Dergi Düzenleme
+    #[Route('/{role}/journal/edit/{id}', name: 'admin_journal_edit')]
+    public function journalEdit($id, Request $request, $role, Security $security,): Response
+    {
+        $user = $security->getUser();
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+        $journal = $this->entityManager->getRepository(Journal::class)->find($id);
+        if (!$journal) {
+            $this->addFlash('danger', 'Dergi Bulunamadı.');
+            return $this->redirectToRoute('admin_journal_management');
+        }
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createJournalEditBreadcrumb();
+        } else {
+            $breadcrumb = $this->breadcrumbService->createEditorJournalEditBreadcrumb();
+        }
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
+
+        $form = $this->createForm(JournalFormType::class, $journal);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Dergi bilgileri güncellendi.');
+            if ($role == 'admin') {
+                return $this->redirectToRoute('admin_journal_management');
+            } else {
+                return $this->redirectToRoute('editor_journal_management');
+
+            }
+        }
+
+
+        return $this->render('admin/journal/journal_add_edit.html.twig', [
+            'form' => $form->createView(),
+            'breadcrumb' => $breadcrumb,
+            'name' => 'Dergi Düzenleme',
+            'button' => 'Düzenlemeyi Kaydet'
+        ]);
+    }
+
+//dergi xml çıktı
+    #[Route('journal/{id}/export', name: 'journal_export')]
+    public function issueExport($id): Response
+    {
+        $journal = $this->entityManager->getRepository(Journal::class)->find($id);
+        $issues = $this->entityManager->getRepository(Issues::class)->findBy(['journal' => $journal, 'status' => IssueStatusParam::EDITED]);
+        $xmlDoc = new DOMDocument('1.0', 'UTF-8');
+        $xmlDoc->formatOutput = true;
+        $issueNode = $xmlDoc->createElement('journal');
+        $journalName = $journal->getName();
+
+        foreach ($issues as $issue) {
+
+            $articles = $issue->getArticles();
+
+            $articlesNode = $xmlDoc->createElement('issue');
+
+            foreach ($articles as $article) {
+//            $articlesNode->appendChild($articleNode);
+
+                $articleType = $article->getType();
+                $doi = $article->getDoi();
+                $fPage = $article->getFirstPage();
+                $lPage = $article->getLastPage();
+                $primaryLang = $article->getPrimaryLanguage();
+                $typeModifier = new TypeModifier();
+
+                // <article> öğesini oluştur
+                $articleNode = $xmlDoc->createElement('article');
+//                $articleNode->setAttribute('xmlns:mml', 'http://www.w3.org/1998/Math/MathML');
+//                $articleNode->setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+//                $articleNode->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+                $articleNode->setAttribute('article-type', $articleType);
+                $articleNode->setAttribute('dtd-version', '1.0');
+
+                $frontNode = $xmlDoc->createElement('front');
+                $journalMetaNode = $xmlDoc->createElement('journal-meta');
+
+                $journalTitleGroupNode = $xmlDoc->createElement('journal-title-group');
+                $journalMetaNode->appendChild($journalTitleGroupNode);
+
+//issn
+                $journalIssnNode = $xmlDoc->createElement('issn', $journal->getIssn());
+                $journalIssnNode->setAttribute('pub-type', 'ppub');
+                $journalMetaNode->appendChild($journalIssnNode);
+
+// eissn
+                $journalEissnNode = $xmlDoc->createElement('issn', $journal->getEIssn());
+                $journalEissnNode->setAttribute('pub-type', 'epub');
+                $journalMetaNode->appendChild($journalEissnNode);
+
+//dergi adı
+                $journalTitleNode = $xmlDoc->createElement('journal-title', $journalName);
+                $journalTitleGroupNode->appendChild($journalTitleNode);
+
+//journal meta buraya kadar
+
+                $articleMetaNode = $xmlDoc->createElement('article-meta');
+                $articleIdNode = $xmlDoc->createElement('article-id', $doi);
+                $articleIdNode->setAttribute('pub-id-type', 'doi');
+                $articleMetaNode->appendChild($articleIdNode);
+
+                $articleTitleGroupNode = $xmlDoc->createElement('title-group');
+
+                $translations = $article->getTranslations();
+
+                foreach ($translations as $translation) {
+                    // Ana dil ile aynı olan çeviriyi doğrudan <article-title> içine ekleyin
+                    if ($primaryLang == $translation->getLocale()) {
+                        $articleTitleNode = $xmlDoc->createElement('article-title', $translation->getTitle());
+                        $articleTitleGroupNode->appendChild($articleTitleNode);
+                    }
+                }
+
+                $hasTranslations = $translations->count() > 1;
+
+// Ana dil ile aynı olmayan çevirileri <trans-title-group> içine ekleyin
+                if ($hasTranslations) {
+                    foreach ($translations as $translation) {
+                        if ($primaryLang != $translation->getLocale()) { // Ana dil ile aynı olmayan çeviriler
+
+                            $articleTransTitleGroupNode = $xmlDoc->createElement('trans-title-group');
+                            $articleTransTitleGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                            $articleTransTitleNode = $xmlDoc->createElement('trans-title', $translation->getTitle());
+                            $articleTransTitleGroupNode->appendChild($articleTransTitleNode);
+                        }
+                    }
+
+                    $articleTitleGroupNode->appendChild($articleTransTitleGroupNode);
+                }
+
+                $articleMetaNode->appendChild($articleTitleGroupNode);
+
+
+                //yazar sekmesi
+                $contribGroupNode = $xmlDoc->createElement('contrib-group');
+                $authors = $article->getAuthors();
+                foreach ($authors as $author) {
+                    $contribNode = $xmlDoc->createElement('contrib');
+                    $contribNode->setAttribute('contrib-type', 'author');
+//isim soyad
+                    $nameNode = $xmlDoc->createElement('name');
+                    $surnameNode = $xmlDoc->createElement('surname', $author->getLastname());
+                    $nameNode->appendChild($surnameNode);
+                    $givenNameNode = $xmlDoc->createElement('given-names', $author->getFirstname());
+                    $nameNode->appendChild($givenNameNode);
+                    $contribNode->appendChild($nameNode);
+//institute
+                    $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+
+                    $contribNode->appendChild($affNode);
+
+                    $emailNode = $xmlDoc->createElement('email', $author->getEmail());
+                    $contribNode->appendChild($emailNode);
+//orcid
+                    $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $author->getOrcId());
+                    $contribIdNode->setAttribute('contrib-id-type', 'orcid');
+                    $contribNode->appendChild($contribIdNode);
+
+                    $contribGroupNode->appendChild($contribNode);
+                }
+                //çevirmen sekmesi
+                $translators = $article->getTranslators();
+                foreach ($translators as $translator) {
+                    $contribNode = $xmlDoc->createElement('contrib');
+                    $contribNode->setAttribute('contrib-type', 'translator');
+//isim soyad
+                    $nameNode = $xmlDoc->createElement('name');
+                    $surnameNode = $xmlDoc->createElement('surname', $translator->getLastname());
+                    $nameNode->appendChild($surnameNode);
+                    $givenNameNode = $xmlDoc->createElement('given-names', $translator->getFirstname());
+                    $nameNode->appendChild($givenNameNode);
+                    $contribNode->appendChild($nameNode);
+
+//institute
+                    $affNode = $xmlDoc->createElement('aff', $translator->getInstitute());
+                    $contribNode->appendChild($affNode);
+//orcid
+                    $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $translator->getOrcId());
+                    $contribIdNode->setAttribute('contrib-id-type', 'orcid');
+                    $contribNode->appendChild($contribIdNode);
+
+                    $contribGroupNode->appendChild($contribNode);
+                }
+                $articleMetaNode->appendChild($contribGroupNode);
+//pubdate
+                if ($article->getReceivedDate() && $article->getAcceptedDate()) {
+                    $receivedDate = $article->getReceivedDate()->format('Y-m-d');
+                    $historyNode = $xmlDoc->createElement('history');
+
+                    // Received Date Node
+                    $dateReceivedNode = $xmlDoc->createElement('date');
+                    $dateReceivedNode->setAttribute('date-type', 'received');
+                    $dateReceivedNode->setAttribute('iso-8601-date', $receivedDate);
+
+                    // Day Node
+                    $dayReceivedNode = $xmlDoc->createElement('day', $article->getReceivedDate()->format('d'));
+                    $dateReceivedNode->appendChild($dayReceivedNode);
+
+                    // Month Node
+                    $monthReceivedNode = $xmlDoc->createElement('month', $article->getReceivedDate()->format('m'));
+                    $dateReceivedNode->appendChild($monthReceivedNode);
+
+                    // Year Node
+                    $yearReceivedNode = $xmlDoc->createElement('year', $article->getReceivedDate()->format('Y'));
+                    $dateReceivedNode->appendChild($yearReceivedNode);
+
+                    // Append Received Date Node to history node
+                    $historyNode->appendChild($dateReceivedNode);
+
+                    // Accepted Date Node
+                    $acceptedDate = $article->getAcceptedDate()->format('Y-m-d');
+                    $dateAcceptedNode = $xmlDoc->createElement('date');
+                    $dateAcceptedNode->setAttribute('date-type', 'accepted');
+                    $dateAcceptedNode->setAttribute('iso-8601-date', $acceptedDate);
+
+                    // Day Node
+                    $dayAcceptedNode = $xmlDoc->createElement('day', $article->getAcceptedDate()->format('d'));
+                    $dateAcceptedNode->appendChild($dayAcceptedNode);
+
+                    // Month Node
+                    $monthAcceptedNode = $xmlDoc->createElement('month', $article->getAcceptedDate()->format('m'));
+                    $dateAcceptedNode->appendChild($monthAcceptedNode);
+
+                    // Year Node
+                    $yearAcceptedNode = $xmlDoc->createElement('year', $article->getAcceptedDate()->format('Y'));
+                    $dateAcceptedNode->appendChild($yearAcceptedNode);
+
+                    // Append Accepted Date Node to history node
+                    $historyNode->appendChild($dateAcceptedNode);
+
+                    // Append history node to appropriate parent node (like $articleMetaNode)
+                    $articleMetaNode->appendChild($historyNode);
+                }
+
+
+                //volume
+                $volumeNode = $xmlDoc->createElement('volume', $issue->getVolume());
+                $articleMetaNode->appendChild($volumeNode);
+//sayı
+                $numberNode = $xmlDoc->createElement('issue', $issue->getNumber());
+                $articleMetaNode->appendChild($numberNode);
+//birinci sayfa
+                $fpageNode = $xmlDoc->createElement('fpage', $fPage);
+                $articleMetaNode->appendChild($fpageNode);
+//ikinci sayfa
+                $lpageNode = $xmlDoc->createElement('lpage', $lPage);
+                $articleMetaNode->appendChild($lpageNode);
+
+//abstract
+                foreach ($translations as $translation) {
+                    if ($article->getPrimaryLanguage() == $translation->getLocale()) {
+                        $abstractNode = $xmlDoc->createElement('abstract');
+                        $pNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+                        $abstractNode->appendChild($pNode);
+                        $articleMetaNode->appendChild($abstractNode);
+                    } else {
+                        $transAbstractNode = $xmlDoc->createElement('trans-abstract');
+                        $transAbstractNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                        $pTransNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
+
+//                    $pTransNode = $xmlDoc->createElement('p', $translation->getAbstract());
+                        $transAbstractNode->appendChild($pTransNode);
+                        $articleMetaNode->appendChild($transAbstractNode);
+                    }
+                }
+                foreach ($translations as $translation) {
+                    $kwdGroupNode = $xmlDoc->createElement('kwd-group');
+                    $kwdGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
+                    foreach ($translation->getKeywords() as $keyword) {
+                        $kwdNode = $xmlDoc->createElement('kwd', $keyword);
+                        $kwdGroupNode->appendChild($kwdNode);
+                    }
+                    $articleMetaNode->appendChild($kwdGroupNode);
+                }
+
+                $frontNode->appendChild($articleMetaNode);
+
+                $articleNode->appendChild($frontNode);
+
+                $back = $xmlDoc->createElement('back');
+                $refListNode = $xmlDoc->createElement('ref-list');
+                foreach ($article->getCitations() as $citation) {
+                    $refNode = $xmlDoc->createElement('ref');
+                    $refNode->setAttribute('id', 'ref' . $citation->getRow());
+
+                    $label = $xmlDoc->createElement('label', $citation->getRow());
+                    $refNode->appendChild($label);
+                    $mixedCitationNode = $xmlDoc->createElement('mixed-citation', htmlspecialchars($citation->getReferance(), ENT_XML1));
+                    $refNode->appendChild($mixedCitationNode);
+
+                    $refListNode->appendChild($refNode);
+
+                }
+                $back->appendChild($refListNode);
+                $articleNode->appendChild($back);
+                $articlesNode->appendChild($articleNode);
+            }
+            $issueNode->appendChild($articlesNode);
+// <articles> kök öğesini XML dokümanına ekle
+            $xmlDoc->appendChild($issueNode);
+        }
+// XML içeriğini bir değişkene atayın
+        $xmlContent = $xmlDoc->saveXML();
+        $fileName = 'exported_issues.xml';
+        $file = fopen($fileName, 'w');
+        fwrite($file, $xmlContent);
+        fclose($file);
+
+// Dosyayı indirme olarak kullanıcıya sun
+        $response = new Response(file_get_contents($fileName));
+        $response->headers->set('Content-Type', 'application/xml');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+        $response->sendHeaders();
+
+        return $response;
+    }
+
 
 // sayı listesi
     #[Route('/journal/{id}/issues', name: 'journal_issues')]
     public function journalIssues($id, FactoryInterface $factory, Security $security,): Response
     {
         $journal = $this->entityManager->getRepository(Journal::class)->find($id);
-$user = $this->security->getUser();
+        $user = $this->security->getUser();
         if (!$journal) {
             $this->addFlash('danger', 'Dergi Bulunamadı.');
             if (in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_ADMIN)) {
@@ -84,13 +416,16 @@ $user = $this->security->getUser();
     }
 
 // sayı ekleme
-    #[Route('/journal/{id}/issue/add', name: 'journal_issue_add')]
-    public function issueAdd($id, Request $request, FactoryInterface $factory): Response
+    #[Route('/{role}/journal/{id}/issue/add', name: 'journal_issue_add')]
+    public function issueAdd($id, Request $request, FactoryInterface $factory, $role): Response
     {
         $journal = $this->entityManager->getRepository(Journal::class)->find($id);
         $journalname = $journal->getName();
-        $breadcrumb = $this->breadcrumbService->createIssueAddBreadcrumb($factory, $journalname, $id);
-
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createIssueAddBreadcrumb($factory, $journalname, $id);
+        } else {
+            $breadcrumb = $this->breadcrumbService->createEditorIssueAddBreadcrumb($factory, $journalname, $id);
+        }
         $newissue = new Issues();
         $newissue->setJournal($journal);
         $this->entityManager->persist($newissue);
@@ -134,7 +469,12 @@ $user = $this->security->getUser();
                 'success',
                 'Yeni Sayı Oluşturulmuştur.'
             );
-            return $this->redirectToRoute('journal_issues', ['id' => $id]);
+            if ($role == 'admin'){
+                return $this->redirectToRoute('journal_issues', ['id' => $id]);
+            }else{
+                return $this->redirectToRoute('editor_journal_issues', ['id' => $id]);
+
+            }
         }
         return $this->render('journal_issue_add.html.twig', [
             'form' => $form->createView(),
@@ -147,14 +487,19 @@ $user = $this->security->getUser();
     }
 
 //sayı düzenleme
-    #[Route('/journal/{id}/issue/edit', name: 'journal_issue_edit')]
-    public function issueEdit($id, Request $request, FactoryInterface $factory): Response
+    #[Route('/{role}/journal/{id}/issue/edit', name: 'journal_issue_edit')]
+    public function issueEdit($id, Request $request, FactoryInterface $factory, $role): Response
     {
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
         $journal = $issue->getJournal();
         $journalname = $journal->getName();
         $journalId = $journal->getId();
-        $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
+
+        } else {
+            $breadcrumb = $this->breadcrumbService->createEditorIssueEditBreadcrumb($factory, $journalname, $journalId);
+        }
 
         $form = $this->createForm(IssuesEditFormType::class, $issue);
         $form->handleRequest($request);
@@ -168,8 +513,12 @@ $user = $this->security->getUser();
                 'success',
                 'Sayı Düzenlenmiştir.'
             );
+            if ($role == 'admin') {
+                return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+            }else{
+                return $this->redirectToRoute('editor_journal_issues', ['id' => $journalId]);
 
-            return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+            }
         }
         return $this->render('journal_issue_edit.html.twig', [
             'form' => $form->createView(),
@@ -180,16 +529,21 @@ $user = $this->security->getUser();
         ]);
     }
 
-    #[Route('/journal/{id}/issue/xml/edit', name: 'journal_issue_xml_edit')]
-    public function issueXmlEdit($id, Request $request, FactoryInterface $factory): Response
+    //xml değiştirme
+    #[Route('/{role}/journal/{id}/issue/xml/edit', name: 'journal_issue_xml_edit')]
+    public function issueXmlEdit($id, Request $request, FactoryInterface $factory, $role): Response
     {
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
         $journal = $issue->getJournal();
         $journalname = $journal->getName();
         $journalId = $journal->getId();
         $issueId = $issue->getId();
-        $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
 
+        } else {
+            $breadcrumb = $this->breadcrumbService->createEditorIssueEditBreadcrumb($factory, $journalname, $journalId);
+        }
         $form = $this->createForm(IssuesXmlFormType::class);
         $form->handleRequest($request);
         $name = $journal->getName() . ' ' . $issue->getNumber() . '. Sayısı Xml Düzenleme';
@@ -236,7 +590,12 @@ $user = $this->security->getUser();
                 'Xml Dosyası Yenilenmiştir.'
             );
 
-            return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+            if ($role == 'admin') {
+                return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+            }else{
+                return $this->redirectToRoute('editor_journal_issues', ['id' => $journalId]);
+
+            }
         }
         return $this->render('journal_issue_xml_edit.html.twig', [
             'form' => $form->createView(),
@@ -248,8 +607,8 @@ $user = $this->security->getUser();
     }
 
     //sayı silme
-    #[Route('/journal/issue/{id}/delete', name: 'journal_issue_delete')]
-    public function deleteIssue($id): Response
+    #[Route('/{role}/journal/issue/{id}/delete', name: 'journal_issue_delete')]
+    public function deleteIssue($id, $role): Response
     {
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
 
@@ -318,14 +677,18 @@ $user = $this->security->getUser();
         $this->entityManager->flush();
 
         $this->addFlash('success', 'Sayı ve bağlı makaleler başarıyla silindi.');
+        if ($role == 'admin') {
+            return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
 
-        return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
+        } else {
+            return $this->redirectToRoute('editor_journal_issues', ['id' => $journalId]);
+        }
     }
 
 
 // sayı dışa aktarımı
     #[Route('journal/issue/{id}/export', name: 'issue_export')]
-    public function issueExport($id,): Response
+    public function journalExport($id,): Response
     {
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
         $journal = $issue->getJournal();
@@ -606,7 +969,7 @@ $user = $this->security->getUser();
 
 // makale liste
     #[Route('journal/issue/{id}/articles', name: 'articles_list')]
-    public function articleList($id, FactoryInterface $factory,Security $security): Response
+    public function articleList($id, FactoryInterface $factory, Security $security): Response
     {
         $user = $this->security->getUser();
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
@@ -898,8 +1261,8 @@ $user = $this->security->getUser();
 
 // XML içeriğini bir değişkene atayın
         $xmlContent = $xmlDoc->saveXML();
-        $journalSlug = $this->convertToSlug($journal->getName());
-        $articleSlug = $this->convertToSlug($article->getTranslations()->findFirst());
+//        $journalSlug = $this->convertToSlug($journal->getName());
+//        $articleSlug = $this->convertToSlug($article->getTranslations()->findFirst());
         $fileName = 'exported_article.xml';
         $file = fopen($fileName, 'w');
         fwrite($file, $xmlContent);
@@ -917,10 +1280,11 @@ $user = $this->security->getUser();
     }
 
     //makale düzenleme
-    #[Route('article/edit/{id}/{role}', name: 'article_edit')]
-    public function article_edit($id, $role, Request $request, FactoryInterface $factory): Response
+    #[Route('/{role}/article/edit/{id}', name: 'article_edit')]
+    public function article_edit($id, $role, Request $request, FactoryInterface $factory, Security $security): Response
     {
-
+        /** @var User $user */
+        $user = $this->security->getUser();
         $article = $this->entityManager->getRepository(Articles::class)->find($id);
         $issue = $article->getIssue();
         $journal = $article->getJournal();
@@ -931,14 +1295,13 @@ $user = $this->security->getUser();
             $this->addFlash('danger', 'Dergi, sayı veya makale hatalı.');
             return $this->redirectToRoute('admin_journal_management');
         }
-        if ($role == 'operator')
-        {
+        if ($role == 'operator') {
             $breadcrumb = $this->breadcrumbService->createOperatorArticleEditBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
-        }elseif ($role == 'editor'){
+        } elseif ($role == 'editor') {
             $breadcrumb = $this->breadcrumbService->createEditorArticleEditBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
-        }elseif ($role == 'admin'){
+        } elseif ($role == 'admin') {
             $breadcrumb = $this->breadcrumbService->createArticleEditBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
-        }else{
+        } else {
             throw $this->createNotFoundException('rol bulunamadı');
         }
         $path = 'var' . '/' . 'journal' . '/' . $journal->getId() . '/' . $issue->getId();
@@ -967,10 +1330,10 @@ $user = $this->security->getUser();
                     $title = html_entity_decode($newTranslation->getTitle(), ENT_QUOTES | ENT_HTML5);
                     $abstract = html_entity_decode($newTranslation->getAbstract(), ENT_QUOTES | ENT_HTML5);
 
-                    $title = str_replace(["                    ", "\r", "&#13;", "\n", '&#13;'], '', $newTranslation->getTitle());
-                    $abstract = str_replace(["                    ", "\r", "&#13;","\n", '&#13;'], '', $newTranslation->getAbstract());
-                    $title = str_replace('&rsquo;',"'",$title);
-                    $abstract = str_replace('&rsquo;',"'",$abstract);
+                    $title = str_replace(["                    ", "\r", "&#13;", "\n", '&#13;'], ' ', $title);
+                    $abstract = str_replace(["                    ", "\r", "&#13;", "\n", '&#13;'], ' ', $abstract);
+                    $title = str_replace('&rsquo;', "'", $title);
+                    $abstract = str_replace('&rsquo;', "'", $abstract);
                     $newTranslation->setTitle($title);
                     $newTranslation->setAbstract($abstract);
 
@@ -1012,8 +1375,8 @@ $user = $this->security->getUser();
             foreach ($citations as $newCitation) {
                 if (!empty($newCitation->getReferance())) {
                     $newCitation->setArticle($article);
-                    $referance = str_replace(["                    ", "&#13;","\r", "\n", '&#13;'], '', $newCitation->getReferance());
-                    $referance = str_replace('&rsquo;',"'",$referance);
+                    $referance = str_replace(["                    ", "&#13;", "\r", "\n", '&#13;'], '', $newCitation->getReferance());
+                    $referance = str_replace('&rsquo;', "'", $referance);
 
                     $newCitation->setReferance($referance);
 
@@ -1030,8 +1393,7 @@ $user = $this->security->getUser();
             foreach ($citat as $value) {
                 $this->entityManager->remove($value);
             }
-            /** @var User $user */
-            $user = $this->security->getUser();
+
             $article->setEditor($user);
             $utc_now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -1055,7 +1417,13 @@ $user = $this->security->getUser();
                 $this->entityManager->persist($issue);
                 $this->entityManager->flush();
                 $this->addFlash('success', 'Tüm Makaleler Güncellendi.');
-                return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+                if ($role == 'admin') {
+                    return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+                } elseif ($role == 'editor') {
+                    return $this->redirectToRoute('editor_journal_issues', ['id' => $journal->getId()]);
+                } else {
+                    return $this->redirectToRoute('operator_journal_issues', ['id' => $journal->getId()]);
+                }
             }
             $this->entityManager->persist($issue);
             $this->entityManager->flush();
@@ -1063,9 +1431,16 @@ $user = $this->security->getUser();
 
             if ($request->request->has('save_and_skip')) {
 
-                return $this->redirectToRoute('article_save_skip', ['id' => $article->getId()]);
+                return $this->redirectToRoute('article_save_skip', ['id' => $article->getId(), 'role' => $role]);
             }
-            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+            if ($role == 'admin') {
+                return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+            } elseif ($role == 'editor') {
+                return $this->redirectToRoute('editor_articles_list', ['id' => $issue->getId()]);
+            } else {
+                return $this->redirectToRoute('operator_articles_list', ['id' => $issue->getId()]);
+
+            }
         }
         return $this->render('article_edit.html.twig', [
             'form' => $form->createView(),
@@ -1073,13 +1448,14 @@ $user = $this->security->getUser();
             'pdfFile' => $pdfFileName,
             'article' => $article,
             'role' => $role,
+            'user' => $user,
         ]);
     }
 
 
 //sonraki makaleye geçmek için
-    #[Route('/article/save-skip/{id}', name: 'article_save_skip')]
-    public function articleSaveSkip($id): Response
+    #[Route('/article/save-skip/{id}/{role}', name: 'article_save_skip')]
+    public function articleSaveSkip($id, $role): Response
     {
         $article = $this->entityManager->getRepository(Articles::class)->find($id);
         $issue = $article->getIssue();
@@ -1089,32 +1465,47 @@ $user = $this->security->getUser();
         ]);
 
         if ($nextArticle) {
-            return $this->redirectToRoute('article_edit', ['id' => $nextArticle->getId()]);
-        } else {
+            return $this->redirectToRoute('article_edit', ['id' => $nextArticle->getId(), 'role' => $role]);
+        }
+        $this->addFlash('success', 'Makale Tamamlanmıştır.');
+
+        if ($role == 'admin') {
             return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+        } elseif ($role == 'editor') {
+            return $this->redirectToRoute('editor_articles_list', ['id' => $issue->getId()]);
+
+        } else {
+            return $this->redirectToRoute('operator_articles_list', ['id' => $issue->getId()]);
 
         }
+
     }
 
 //yeni makale ekleme
-    #[Route ('/article/{id}/new', name: 'article_add')]
-    public function articleAdd($id, Request $request, FactoryInterface $factory,): Response
+    #[Route ('/{role}/article/{id}/new', name: 'article_add')]
+    public function articleAdd($id, Request $request, FactoryInterface $factory, $role): Response
     {
 
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+
         $journal = $issue->getJournal();
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
+        } else {
+            $breadcrumb = $this->breadcrumbService->createEditorArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), 'Yeni Makale Ekle');
+        }
 
         $newArticle = new Articles();
         $form = $this->createForm(ArticleFulltextAddFormType::class, $newArticle);
         $form->handleRequest($request);
         $data = $form->getData();
-        $breadcrumb = $this->breadcrumbService->createArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
+
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $newArticle->setPrimaryLanguage('tr'); //burayı düzelt
+            $newArticle->setPrimaryLanguage('tr');
             $this->entityManager->persist($newArticle);
             $this->entityManager->flush();
-            //bu kısma article dosyasının nereye kaydedileceği gelecek
+
 
             $journalId = $issue->getJournal()->getId();
             $issueId = $issue->getId();
@@ -1146,13 +1537,11 @@ $user = $this->security->getUser();
                         $issueFolder,
                         $fileName
                     );
-                    // Dosya adını ve yolunu veritabanına kaydet
                     $newArticle->setFulltext($destinationPath);
                 } else {
                     $newArticle->setFulltext(null);
                 }
             } catch (FileException $e) {
-                // Hata durumunda işlem yap
                 return new Response($e->getMessage());
             }
 
@@ -1171,7 +1560,7 @@ $user = $this->security->getUser();
             $this->entityManager->flush();
             //-*-------------------------------------------
 
-            return $this->redirectToRoute('article_edit', ['id' => $newArticle->getId()]);
+            return $this->redirectToRoute('article_edit', ['id' => $newArticle->getId(), 'role' => $role]);
 
         }
 
@@ -1185,18 +1574,23 @@ $user = $this->security->getUser();
     }
 
 //pdf değiştirme
-    #[Route ('/article/{id}/pdf-change', name: 'article_Pdf_Change')]
-    public function articlePdfChange($id, Request $request, FactoryInterface $factory,): Response
+    #[Route ('/{role}/article/{id}/pdf-change', name: 'article_Pdf_Change')]
+    public function articlePdfChange($id, Request $request, FactoryInterface $factory, $role,): Response
     {
-
         $article = $this->entityManager->getRepository(Articles::class)->find($id);
         $issue = $article->getIssue();
         $journal = $issue->getJournal();
 
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createArticlePdfUploadBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), $article->getId());
+
+        } else {
+            $breadcrumb = $this->breadcrumbService->createEditorArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), 'PDF değiştir');
+
+        }
         $form = $this->createForm(ArticleFulltextAddFormType::class);
         $form->handleRequest($request);
         $data = $form->getData();
-        $breadcrumb = $this->breadcrumbService->createArticlePdfUploadBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), $article->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
             $article->setPrimaryLanguage(ArticleLanguageParam::TURKCE);
@@ -1263,7 +1657,7 @@ $user = $this->security->getUser();
             $this->entityManager->persist($issue);
 
             $this->entityManager->flush();
-            return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
+            return $this->redirectToRoute('article_edit', ['id' => $article->getId(), 'role' => $role]);
 
         }
 
@@ -1304,8 +1698,8 @@ $user = $this->security->getUser();
 
 
 // article pdf hata bildirme
-    #[Route('article/{id}/{status}', name: 'article_pdf_error')]
-    public function articlePdfError($id, $status): Response
+    #[Route('/{role}/article/{id}/{status}', name: 'article_pdf_error')]
+    public function articlePdfError($id, $status, $role): Response
     {
         $article = $this->entityManager->getRepository(Articles::class)->find($id);
         $article->setStatus(ArticleStatusParam::ERROR);
@@ -1342,12 +1736,19 @@ $user = $this->security->getUser();
         $this->entityManager->flush();
         $this->addFlash('success', 'Makale Pdf Hatası Gönderilmiştir.');
 
-        return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+        if ($role == 'admin') {
+            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+        } elseif ($role == 'editor') {
+            return $this->redirectToRoute('editor_articles_list', ['id' => $issue->getId()]);
+        } else {
+            return $this->redirectToRoute('operator_articles_list', ['id' => $issue->getId()]);
+
+        }
     }
 
     // article pdf hata silme
-    #[Route('/article/{id}/delete/error', name: 'article_pdf_error_delete')]
-    public function articlePdfErrorDelete($id): Response
+    #[Route('/{role}/article/{id}/delete/error', name: 'article_pdf_error_delete')]
+    public function articlePdfErrorDelete($id, $role): Response
     {
         $article = $this->entityManager->getRepository(Articles::class)->find($id);
         $article->setStatus(ArticleStatusParam::EDIT_REQUIRED);
@@ -1359,12 +1760,12 @@ $user = $this->security->getUser();
         $this->entityManager->flush();
         $this->addFlash('success', 'Makale Hatası Geri Alınmıştır.');
 
-        return $this->redirectToRoute('article_edit', ['id' => $article->getId()]);
+        return $this->redirectToRoute('article_edit', ['id' => $article->getId(), 'role' => $role]);
     }
 
 // makale silme
-    #[Route('/article/all/{id}/delete', name: 'article_delete')]
-    public function articleDeleteFunc($id): Response
+    #[Route('/{role}/article/all/{id}/delete', name: 'article_delete')]
+    public function articleDeleteFunc($id, $role,): Response
     {
         $article = $this->entityManager->getRepository(Articles::class)->find($id);
         $issue = $article->getIssue();
@@ -1415,8 +1816,25 @@ $user = $this->security->getUser();
         $this->entityManager->remove($article);
         $this->entityManager->flush();
 
-        $this->addFlash('success', 'Makale Başarıyla Silindi');
-        return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+//        $this->addFlash('success', 'Makale Başarıyla Silindi');
+        $articleEdited = $this->entityManager->getRepository(Articles::class)->findBy([
+            'issue' => $issue,
+            'status' => ArticleStatusParam::EDITED,
+        ]);
+        $articleCount = $this->entityManager->getRepository(Articles::class)->findBy([
+            'issue' => $issue,
+        ]);
+        if (count($articleCount) > 0 && count($articleCount) === count($articleEdited)) {
+            $issue->setStatus(IssueStatusParam::EDITED);
+            $this->entityManager->persist($issue);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Sayı Dışa Aktarıma Hazır.');
+        }
+        if ($role == 'admin') {
+            return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
+        } else {
+            return $this->redirectToRoute('editor_articles_list', ['id' => $issue->getId()]);
+        }
     }
 
     //pdf görüntüleme

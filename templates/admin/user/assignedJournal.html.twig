@@ -34,8 +34,8 @@
                             <th>Dergi</th>
                             <th>Issn</th>
                             <th>E-issn</th>
-                            <th>Editör</th>
-                            <th>Operatör</th>
+                            <th style="text-align: center">Editör</th>
+                            <th style="text-align: center;">Operatör</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,18 +44,26 @@
                                 <td>{{ journal.journal.name }}</td>
                                 <td>{{ journal.journal.issn }}</td>
                                 <td>{{ journal.journal.eIssn }}</td>
-                                <td>
+                                <td style="text-align: center">
                                     {% if editor in journal.role %}
-                                        <a class="btn btn-success" href="#" onclick="openDeleteModal('{{ journal.id }}', 2)">
-                                            <p class="card-text text-right">Editör Rolünü Sil</p>
-                                        </a>
+                                    <div class="btn-group" style="text-align: center">
+                                        <a class="btn btn-dark disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Editör Rolü</a>
+
+                                        <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px"  href="#" onclick="openDeleteModal('{{ journal.id }}', 'ROLE_EDITOR')">
+                                        x</a>
+
+                                    </div>
+
                                     {% endif %}
                                 </td>
-                                <td>
+                                <td style="text-align: center">
                                     {% if operator in journal.role %}
-                                        <a class="btn btn-primary" href="#" onclick="openDeleteModal('{{ journal.id }}', 3)">
-                                            <p class="card-text text-right">Operatör Rolünü sil</p>
-                                        </a>
+                                        <div class="btn-group" style="text-align: center">
+                                        <a class="btn btn-dark disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Operatör Rolü</a>
+                                            </a> <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px" href="#" onclick="openDeleteModal('{{ journal.id }}' , 'ROLE_OPERATOR')">
+                                            x</a>
+                                        </div>
+
                                     {% endif %}
                                 </td>
                             </tr>

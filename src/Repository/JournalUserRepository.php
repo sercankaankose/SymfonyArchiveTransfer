@@ -44,6 +44,20 @@ class JournalUserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function userRoleInJournal($user, $journal, $roleName): bool
+    {
+        $qb = $this->createQueryBuilder('ju')
+            ->innerJoin('ju.role', 'r')
+            ->where('ju.person = :user')
+            ->andWhere('ju.journal = :journal')
+            ->andWhere('r.role_name = :role_name')
+            ->setParameter('user', $user)
+            ->setParameter('journal', $journal)
+            ->setParameter('role_name', $roleName)
+            ->getQuery();
+        return (bool) $qb->getOneOrNullResult();
+
+    }
 
 //    /**
 //     * @return JournalUser[] Returns an array of JournalUser objects

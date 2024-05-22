@@ -57,9 +57,12 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h1>Dergi İşlemleri</h1>
                 <div class="m-3">
-                    <a href="{{ path('admin_journal_add') }}" class="btn btn-lg btn-dark">Dergi Ekle</a>
-                </div>
+                    {% if 'ROLE_SYSTEM_OPERATOR' not in user.roles or 'ROLE_ADMIN' in user.roles %}
 
+                    <a href="{{ path('admin_journal_add') }}" class="btn btn-lg btn-dark">Dergi Ekle</a>
+                    {% endif %}
+
+                </div>
             </div>
             <div class="card shadow-lg " style="font-size: 20px;">
                 <div class="card-body">
@@ -112,7 +115,7 @@
                                         {% if status_edited_count == status_all_count %}
                                             {% if status_all_count == 0 %}
                                                 {% else %}
-                                                    <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: -3px; text-align: center">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
+                                                    <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: 40px; text-align: center">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
                                             {% endif %}
 
                                         {% endif %}
@@ -132,7 +135,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="dropdown-item"
-                                                           href="{{ path('admin_journal_edit', {'id': journal.id}) }}">Düzenle</a>
+                                                           href="{{ path('admin_journal_edit', {'id': journal.id,'role': role}) }}">Düzenle</a>
                                                         <a class="dropdown-item" type="button" href="#"
                                                            data-bs-toggle="modal"
                                                            onclick="openDeleteModal({{ journal.id }})"

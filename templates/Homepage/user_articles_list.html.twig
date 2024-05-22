@@ -105,7 +105,7 @@
                 <div class="m-3 me-0">
                     {% if role == 'editor' or role == 'admin' %}
 
-                        <a href="{{ path('article_add',{'id': issues.id}) }}" class="btn btn-lg btn-dark">Yeni Makale
+                        <a href="{{ path('article_add',{'id': issues.id, 'role': 'editor'}) }}" class="btn btn-lg btn-dark">Yeni Makale
                         </a>
                     {% endif %}
                     {#                    <a href="{{ path('issue_save',{'id': issues.id}) }}" class="btn btn-lg btn-success">Düzenlendi #}
@@ -173,7 +173,8 @@
                                         <td>
                                             <span class="badge text-bg-danger" tabindex="0" data-bs-toggle="popover"
                                                   data-bs-placement="left" data-bs-trigger="hover focus"
-                                                  data-bs-content="{{ article.errors|join(', ') }}">
+                                                  data-bs-content="{{ article.errors|join(', ') }}"
+                                                  style=" color: white ;border-radius: 3px; padding: 3px; padding-left: 32px; padding-right: 32px; display:inline-flex;">
                                             Hatalı
                                             </span>
                                         </td>
@@ -222,7 +223,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="dropdown-item"
-                                                           href="{{ path('article_Pdf_Change', {'id': article.id}) }}">Pdf
+                                                           href="{{ path('article_Pdf_Change', {'id': article.id, 'role': role }) }}">Pdf
                                                             Güncelle</a>
                                                         <a class="dropdown-item" type="button" href="#"
                                                            data-bs-toggle="modal"
@@ -287,7 +288,7 @@
         <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script>
             function openDeleteModal(articleId) {
-                var deleteUrl = "{{ path('article_delete', {'id': 'article_ID'}) }}".replace('article_ID', articleId);
+                var deleteUrl = "{{ path('article_delete', {'id': 'article_ID', 'role': 'editor'}) }}".replace('article_ID', articleId);
                 document.getElementById('deleteArticleModalLabel').textContent = 'Makaleyi Sil';
                 document.querySelector(`#deleteArticleLink`).setAttribute('href', deleteUrl);
                 var deleteModal = new bootstrap.Modal(document.getElementById('deleteArticleModal'));

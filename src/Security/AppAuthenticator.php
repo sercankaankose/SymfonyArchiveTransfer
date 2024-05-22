@@ -52,12 +52,10 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
 
         // Kullanıcının rolünü kontrol et
-        if ($this->authorizationChecker->isGranted(RoleParam::ROLE_ADMIN)) {
-            // Eğer kullanıcı admin ise, admin dashboard sayfasına yönlendir
+        if ($this->authorizationChecker->isGranted(RoleParam::ROLE_ADMIN) or ($this->authorizationChecker->isGranted(RoleParam::ROLE_SYSTEM_OPERATOR)) ) {
             return new RedirectResponse($this->urlGenerator->generate('dashboard_admin'));
         }
 
-        // Eğer kullanıcı admin değilse, varsayılan olarak ana sayfaya yönlendir
         return new RedirectResponse($this->urlGenerator->generate('app_homepage'));
     }
 

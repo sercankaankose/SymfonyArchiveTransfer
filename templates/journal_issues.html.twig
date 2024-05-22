@@ -82,10 +82,18 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h1>{{ journal.name }} Sayıları</h1>
                 <div class="m-3">
-                    {% if role == 'editor' or role == 'admin' %}
-                        <a href="{{ path('journal_issue_add',{'id': journal.id}) }}" class="btn btn-lg btn-dark"
-                           style="margin-right: -13px">Yeni Sayı
-                            Ekle</a>
+                    {% if role == 'editor' or role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
+                        {% if role == 'admin' %}
+                            <a href="{{ path('journal_issue_add',{'id': journal.id, 'role': 'admin'}) }}"
+                               class="btn btn-lg btn-dark"
+                               style="margin-right: -13px">Yeni Sayı
+                                Ekle</a>
+                        {% elseif role == 'editor' %}
+                            <a href="{{ path('journal_issue_add',{'id': journal.id, 'role': 'editor'}) }}"
+                               class="btn btn-lg btn-dark"
+                               style="margin-right: -13px">Yeni Sayı
+                                Ekle</a>
+                        {% endif %}
                     {% endif %}
 
                 </div>
@@ -167,7 +175,7 @@
                                         <div style="display: inline-flex; justify-content: space-between;">
 
                                             {% if issue.status == '002' %}
-                                                {% if  role == 'admin' or role == 'editor' %}
+                                                {% if  role != 'operator' and 'ROLE_SYSTEM_OPERATOR' not in user.roles%}
                                                     <a class="btn button-42"
                                                        href="{{ path('issue_export', {'id': issue.id}) }}"
                                                        style="flex: 1; margin-right: 40px">Dışa Aktar <i
@@ -218,19 +226,25 @@
                                                            href="{{ path('editor_articles_list', {'id': issue.id}) }}">Makaleler</a>
                                                     {% endif %}
                                                 {% endif %}
-                                                {% if role == 'editor' or role == 'admin' %}
-
-
+                                                {% if role != 'operator' and 'ROLE_SYSTEM_OPERATOR' not in user.roles or role == 'editor' %}
+                                                    {#                                                    {% if role == 'editor' or role == 'admin' %} #}
                                                     <div class="dropdown">
-                                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        <button class="btn btn-secondary dropdown-toggle"
+                                                                type="button"
                                                                 id="dropdownMenuButton" data-bs-toggle="dropdown"
                                                                 aria-haspopup="true" aria-expanded="false"
                                                                 style="border-radius: 3px; margin-left: 1px">
                                                             <i class="bi bi-three-dots"></i>
                                                         </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item"
-                                                               href="{{ path('journal_issue_edit', {'id': issue.id}) }}">Düzenle</a>
+                                                        <div class="dropdown-menu"
+                                                             aria-labelledby="dropdownMenuButton">
+                                                            {% if role == 'admin' %}
+                                                                <a class="dropdown-item"
+                                                                   href="{{ path('journal_issue_edit', {'id': issue.id, 'role': 'admin'}) }}">Düzenle</a>
+                                                            {% else %}
+                                                                <a class="dropdown-item"
+                                                                   href="{{ path('journal_issue_edit', {'id': issue.id, 'role': 'editor'}) }}">Düzenle</a>
+                                                            {% endif %}
                                                             <a class="dropdown-item" type="button" href="#"
                                                                data-bs-toggle="modal"
                                                                onclick="openDeleteModal({{ issue.id }})"
@@ -238,16 +252,29 @@
                                                                data-target="#deleteJournalModal"
                                                                data-id="{{ issue.id }}">Sil</a>
                                                             {% if issue.status == '000' %}
-
+                                                            {% if role == 'admin' %}
                                                                 <a class="dropdown-item"
-                                                                   href="{{ path('journal_issue_xml_edit', {'id': issue.id}) }}">
+                                                                   href="{{ path('journal_issue_xml_edit', {'id': issue.id, 'role': 'admin'}) }}">
                                                                     Xml Düzenle
                                                                 </a>
+                                                            {% else %}
+                                                                <a class="dropdown-item"
+                                                                   href="{{ path('journal_issue_xml_edit', {'id': issue.id, 'role': 'editor'}) }}">
+                                                                    Xml Düzenle
+                                                                </a>
+                                                            {% endif %}
                                                             {% elseif issue.status == '003' %}
-                                                                <a class="dropdown-item"
-                                                                   href="{{ path('journal_issue_xml_edit', {'id': issue.id}) }}">
-                                                                    Xml Düzenle
-                                                                </a>
+                                                                {% if role == 'admin' %}
+                                                                    <a class="dropdown-item"
+                                                                       href="{{ path('journal_issue_xml_edit', {'id': issue.id, 'role': 'admin'}) }}">
+                                                                        Xml Düzenle
+                                                                    </a>
+                                                                {% else %}
+                                                                    <a class="dropdown-item"
+                                                                       href="{{ path('journal_issue_xml_edit', {'id': issue.id, 'role': 'editor'}) }}">
+                                                                        Xml Düzenle
+                                                                    </a>
+                                                                {% endif %}
                                                             {% endif %}
                                                         </div>
                                                     </div>
@@ -306,7 +333,7 @@
         <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script>
             function openDeleteModal(issueId) {
-                var deleteUrl = "{{ path('journal_issue_delete', {'id': 'JOURNAL_ID'}) }}".replace('JOURNAL_ID', issueId);
+                var deleteUrl = "{{ path('journal_issue_delete', {'id': 'JOURNAL_ID', 'role': role}) }}".replace('JOURNAL_ID', issueId);
                 document.getElementById('deleteIssueModalLabel').textContent = 'Sayıyı Sil';
                 document.querySelector(`#deleteIssueLink`).setAttribute('href', deleteUrl);
                 var deleteModal = new bootstrap.Modal(document.getElementById('deleteIssueModal'));

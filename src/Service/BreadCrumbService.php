@@ -13,6 +13,7 @@ class BreadCrumbService
     {
         $this->factory = $factory;
     }
+
     //admin paneli
     public function createAdminDashboardBreadcrumb()
     {
@@ -21,6 +22,7 @@ class BreadCrumbService
 
         return $menu;
     }
+
     // kullanıcı paneli
     public function createUserManagementBreadcrumb()
     {
@@ -30,6 +32,7 @@ class BreadCrumbService
 
         return $menu;
     }
+
     //dergiye kullanıcı atama
     public function createJournalAssigmentBreadcrumb()
     {
@@ -40,6 +43,7 @@ class BreadCrumbService
         return $menu;
 
     }
+
     // admin dergi paneli
     public function createJournalManagementBreadcrumb()
     {
@@ -49,6 +53,7 @@ class BreadCrumbService
 
         return $menu;
     }
+
     //yeni kullanıcı oluşturma
     public function createUserAddBreadcrumb()
     {
@@ -59,6 +64,7 @@ class BreadCrumbService
 
         return $menu;
     }
+
     //kullanıcının atandığı dergiler
     public function createUserAssigned_listBreadcrumb()
     {
@@ -71,7 +77,7 @@ class BreadCrumbService
     }
 
     //kullanıcı düzenleme
-public function createUserEditBreadcrumb()
+    public function createUserEditBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
@@ -92,12 +98,23 @@ public function createUserEditBreadcrumb()
         return $menu;
     }
 
-    // dergi Sayıları
+    // admin dergi düzenleme
     public function createJournalEditBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
-        $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
+        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Dergiler ', ['route' => 'admin_journal_management']);
+        $menu->addChild('Düzenle');
+
+        return $menu;
+    }
+
+    //  editör dergi düzenleme
+    public function createEditorJournalEditBreadcrumb()
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
+        $menu->addChild('Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
         $menu->addChild('Düzenle');
 
         return $menu;
@@ -109,79 +126,95 @@ public function createUserEditBreadcrumb()
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
-        $menu->addChild($journalName.' Sayıları');
+        $menu->addChild($journalName . ' Sayıları');
 
         return $menu;
     }
+
     // Sayıdaki makaleler
-    public function createArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number,$id)
+    public function createArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number, $id)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
-        $menu->addChild($journalName.' Sayıları ',['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
-        $menu->addChild(' '.$number.'. Sayı '.'Makaleleri');
+        $menu->addChild($journalName . ' Sayıları ', ['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
+        $menu->addChild(' ' . $number . '. Sayı ' . 'Makaleleri');
 
         return $menu;
     }
+
     // makale düzenleme
-    public function createArticleEditBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId)
+    public function createArticleEditBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
-        $menu->addChild($journalName.' Sayıları ',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
-        $menu->addChild($number.'. Sayı '.'Makaleleri', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
+        $menu->addChild($journalName . ' Sayıları ', ['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild($number . '. Sayı ' . 'Makaleleri', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
         $menu->addChild('Makale Düzenleme');
 
         return $menu;
     }
+
     //operator makale düzenleme
-    public function createOperatorArticleEditBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId)
+    public function createOperatorArticleEditBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
         $menu->addChild(' Operatörlük Yaptığım Dergiler ', ['route' => 'operator_journal_management']);
-        $menu->addChild($journalName.' Sayıları', ['route' => 'operator_journal_issues', 'routeParameters' => ['id' => $journalId]]);
-        $menu->addChild($number.'. Sayı '.'Makaleleri', ['route' => 'operator_articles_list', 'routeParameters' => ['id' => $issueId]]);
+        $menu->addChild($journalName . ' Sayıları', ['route' => 'operator_journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild($number . '. Sayı ' . 'Makaleleri', ['route' => 'operator_articles_list', 'routeParameters' => ['id' => $issueId]]);
         $menu->addChild('Makale Düzenleme');
 
         return $menu;
     }
+
     // editör makale düzenleme
-    public function createEditorArticleEditBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId)
+    public function createEditorArticleEditBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
         $menu->addChild(' Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
-        $menu->addChild($journalName.' Sayıları', ['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $journalId]]);
-        $menu->addChild($number.'. Sayı '.'Makaleleri', ['route' => 'editor_articles_list', 'routeParameters' => ['id' => $issueId]]);
+        $menu->addChild($journalName . ' Sayıları', ['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild($number . '. Sayı ' . 'Makaleleri', ['route' => 'editor_articles_list', 'routeParameters' => ['id' => $issueId]]);
         $menu->addChild('Makale Düzenleme');
 
         return $menu;
     }
+
     //yeni makale ekleme
-    public function createArticleAddBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId)
+    public function createArticleAddBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
-        $menu->addChild($journalName.' '.$number.'. Sayısı',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild($journalName . ' ' . $number . '. Sayısı', ['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
         $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
         $menu->addChild('Makale oluştur');
 
         return $menu;
     }
 
+    //editor yeni makale ekleme
+    public function createEditorArticleAddBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId,$last)
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
+        $menu->addChild(' Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
+        $menu->addChild($journalName . ' Sayıları', ['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild($number . '. Sayı ' . 'Makaleleri', ['route' => 'editor_articles_list', 'routeParameters' => ['id' => $issueId]]);
+        $menu->addChild($last);
+        return $menu;
+    }
+
     //pdf düzenleme
-    public function createArticlePdfUploadBreadcrumb(FactoryInterface $factory, $journalName, $number,$issueId, $journalId,$articleId)
+    public function createArticlePdfUploadBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId, $articleId)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
-        $menu->addChild($journalName.' '.$number.'. Sayısı',['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
+        $menu->addChild($journalName . ' ' . $number . '. Sayısı', ['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
         $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
-        $menu->addChild('Makale Düzenleme', ['route' => 'article_edit', 'routeParameters' => ['id' => $articleId]]);
         $menu->addChild('Pdf Güncelleme');
 
         return $menu;
@@ -199,6 +232,18 @@ public function createUserEditBreadcrumb()
         return $menu;
     }
 
+    // editör yeni sayı
+    public function createEditorIssueAddBreadcrumb(FactoryInterface $factory, $journalName, $id)
+    {
+        $menu = $factory->createItem('root');
+        $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
+        $menu->addChild(' Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
+        $menu->addChild($journalName . ' Sayıları',['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $id]]);
+        $menu->addChild('Sayı Ekle');
+
+        return $menu;
+    }
+
     //sayı düzenleme
     public function createIssueEditBreadcrumb(FactoryInterface $factory, $journalName, $id)
     {
@@ -210,13 +255,24 @@ public function createUserEditBreadcrumb()
 
         return $menu;
     }
+    // editör sayı düzenleme
+    public function createEditorIssueEditBreadcrumb(FactoryInterface $factory, $journalName, $id)
+    {
+        $menu = $factory->createItem('root');
+        $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
+        $menu->addChild(' Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
+        $menu->addChild($journalName . ' Sayıları',['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $id]]);
+        $menu->addChild('Sayı Düzenle');
+
+        return $menu;
+    }
 
     //kullancı operatörlük dergileri
     public function createOperatorManagementBreadcrumb(FactoryInterface $factory, $role)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
-        $menu->addChild($role.' Yaptığım Dergiler');
+        $menu->addChild($role . ' Yaptığım Dergiler');
 
         return $menu;
     }
@@ -227,48 +283,49 @@ public function createUserEditBreadcrumb()
         $menu = $this->factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
         $menu->addChild(' Operatörlük Yaptığım Dergiler ', ['route' => 'operator_journal_management']);
-        $menu->addChild($journalName.' Sayıları');
+        $menu->addChild($journalName . ' Sayıları');
 
         return $menu;
     }
+
     //kullanıcı editörlük dergi sayıları
     public function createEditorIssuesBreadcrumb(FactoryInterface $factory, $journalName)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
         $menu->addChild(' Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
-        $menu->addChild($journalName.' Sayıları');
+        $menu->addChild($journalName . ' Sayıları');
 
         return $menu;
     }
 
     //kullanıcı makale listesi
-    public function createUserArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number,$id)
+    public function createUserArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number, $id)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
         $menu->addChild(' Operatörlük Yaptığım Dergiler ', ['route' => 'operator_journal_management']);
-        $menu->addChild($journalName.' Sayıları', ['route' => 'operator_journal_issues', 'routeParameters' => ['id' => $id]]);
-        $menu->addChild(' '.$number.'. Sayı '.'Makaleleri');
+        $menu->addChild($journalName . ' Sayıları', ['route' => 'operator_journal_issues', 'routeParameters' => ['id' => $id]]);
+        $menu->addChild(' ' . $number . '. Sayı ' . 'Makaleleri');
 
         return $menu;
     }
 
-    public function createEditorArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number,$id)
+    public function createEditorArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number, $id)
     {
         $menu = $this->factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
         $menu->addChild(' Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
-        $menu->addChild($journalName.' Sayıları', ['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $id]]);
-        $menu->addChild(' '.$number.'. Sayı '.'Makaleleri');
+        $menu->addChild($journalName . ' Sayıları', ['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $id]]);
+        $menu->addChild(' ' . $number . '. Sayı ' . 'Makaleleri');
 
         return $menu;
     }
+
     public function createEmptyBreadcrumb()
     {
         return $this->factory->createItem('root');
     }
-
 
 
 }
