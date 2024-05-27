@@ -56,7 +56,11 @@ class HomepageController extends AbstractController
         $breadcrumb = $this->breadcrumbService->createOperatorManagementBreadcrumb($factory, 'Operatörlük');
         $user = $security->getUser();
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
-
+        if ( !$user->isIsActive())
+        {
+            $this->addFlash('danger', 'Hesabınız Pasifleştirilmiştir.');
+            return $this->redirectToRoute('app_homepage');
+        }
         $journalUsers = $this->journalUserRepository->findByRoleOperator($user);
 
         return $this->render('Homepage/user_journals.html.twig', [
@@ -67,6 +71,7 @@ class HomepageController extends AbstractController
 
         ]);
     }
+
     // operatör sayı listesi
     #[Route('/operator/journal/{id}/issues', name: 'operator_journal_issues')]
     public function operatorJournalIssues($id, FactoryInterface $factory, Security $security): Response
@@ -82,11 +87,19 @@ class HomepageController extends AbstractController
             if (in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_OPERATOR)) {
                 return $this->redirectToRoute('operator_journal_management');
             } else {
-                $this->addFlash('danger','Bu Derginin Sayılarına Erişme Yetkin Yok');
+                $this->addFlash('danger', 'Bu Derginin Sayılarına Erişme Yetkin Yok');
                 return $this->redirectToRoute('app_homepage');
             }
         }
-
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_OPERATOR);
+        if ( !$user->isIsActive())
+        {
+            $this->addFlash('danger', 'Hesabınız Pasifleştirilmiştir.');
+            return $this->redirectToRoute('app_homepage');
+        }
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
         return $this->render('journal_issues.html.twig', [
             'breadcrumb' => $breadcrumb,
             'journal' => $journal,
@@ -99,11 +112,11 @@ class HomepageController extends AbstractController
 
     // operatör makale listesi
     #[Route('operator/issue/{id}/articles', name: 'operator_articles_list')]
-    public function operatorArticleList($id, FactoryInterface $factory,Security $security): Response
+    public function operatorArticleList($id, FactoryInterface $factory, Security $security): Response
     {
         $user = $this->security->getUser();
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email'=>$user->getUserIdentifier()]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
 
         $journal = $issue->getJournal();
         $breadcrumb = $this->breadcrumbService->createUserArticleListBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $journal->getId());
@@ -114,6 +127,19 @@ class HomepageController extends AbstractController
             } else {
                 return $this->redirectToRoute('app_homepage');
             }
+        }
+
+        if ( !$user->isIsActive())
+        {
+            $this->addFlash('danger', 'Hesabınız Pasifleştirilmiştir.');
+            return $this->redirectToRoute('app_homepage');
+        }
+
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_OPERATOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
         $articles = $this->entityManager->getRepository(Articles::class)->findBy([
             'issue' => $issue
@@ -141,7 +167,11 @@ class HomepageController extends AbstractController
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
 
         $journalUsers = $this->journalUserRepository->findByRoleEditor($user);
-
+        if ( !$user->isIsActive())
+        {
+            $this->addFlash('danger', 'Hesabınız Pasifleştirilmiştir.');
+            return $this->redirectToRoute('app_homepage');
+        }
         return $this->render('Homepage/user_journals.html.twig', [
             'breadcrumb' => $breadcrumb,
             'journalUsers' => $journalUsers,
@@ -150,6 +180,7 @@ class HomepageController extends AbstractController
 
         ]);
     }
+
     //editor sayı listesi
     #[Route('/editor/journal/{id}/issues', name: 'editor_journal_issues')]
     public function editorJournalIssues($id, FactoryInterface $factory, Security $security): Response
@@ -162,14 +193,25 @@ class HomepageController extends AbstractController
         ]);
         if (!$journal) {
             $this->addFlash('danger', 'Dergi Bulunamadı.');
-            if (in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_OPERATOR ) or in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_EDITOR )) {
+            if (in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_OPERATOR) or in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_EDITOR)) {
                 return $this->redirectToRoute('editor_journal_management');
             } else {
-                $this->addFlash('danger','Bu Derginin Sayılarına Erişme Yetkin Yok');
+                $this->addFlash('danger', 'Bu Derginin Sayılarına Erişme Yetkin Yok');
                 return $this->redirectToRoute('app_homepage');
             }
+
         }
 
+        if ( !$user->isIsActive())
+        {
+            $this->addFlash('danger', 'Hesabınız Pasifleştirilmiştir.');
+            return $this->redirectToRoute('app_homepage');
+        }
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
         return $this->render('journal_issues.html.twig', [
             'breadcrumb' => $breadcrumb,
             'journal' => $journal,
@@ -179,13 +221,14 @@ class HomepageController extends AbstractController
 
         ]);
     }
+
     //editör makale listesi
     #[Route('editor/issue/{id}/articles', name: 'editor_articles_list')]
-    public function editorArticleList($id, FactoryInterface $factory,Security $security): Response
+    public function editorArticleList($id, FactoryInterface $factory, Security $security): Response
     {
         $user = $this->security->getUser();
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email'=>$user->getUserIdentifier()]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
 
         $journal = $issue->getJournal();
         $breadcrumb = $this->breadcrumbService->createEditorArticleListBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $journal->getId());
@@ -196,6 +239,16 @@ class HomepageController extends AbstractController
             } else {
                 return $this->redirectToRoute('app_homepage');
             }
+        }
+        if ( !$user->isIsActive())
+        {
+            $this->addFlash('danger', 'Hesabınız Pasifleştirilmiştir.');
+            return $this->redirectToRoute('app_homepage');
+        }
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
         $articles = $this->entityManager->getRepository(Articles::class)->findBy([
             'issue' => $issue

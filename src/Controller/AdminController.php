@@ -34,32 +34,33 @@ class AdminController extends AbstractController
     private EntityManagerInterface $entityManager;
     private BreadCrumbService $breadcrumbService;
     private $journalUserRepository;
+    private Security $security;
 
-    public function __construct(EntityManagerInterface $entityManager, BreadCrumbService $breadcrumbService, JournalUserRepository $journalUserRepository)
+    public function __construct(EntityManagerInterface $entityManager, Security $security, BreadCrumbService $breadcrumbService, JournalUserRepository $journalUserRepository)
     {
         $this->entityManager = $entityManager;
         $this->breadcrumbService = $breadcrumbService;
         $this->journalUserRepository = $journalUserRepository;
-
+        $this->security = $security;
     }
 
     #[Route('/admin', name: 'dashboard_admin')]
     public function index(): Response
     {
-
+        $user = $this->security->getUser();
         $breadcrumb = $this->breadcrumbService->createAdminDashboardBreadcrumb();
 
         return $this->render('admin/index.html.twig', [
             'breadcrumb' => $breadcrumb,
-
+            'user' => $user,
         ]);
     }
 
     //-----------------------------------------------------------------
     //KULLANICI İŞLEMLERİ
 
-
 //    kullanıcı paneli
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/user-management', name: 'admin_user_management')]
     public function userManagement(): Response
     {
@@ -76,6 +77,7 @@ class AdminController extends AbstractController
 
 
 //    kullanıcı ekleme
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/user/add', name: 'admin_user_add')]
     public function userAdd(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
@@ -111,6 +113,7 @@ class AdminController extends AbstractController
 
 
 //    kullanıcı pasifleştirme Func
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/user/passive/{id}', name: 'admin_user_pasive')]
     public function userPassiveFunc($id): Response
     {
@@ -125,6 +128,7 @@ class AdminController extends AbstractController
     }
 
 //    kullanıcı aktifleştirme Func
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/user/active/{id}', name: 'admin_user_active')]
     public function userActiveFunc($id): Response
     {
@@ -138,6 +142,7 @@ class AdminController extends AbstractController
     }
 
     // kullanıcıya dergi atama işlemi
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/assigment/journal', name: 'admin_assigment_journal')]
     public function UserJournalAssign(Request $request): Response
     {
@@ -216,6 +221,7 @@ class AdminController extends AbstractController
     }
 
     //sistem operatörü atama
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/assigment/{id}/system-operator', name: 'admin_system_operator_assing')]
     public function userSystemOperatorAssign($id): Response
     {
@@ -238,6 +244,7 @@ class AdminController extends AbstractController
     }
 
     //sistem operatörü yetki silme
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/delete/{id}/role', name: 'admin_system_operator_delete')]
     public function userSystemOperatorDelete($id): Response
     {
@@ -266,6 +273,7 @@ class AdminController extends AbstractController
     }
 
     // kullanıcının atandığı dergiler
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/assigned/{id}', name: 'admin_assigned_journal_list')]
     public function adminAssignedJournal($id)
     {
@@ -322,36 +330,55 @@ class AdminController extends AbstractController
     }
 
     //atanmış rol silme
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/assigned/{id}/{role}', name: 'admin_assigned_journal_delete')]
     public function adminAssignedJournalDeleteFunc($id, $role)
     {
         $journalUser = $this->entityManager->getRepository(JournalUser::class)->find($id);
-        $role = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => $role]);
+        $roleEntity = $this->entityManager->getRepository(Role::class)->findOneBy(['role_name' => $role]);
 
         $user = $journalUser->getPerson();
-        $journalUser->removeRole($role);
+        $journalUser->removeRole($roleEntity);
 
-        $journalUserRoles = $journalUser->getRole();
-        if (count($journalUserRoles) === 0) {
+        if ($journalUser->getRole()->isEmpty()) {
             $this->entityManager->remove($journalUser);
         }
-
-        $otherJournalUsers = $this->entityManager->getRepository(JournalUser::class)->findBy([
-            'person' => $user,
-        ]);
-        $rolesIds = [];
-
-        /** @var JournalUser $journalUser */
-        foreach ($otherJournalUsers as $journalUser) {
-            if (count($journalUser->getRole()) > 0) {
-                foreach ($journalUser->getRole() as $role) {
-                    $rolesIds[] = $role->getId();
-                }
-            }
+        $this->entityManager->flush();
+        $roleStillAssigned = false;
+        if ($role === RoleParam::ROLE_OPERATOR) {
+            $otherJournalUsersWithRole = $this->entityManager->getRepository(JournalUser::class)->findByRoleOperator($user);
+        } elseif ($role === RoleParam::ROLE_EDITOR) {
+            $otherJournalUsersWithRole = $this->entityManager->getRepository(JournalUser::class)->findByRoleEditor($user);
+        } else {
+            $otherJournalUsersWithRole = [];
         }
-        if (!in_array($rolesIds, (array)($role->getId()))) {
-            $user->removeRole($role);
+
+        if (!empty($otherJournalUsersWithRole)) {
+            $roleStillAssigned = true;
         }
+        if (!$roleStillAssigned) {
+            $user->removeRole($roleEntity);
+        }
+
+        $this->entityManager->flush();
+
+//        $otherJournalUsers = $this->entityManager->getRepository(JournalUser::class)->findBy([
+//            'person' => $user,
+//
+//        ]);
+//        $rolesIds = [];
+//
+//        /** @var JournalUser $journalUser */
+//        foreach ($otherJournalUsers as $journalUser) {
+//            if (count($journalUser->getRole()) > 0) {
+//                foreach ($journalUser->getRole() as $role) {
+//                    $rolesIds[] = $role->getId();
+//                }
+//            }
+//        }
+//        if (!in_array($rolesIds, (array)($role->getId()))) {
+//            $user->removeRole($role);
+//        }
         $this->entityManager->flush();
 
 
@@ -423,6 +450,7 @@ class AdminController extends AbstractController
 
 
 //    Dergi Ekleme
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/admin/journal/add', name: 'admin_journal_add')]
     public function journalAdd(Request $request): Response
     {

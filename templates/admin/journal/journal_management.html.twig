@@ -52,6 +52,9 @@
                 /*box-shadow: #198754 0 3px 8px;*/
                 color: #fff;
             }
+            .single-line {
+                white-space: nowrap;
+            }
         </style>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
@@ -71,9 +74,9 @@
                         <table class="table" id="myTable">
                             <thead>
                             <tr>
-                                <th>Dergi İsmi</th>
-                                <th>Issn</th>
-                                <th>E-issn</th>
+                                <th style="text-align: center;">Dergi İsmi</th>
+                                <th style="text-align: center;">Issn</th>
+                                <th style="text-align: center;">E-issn</th>
                                 <th style="text-align: center;">Tüm Sayılar</th>
                                 <th style="text-align: center;">Kontrol Edilmiş Sayılar</th>
                                 <th style="text-align: center;">Hatalı Sayılar</th>
@@ -102,9 +105,9 @@
                                     {% else %}
                                     {% endfor %}
                                 <tr>
-                                <td>{{ journal.name }}</td>
-                                <td>{{ journal.issn }}</td>
-                                <td>{{ journal.eIssn }}</td>
+                                <td class="single-line">{{ journal.name }}</td>
+                                    <td class="single-line">{{ journal.issn }}</td>
+                                <td class="single-line">{{ journal.eIssn }}</td>
 
                                     <td style="text-align: center">{{ status_all_count }}</td>
                                     <td style="text-align: center">{{ status_edited_count }}</td>
@@ -112,10 +115,15 @@
 
 
                                     <td style="text-align: right">
+                                        <div style="display: inline-flex; justify-content: space-between;">
+
                                         {% if status_edited_count == status_all_count %}
                                             {% if status_all_count == 0 %}
                                                 {% else %}
-                                                    <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: 40px; text-align: center">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
+                                                    {% if  role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles or role == 'editor' %}
+
+                                                        <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: 40px; text-align: center">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
+                                            {% endif %}
                                             {% endif %}
 
                                         {% endif %}
@@ -143,6 +151,7 @@
                                                            data-target="#deleteJournalModal"
                                                            data-id="{{ journal.id }}">Sil</a>
                                                     </div>
+                                                </div>
                                                 </div>
                                             {% endif %}
 

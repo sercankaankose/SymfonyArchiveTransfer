@@ -19,6 +19,50 @@
             #deleteUserModal {
                 margin-top: 150px;
             }
+           
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .btn-secondary {
+                background-color: #6c757d;
+                color: white;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+
+            .btn-danger {
+                background-color: #dc3545;
+                color: white;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            .btn:hover {
+                opacity: 0.8;
+            }
+
+            .btn:disabled {
+                background-color: #c4c4c4;
+                color: #6c757d;
+            }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+            }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+            .btn-group .btn {
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
         </style>
 
         <div class="container">
@@ -46,24 +90,20 @@
                                 <td>{{ journal.journal.eIssn }}</td>
                                 <td style="text-align: center">
                                     {% if editor in journal.role %}
-                                    <div class="btn-group" style="text-align: center">
-                                        <a class="btn btn-dark disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Editör Rolü</a>
+                                        <div class="btn-group" style="text-align: center">
+                                            <a class="btn btn-secondary disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Editör Rolü</a>
+                                            <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px" href="#" onclick="openDeleteModal('{{ journal.id }}', 'ROLE_EDITOR')">x</a>
+                                        </div>
 
-                                        <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px"  href="#" onclick="openDeleteModal('{{ journal.id }}', 'ROLE_EDITOR')">
-                                        x</a>
-
-                                    </div>
 
                                     {% endif %}
                                 </td>
                                 <td style="text-align: center">
                                     {% if operator in journal.role %}
                                         <div class="btn-group" style="text-align: center">
-                                        <a class="btn btn-dark disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Operatör Rolü</a>
-                                            </a> <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px" href="#" onclick="openDeleteModal('{{ journal.id }}' , 'ROLE_OPERATOR')">
-                                            x</a>
+                                            <a class="btn btn-secondary disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Operatör Rolü</a>
+                                            <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px" href="#" onclick="openDeleteModal('{{ journal.id }}', 'ROLE_OPERATOR')">x</a>
                                         </div>
-
                                     {% endif %}
                                 </td>
                             </tr>

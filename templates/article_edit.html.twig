@@ -370,6 +370,7 @@
             right: 0;
             top: 0;
         }
+
     </style>
 {% endblock %}
 
@@ -386,25 +387,23 @@
 
             {% else %}
             {% endif %}
-            <div class="btn-group-lg mt-2">
-                <a class="btn btn-danger btn-lg" onclick="openDeleteModal()" style="margin-top: -10px;"
-                   data-toggle="modal" data-target="#pdfErrorModal"><i class="bi bi-exclamation-triangle-fill"></i>PDF
-                    Hatası Bildir</a>
-                {% if role == 'editor' or role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
-                    <a class="btn btn-warning btn-lg"
-                       href="{{ path('article_Pdf_Change', {'id': article.id, 'role': role}) }}"
-                       style="margin-top: -10px; color: #fff3cd; border:#373a41 solid 1px">
+            <div class="btn-group-lg mt-2 d-flex justify-content-between" style="width: 100%;">
+                <a class="btn btn-danger btn-lg flex-grow-1 m-1" onclick="openDeleteModal()" data-toggle="modal" data-target="#pdfErrorModal">
+                    <i class="bi bi-exclamation-triangle-fill"></i> PDF Hatası Bildir
+                </a>
+                {% if role == 'editor' or (role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles) %}
+                    <a class="btn btn-warning btn-lg flex-grow-1 m-1" style="color: #f3f3f3" href="{{ path('article_Pdf_Change', {'id': article.id, 'role': role}) }}">
                         <i class="bi bi-box-arrow-in-down"></i> Pdf Güncelle
                     </a>
                 {% endif %}
-                <button type="submit" name="save_and_return" class="btn btn-success btn-lg" style=" margin-top: -10px;">
-                    <i
-                            class="bi bi-file-earmark-check"></i>Kaydet
+                <button type="submit" name="save_and_return" class="btn btn-success btn-lg flex-grow-1 m-1">
+                    <i class="bi bi-file-earmark-check"></i> Kaydet
                 </button>
-                <button type="submit" name="save_and_skip" class="btn btn-success btn-lg" style="margin-top: -10px;">
-                    <i class="bi bi-file-earmark-check"></i>Kaydet ve Sonraki Makaleye Geç
+                <button type="submit" name="save_and_skip" class="btn btn-success btn-lg flex-grow-1 m-1">
+                    <i class="bi bi-file-earmark-check"></i> Kaydet ve Sonraki Makaleye Geç
                 </button>
             </div>
+
             <div class="card mt-3 mb-3">
                 <div class="row ms-3">
                     <div class="col type">

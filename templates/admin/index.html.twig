@@ -3,14 +3,41 @@
 {% block title %}Admin Paneli{% endblock %}
 
 {% block body %}
+<style>
+    .breadcrumb {
+        padding: 10px;
+    }
+    .header {
+        padding-bottom: 10px;
+    }
+    header {
+        padding-bottom: 10px;
+    }
 
+    .card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #ddd;
+        box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
     <div class="container mt-4">
 
         <div class="row">
+            {% if 'ROLE_ADMIN' in user.roles %}
 
             <div class="col-md-6">
+
                 <a href="{{ path('admin_user_management') }}" class="">
-                    <div class="card" style="background-color: #dcdcdc; border: none;">
+                    <div class="card" style="background-color:#f8f9fa;  ">
                         <div class="card-header">
                             <h2><i class="bi bi-people"></i> Kullanıcı Yönetimi</h2></div>
                         <div class="card-body">
@@ -24,21 +51,31 @@
                     </div>
                 </a>
             </div>
-
+            {% endif %}
+            {% if 'ROLE_ADMIN' in user.roles %}
             <div class="col-md-6">
+                {% else %}
+                <div class="col-md-12">
+
+                {% endif %}
+
                 <a href="{{ path('admin_journal_management') }}" class="">
-                    <div class="card" style="background-color: #dcdcdc;">
+                    <div class="card" style="background-color: #f8f9fa;">
                         <div class="card-header">
                             <h2><i class="bi bi-journals"></i>Dergi Yönetimi</h2></div>
                         <div class="card-body">
                             <a href="{{ path('admin_journal_management') }}"><h5 class="card-text"><i class="bi bi-journal"></i>Dergiler</h5></a>
+                            {% if 'ROLE_ADMIN' in user.roles %}
                             <hr>
+
                             <a href="{{ path('admin_journal_add') }}"><h5 class="card-text"><i class="bi bi-journal-plus"></i>Dergi Ekle</h5></a>
+                            {% endif %}
                         </div>
                     </div>
                 </a>
             </div>
 
+        </div>
         </div>
 
     </div>

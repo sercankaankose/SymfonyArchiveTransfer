@@ -175,7 +175,7 @@
                                         <div style="display: inline-flex; justify-content: space-between;">
 
                                             {% if issue.status == '002' %}
-                                                {% if  role != 'operator' and 'ROLE_SYSTEM_OPERATOR' not in user.roles%}
+                                                {% if  role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles or role == 'editor' %}
                                                     <a class="btn button-42"
                                                        href="{{ path('issue_export', {'id': issue.id}) }}"
                                                        style="flex: 1; margin-right: 40px">Dışa Aktar <i

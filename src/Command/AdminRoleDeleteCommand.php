@@ -13,10 +13,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'MakeAdmin',
-    description: 'Kullanıcı Admin Rolü eklendi',
+    name: 'RemoveAdmin',
+    description: 'Kullanıcıdan Admin Rolü kaldırıldı',
 )]
-class RoleCommand extends Command
+class AdminRoleDeleteCommand extends Command
 {
     private EntityManagerInterface $entityManager;
 
@@ -26,12 +26,14 @@ class RoleCommand extends Command
         $this->entityManager = $entityManager;
     }
 
+
     protected function configure(): void
     {
         $this
-            ->addArgument('email', InputArgument::REQUIRED, 'email girmeniz gerekmektedir.')
-            ->setDescription('Rol Ataması Yapıldı.')
-            ->setHelp('Bu komut maili girilen kullanıcıya admin yetkisi verir.');
+            ->addArgument('email', InputArgument::REQUIRED, 'Email adresi gereklidir.')
+            ->setDescription('Kullanıcıdan admin yetkisi kaldırılır.')
+            ->setHelp('Bu komut ile maili girilen kullanıcıdan admin yetkisi kaldırılır.');
+
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -43,14 +45,18 @@ class RoleCommand extends Command
         $user = $userRepository->findOneBy(['email' => $email]);
 
         if ($user) {
-            $user->setIsAdmin(true);
-            $user->addRoles($role);
-            $user->addRoles($rolesystem);
+            $user->setIsAdmin(false);
+            if ($role) {
+                $user->removeRole($role);
+            }
+            if ($rolesystem) {
+                $user->removeRole($rolesystem);
+            }
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $output->writeln($email .' Kullanıcısı Admin yetkisi aldı');
+            $output->writeln($email .' Kullanıcısından admin yetkisi kaldırıldı');
         } else {
-            $output->writeln( $email . ' Kullanıcı bulunamadı.');
+            $output->writeln($email . ' Kullanıcı bulunamadı.');
         }
 
         return Command::SUCCESS;

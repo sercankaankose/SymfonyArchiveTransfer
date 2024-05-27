@@ -387,19 +387,19 @@ class IssueArticleEditController extends AbstractController
 
 
 // sayı listesi
-    #[Route('/journal/{id}/issues', name: 'journal_issues')]
+    #[Route('/admin/journal/{id}/issues', name: 'journal_issues')]
     public function journalIssues($id, FactoryInterface $factory, Security $security,): Response
     {
         $journal = $this->entityManager->getRepository(Journal::class)->find($id);
         $user = $this->security->getUser();
+
         if (!$journal) {
             $this->addFlash('danger', 'Dergi Bulunamadı.');
             if (in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_ADMIN)) {
                 return $this->redirectToRoute('admin_journal_management');
-            } else {
-                return $this->redirectToRoute('app_homepage');
             }
         }
+
         $breadcrumb = $this->breadcrumbService->createJournalIssueBreadcrumb($factory, $journal->getName());
         $issues = $this->entityManager->getRepository(Issues::class)->findBy([
             'journal' => $journal
@@ -419,6 +419,8 @@ class IssueArticleEditController extends AbstractController
     #[Route('/{role}/journal/{id}/issue/add', name: 'journal_issue_add')]
     public function issueAdd($id, Request $request, FactoryInterface $factory, $role): Response
     {
+        $user = $this->security->getUser();
+
         $journal = $this->entityManager->getRepository(Journal::class)->find($id);
         $journalname = $journal->getName();
         if ($role == 'admin') {
@@ -426,6 +428,12 @@ class IssueArticleEditController extends AbstractController
         } else {
             $breadcrumb = $this->breadcrumbService->createEditorIssueAddBreadcrumb($factory, $journalname, $id);
         }
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
+
         $newissue = new Issues();
         $newissue->setJournal($journal);
         $this->entityManager->persist($newissue);
@@ -494,6 +502,13 @@ class IssueArticleEditController extends AbstractController
         $journal = $issue->getJournal();
         $journalname = $journal->getName();
         $journalId = $journal->getId();
+        $user = $this->security->getUser();
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
         if ($role == 'admin') {
             $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
 
@@ -538,6 +553,13 @@ class IssueArticleEditController extends AbstractController
         $journalname = $journal->getName();
         $journalId = $journal->getId();
         $issueId = $issue->getId();
+        $user = $this->security->getUser();
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
         if ($role == 'admin') {
             $breadcrumb = $this->breadcrumbService->createIssueEditBreadcrumb($factory, $journalname, $journalId);
 
@@ -611,7 +633,15 @@ class IssueArticleEditController extends AbstractController
     public function deleteIssue($id, $role): Response
     {
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+        $journal = $issue->getJournal();
 
+    $user = $this->security->getUser();
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
         if (!$issue) {
             $this->addFlash('danger', 'Sayı bulunamadı.');
             return $this->redirectToRoute('journal_issues');
@@ -1289,7 +1319,7 @@ class IssueArticleEditController extends AbstractController
         $issue = $article->getIssue();
         $journal = $article->getJournal();
         if (!$article) {
-            throw $this->createNotFoundException('Makale bulunamadı: ' . $id);
+            throw $this->createNotFoundException('Makale bulunamadı: ');
         }
         if (!$journal && !$issue && !$article) {
             $this->addFlash('danger', 'Dergi, sayı veya makale hatalı.');
@@ -1304,6 +1334,15 @@ class IssueArticleEditController extends AbstractController
         } else {
             throw $this->createNotFoundException('rol bulunamadı');
         }
+        $user = $this->security->getUser();
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+        $hasOperatorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_OPERATOR);
+
+        if ($hasEditorRole == false && $hasOperatorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
+
         $path = 'var' . '/' . 'journal' . '/' . $journal->getId() . '/' . $issue->getId();
         $pdfFileName = trim($article->getFulltext(), $path);
         $pdfFileName = $article->getFulltext();
@@ -1417,17 +1456,19 @@ class IssueArticleEditController extends AbstractController
                 $this->entityManager->persist($issue);
                 $this->entityManager->flush();
                 $this->addFlash('success', 'Tüm Makaleler Güncellendi.');
-                if ($role == 'admin') {
-                    return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
-                } elseif ($role == 'editor') {
-                    return $this->redirectToRoute('editor_journal_issues', ['id' => $journal->getId()]);
-                } else {
-                    return $this->redirectToRoute('operator_journal_issues', ['id' => $journal->getId()]);
-                }
+//                if ($role == 'admin') {
+//                    return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+//                } elseif ($role == 'editor') {
+//                    return $this->redirectToRoute('editor_journal_issues', ['id' => $journal->getId()]);
+//                } else {
+//                    return $this->redirectToRoute('operator_journal_issues', ['id' => $journal->getId()]);
+//                }
+            }else{
+                $this->addFlash('success', 'Makale bilgileri güncellendi.');
+
             }
             $this->entityManager->persist($issue);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Makale bilgileri güncellendi.');
 
             if ($request->request->has('save_and_skip')) {
 
@@ -1493,6 +1534,13 @@ class IssueArticleEditController extends AbstractController
             $breadcrumb = $this->breadcrumbService->createArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
         } else {
             $breadcrumb = $this->breadcrumbService->createEditorArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), 'Yeni Makale Ekle');
+        }
+        $user = $this->security->getUser();
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false  && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
 
         $newArticle = new Articles();
@@ -1587,6 +1635,13 @@ class IssueArticleEditController extends AbstractController
         } else {
             $breadcrumb = $this->breadcrumbService->createEditorArticleAddBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId(), 'PDF değiştir');
 
+        }
+        $user = $this->security->getUser();
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false  && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
         $form = $this->createForm(ArticleFulltextAddFormType::class);
         $form->handleRequest($request);
@@ -1769,11 +1824,18 @@ class IssueArticleEditController extends AbstractController
     {
         $article = $this->entityManager->getRepository(Articles::class)->find($id);
         $issue = $article->getIssue();
+        $journal = $article->getJournal();
         $translations = $article->getTranslations();
         $translators = $article->getTranslators();
         $authors = $article->getAuthors();
         $citations = $article->getCitations();
+        $user = $this->security->getUser();
 
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false  && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
         foreach ($translations as $translation) {
             $this->entityManager->remove($translation);
         }
