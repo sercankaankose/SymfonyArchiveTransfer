@@ -55,6 +55,7 @@
             .single-line {
                 white-space: nowrap;
             }
+
         </style>
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
@@ -67,114 +68,111 @@
 
                 </div>
             </div>
-            <div class="card shadow-lg " style="font-size: 20px;">
-                <div class="card-body">
+            <div class="container_table card  card shadow-lg" >
+            <div class="card-body" >
+                <table class="table" id="myTable">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;">Dergi İsmi</th>
+                        <th style="text-align: center;">Issn</th>
+                        <th style="text-align: center;">E-issn</th>
+                        <th style="text-align: center;">Tüm Sayılar</th>
+                        <th style="text-align: center;">Kontrol Edilmiş Sayılar</th>
+                        <th style="text-align: center;">Hatalı Sayılar</th>
+                        <th style="text-align: right; "></th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                    <div class="container_table" style="overflow: hidden;">
-                        <table class="table" id="myTable">
-                            <thead>
-                            <tr>
-                                <th style="text-align: center;">Dergi İsmi</th>
-                                <th style="text-align: center;">Issn</th>
-                                <th style="text-align: center;">E-issn</th>
-                                <th style="text-align: center;">Tüm Sayılar</th>
-                                <th style="text-align: center;">Kontrol Edilmiş Sayılar</th>
-                                <th style="text-align: center;">Hatalı Sayılar</th>
-                                <th style="text-align: right; "></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            {% for journal in journals %}
+                    {% for journal in journals %}
 
 
+                        {% set status_all_count = 0 %}
+                        {% set status_editRequired_count = 0 %}
+                        {% set status_edited_count = 0 %}
+                        {% set status_error_count = 0 %}
+
+                        {% for issue in journal.issues %}
+                            {% set status_all_count = status_all_count + 1 %}
+                            {% if issue.status == '001' %}
+                                {% set status_editRequired_count = status_editRequired_count + 1 %}
+                            {% elseif issue.status == '002' %}
+                                {% set status_edited_count = status_edited_count + 1 %}
+                            {% elseif issue.status == '003' %}
+                                {% set status_error_count = status_error_count + 1 %}
+                            {% endif %}
+                        {% else %}
+                        {% endfor %}
+                        <tr>
+                            <td class="single-line">{{ journal.name }}</td>
+                            <td class="single-line">{{ journal.issn }}</td>
+                            <td class="single-line">{{ journal.eIssn }}</td>
+
+                            <td style="text-align: center">{{ status_all_count }}</td>
+                            <td style="text-align: center">{{ status_edited_count }}</td>
+                            <td style="text-align: center">{{ status_error_count }}</td>
+
+
+                            <td style="text-align: right">
+                                <div style="display: inline-flex; justify-content: space-between;">
+
+                                    {% if status_edited_count == status_all_count %}
+                                        {% if status_all_count == 0 %}
+                                        {% else %}
+                                            {% if  role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles or role == 'editor' %}
+
+                                                <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: 40px; text-align: center">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
+                                            {% endif %}
+                                        {% endif %}
+
+                                    {% endif %}
                                     {% set status_all_count = 0 %}
-                                    {% set status_editRequired_count = 0 %}
                                     {% set status_edited_count = 0 %}
                                     {% set status_error_count = 0 %}
 
-                                    {% for issue in journal.issues %}
-                                            {% set status_all_count = status_all_count + 1 %}
-                                        {% if issue.status == '001' %}
-                                            {% set status_editRequired_count = status_editRequired_count + 1 %}
-                                        {% elseif issue.status == '002' %}
-                                            {% set status_edited_count = status_edited_count + 1 %}
-                                        {% elseif issue.status == '003' %}
-                                            {% set status_error_count = status_error_count + 1 %}
-                                        {% endif %}
-                                    {% else %}
-                                    {% endfor %}
-                                <tr>
-                                <td class="single-line">{{ journal.name }}</td>
-                                    <td class="single-line">{{ journal.issn }}</td>
-                                <td class="single-line">{{ journal.eIssn }}</td>
-
-                                    <td style="text-align: center">{{ status_all_count }}</td>
-                                    <td style="text-align: center">{{ status_edited_count }}</td>
-                                    <td style="text-align: center">{{ status_error_count }}</td>
-
-
-                                    <td style="text-align: right">
-                                        <div style="display: inline-flex; justify-content: space-between;">
-
-                                        {% if status_edited_count == status_all_count %}
-                                            {% if status_all_count == 0 %}
-                                                {% else %}
-                                                    {% if  role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles or role == 'editor' %}
-
-                                                        <a class="btn button-42" href="{{ path('journal_export', {'id': journal .id}) }}" style="flex: 1; margin-right: 40px; text-align: center">Dışa Aktar<i class="bi bi-filetype-xml"></i></a>
-                                            {% endif %}
-                                            {% endif %}
-
-                                        {% endif %}
-                                        {% set status_all_count = 0 %}
-                                        {% set status_edited_count = 0 %}
-                                        {% set status_error_count = 0 %}
-
-                                        <div style="display: inline-flex; justify-content: space-between;">
-                                            <a href="{{ path('journal_issues', {'id': journal.id}) }}"
-                                               class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
-                                            {% if 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
-                                                <div class="dropdown" style="border-radius: 3px">
-                                                    <button class="btn btn-secondary dropdown-toggle" style="border-radius: 3px; margin-left: 1px" type="button"
-                                                            id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">
-                                                        <i class="bi bi-three-dots"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item"
-                                                           href="{{ path('admin_journal_edit', {'id': journal.id,'role': role}) }}">Düzenle</a>
-                                                        <a class="dropdown-item" type="button" href="#"
-                                                           data-bs-toggle="modal"
-                                                           onclick="openDeleteModal({{ journal.id }})"
-                                                           data-bs-target="#deleteJournalModal"
-                                                           data-target="#deleteJournalModal"
-                                                           data-id="{{ journal.id }}">Sil</a>
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            {% endif %}
-
-
+                                    <div style="display: inline-flex; justify-content: space-between;">
+                                        <a href="{{ path('journal_issues', {'id': journal.id}) }}"
+                                           class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
+                                        {% if 'ROLE_SYSTEM_OPERATOR' not in user.roles %}
+                                        <div class="dropdown" style="border-radius: 3px">
+                                            <button class="btn btn-secondary dropdown-toggle" style="border-radius: 3px; margin-left: 1px" type="button"
+                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item"
+                                                   href="{{ path('admin_journal_edit', {'id': journal.id,'role': role}) }}">Düzenle</a>
+                                                <a class="dropdown-item" type="button" href="#"
+                                                   data-bs-toggle="modal"
+                                                   onclick="openDeleteModal({{ journal.id }})"
+                                                   data-bs-target="#deleteJournalModal"
+                                                   data-target="#deleteJournalModal"
+                                                   data-id="{{ journal.id }}">Sil</a>
+                                            </div>
                                         </div>
-                                    </td>
+                                    </div>
+                                    {% endif %}
 
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="3">Dergi Bulunamadı...</td>
-                                    <td colspan="3"></td>
-                                    <td colspan="3"></td>
-                                    <td colspan="3"></td>
-                                    <td colspan="3"></td>
-                                    <td colspan="3"></td>
-                                    <td colspan="3"></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Dergi Bulunamadı...</td>
+                            <td colspan="3"></td>
+                            <td colspan="3"></td>
+                            <td colspan="3"></td>
+                            <td colspan="3"></td>
+                            <td colspan="3"></td>
+                            <td colspan="3"></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             </div>
         </div>
         <div class="modal fade" id="deleteJournalModal" tabindex="-1" role="dialog"
