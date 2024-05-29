@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<journal>
+  <issue>
+    <article article-type="54" dtd-version="1.0">
+      <front>
+        <article-meta>
+          <article-id pub-id-type="doi"/>
+          <title-group>
+            <article-title>Başlık Ekleyiniz</article-title>
+          </title-group>
+          <contrib-group/>
+          <volume/>
+          <issue>1</issue>
+          <fpage>5</fpage>
+          <lpage>15</lpage>
+          <abstract>
+            <p/>
+          </abstract>
+          <kwd-group xml:lang="English"/>
+        </article-meta>
+      </front>
+      <back>
+        <ref-list/>
+      </back>
+    </article>
+  </issue>
+</journal>
