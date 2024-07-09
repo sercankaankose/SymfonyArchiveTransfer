@@ -49,7 +49,9 @@ class AdminController extends AbstractController
     {
         $user = $this->security->getUser();
         $breadcrumb = $this->breadcrumbService->createAdminDashboardBreadcrumb();
-
+//        if ($user->getRoles() !== RoleParam::ROLE_ADMIN) {
+//            $this->redirectToRoute('admin_journal_management');
+//        }
         return $this->render('admin/index.html.twig', [
             'breadcrumb' => $breadcrumb,
             'user' => $user,
@@ -482,7 +484,7 @@ class AdminController extends AbstractController
     }
 
 
-//    Dergi Silme Func
+//   dergi silme Func
     #[Route('/admin/journal/delete/{id}', name: 'admin_journal_delete')]
     public function journalDeleteFunc($id): Response
     {
@@ -493,6 +495,11 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin_journal_management');
         }
         $issues = $journal->getIssues();
+        $journalUsers = $journal->getJournalUsers();
+        foreach ($journalUsers as $journalUser) {
+            $this->entityManager->remove($journalUser);
+            $this->entityManager->flush($journalUser);
+        }
         foreach ($issues as $issue) {
             $articles = $issue->getArticles();
             $xmlFilePath = $issue->getXml();
@@ -550,7 +557,6 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('admin_journal_management');
     }
-
 
 }
 

@@ -29,8 +29,8 @@ class Articles
 //    #[Assert\NotBlank(message: 'Birincil Dil Boş Olamaz')]
     private ?string $primary_language = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Tam metin boş olamaz')]
+    #[ORM\Column(length: 255, nullable: true)]
+//    #[Assert\NotBlank(message: 'Tam metin boş olamaz')]
     private ?string $fulltext = null;
 
     #[ORM\Column(nullable: true)]

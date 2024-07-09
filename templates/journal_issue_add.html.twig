@@ -13,6 +13,7 @@
             flex: 1;
             margin-right: 10px;
         }
+
         .breadcrumb {
             list-style: none;
             padding: 0;
@@ -20,60 +21,208 @@
             text-align: center;
         }
 
+        .checkbox-wrapper-64 input[type="checkbox"] {
+            visibility: hidden;
+            display: none;
+        }
+
+        .checkbox-wrapper-64 *,
+        .checkbox-wrapper-64 ::after,
+        .checkbox-wrapper-64 ::before {
+            box-sizing: border-box;
+        }
+
+        /* The switch - the box around the slider */
+        .checkbox-wrapper-64 .switch {
+            font-size: 17px;
+            position: relative;
+            display: inline-block;
+            width: 3.5em;
+            height: 2em;
+        }
+
+        /* Hide default HTML checkbox */
+        .checkbox-wrapper-64 .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .checkbox-wrapper-64 .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border: 1px solid #adb5bd;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .checkbox-wrapper-64 .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.4em;
+            width: 1.4em;
+            border-radius: 20px;
+            left: 0.27em;
+            bottom: 0.25em;
+            background-color: #adb5bd;
+            transition: .4s;
+        }
+
+        .checkbox-wrapper-64 input:checked + .slider {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+        }
+
+        .checkbox-wrapper-64 input:focus + .slider {
+            box-shadow: 0 0 1px #007bff;
+        }
+
+        .checkbox-wrapper-64 input:checked + .slider:before {
+            transform: translateX(1.4em);
+            background-color: #fff;
+        }
+        .custom-form-group {
+            display: flex;
+            align-items: center;
+        }
+        .custom-form-group .form-label {
+            margin-right: 1rem; /* Label ile widget arasındaki boşluk */
+        }
     </style>
     <div class="container">
-    <div class="row justify-content-center">
-        <div style="text-align: right;">
+        <div class="row justify-content-center">
+            <div style="text-align: right;">
 
-            <h1 class="text-center "> {{ name }} </h1>
-        </div>
-        <div class="col-md-6">
+                <h1 class="text-center "> {{ name }} </h1>
+            </div>
+            <div class="col-md-6">
 
-            <div class="card d-flex"
-                 style="background-color: #f2f2f2; max-height: 900px;  width: 100%; ">
+                <div class="card d-flex"
+                     style="background-color: #f2f2f2; max-height: 900px;  width: 100%; ">
 
-                <div class="card-body" style="font-size: 20px">
+                    <div class="card-body" style="font-size: 20px">
 
-                    {{ form_start(form) }}
+                        {{ form_start(form) }}
 
-                    <div class="mb-3">
-                        {{ form_label(form.year, 'Yıl', {'label_attr': {'class': 'form-label'}}) }}*
-                        {{ form_widget(form.year, {'attr': {'class': 'form-control custom-inline-form-element' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.year) }}
+                        <div class="mb-3 dynamic-field">
+                            {{ form_label(form.year, 'Yıl', {'label_attr': {'class': 'form-label'}}) }}*
+                            {{ form_widget(form.year, {'attr': {'class': 'form-control custom-inline-form-element' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
+                            {{ form_errors(form.year) }}
+                        </div>
+                        <div class="mb-3 dynamic-field">
+                            {{ form_label(form.volume, 'Cilt', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.volume, {'attr': {'class': 'form-control' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
+                            {{ form_errors(form.volume) }}
+                        </div>
+
+                        <div class="mb-3 dynamic-field">
+                            {{ form_label(form.number, 'Sayı', {'label_attr': {'class': 'form-label'}}) }}*
+                            {{ form_widget(form.number, {'attr': {'class': 'form-control' ~ (form_errors(form.number)|length ? ' is-invalid' : '')}}) }}
+                            {{ form_errors(form.number) }}
+                        </div>
+                        <br>
+                        <div class="mb-3 custom-form-group">
+                            {{ form_label(form.special, 'Özel Sayı', {'label_attr': {'class': 'form-label'}}) }}
+                            <div class="checkbox-wrapper-64">
+                                <label class="switch">
+                                    {{ form_widget(form.special, {'attr': {'class': 'custom-checkbox', 'style': 'display:none;' }}) }}
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            {{ form_errors(form.special) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.xml, 'XML', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.xml, {'attr': {'class': 'form-control' ~ (form_errors(form.xml)|length ? ' is-invalid' : '')}}) }}
+                            {{ form_errors(form.xml) }}
+                        </div>
+
+                        <div style="text-align: right">
+                            <button type="submit" class="btn btn-primary btn-lg ms-4">{{ button }}</button>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        {{ form_label(form.volume, 'Cilt', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.volume, {'attr': {'class': 'form-control' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.volume) }}
-                    </div>
 
-                    <div class="mb-3">
-                        {{ form_label(form.number, 'Sayı', {'label_attr': {'class': 'form-label'}}) }}*
-                        {{ form_widget(form.number, {'attr': {'class': 'form-control' ~ (form_errors(form.number)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.number) }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_label(form.xml, 'Xml', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.xml, {'attr': {'class': 'form-control' ~ (form_errors(form.xml)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.xml) }}
-                    </div>
-
-{#                    <div class="mb-3">#}
-{#                        {{ form_label(form.fulltext, 'Tam Metin', {'label_attr': {'class': 'form-label'}}) }}#}
-{#                        {{ form_widget(form.fulltext, {'attr': {'class': 'form-control' ~ (form_errors(form.fulltext)|length ? ' is-invalid' : '')}}) }}#}
-{#                        {{ form_errors(form.fulltext) }}#}
-{#                    </div>#}
-
-                    <div style="text-align: right">
-                        <button type="submit" class="btn btn-primary btn-lg">{{button}}</button>
-                    </div>
+                    {{ form_end(form) }}
                 </div>
-
-                {{ form_end(form) }}
             </div>
         </div>
     </div>
 
 
 {% endblock %}
+        {% block javascripts %}
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            {#                        <script> #}
+            {#                            $(document).ready(function() { #}
+            {#                                function toggleFields() { #}
+            {#                                    if ($('#form_many').is(':checked')) { #}
+            {#                                        $('.mb-3').not(':has(#form_many)').fadeOut(); #}
+            {#                                    } else { #}
+            {#                                        $('.mb-3').not(':has(#form_many)').fadeIn(); #}
+            {#                                    } #}
+            {#                                } #}
+
+            {#                                $('#issues_form_many').change(function() { #}
+            {#                                    toggleFields(); #}
+            {#                                }); #}
+
+            {#                                // Initialize the form #}
+            {#                                toggleFields(); #}
+            {#                            }); #}
+            {#                        </script> #}
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const manyCheckbox = document.getElementById('issues_form_many');
+                    const dynamicFields = document.querySelectorAll('.dynamic-field');
+
+                    function fadeOut(element) {
+                        element.style.transition = "opacity 0.5s";
+                        element.style.opacity = "0";
+                        setTimeout(function () {
+                            element.style.display = "none";
+                        }, 500);
+                    }
+
+                    function fadeIn(element) {
+                        element.style.display = "block";
+                        element.style.transition = "opacity 0.5s";
+                        element.style.opacity = "1";
+                    }
+
+                    function toggleFields() {
+                        if (manyCheckbox.checked) {
+                            dynamicFields.forEach(field => fadeOut(field));
+                        } else {
+                            dynamicFields.forEach(field => fadeIn(field));
+                        }
+                    }
+
+                    toggleFields();
+
+                    manyCheckbox.addEventListener('change', toggleFields);
+                });
+
+            </script>
+
+
+
+            {# <script> #}
+            {#                $('#articleType').on('input', function () { #}
+            {#                    var articleType = $(this).val(); #}
+
+            {#                    if ($('#form_many').is(':checked')) { #}
+            {#                        $('.mb-3').fadeIn(); #}
+            {#                    } else { #}
+            {#                        $('.mb-3').fadeOut(); #}
+            {#                    } #}
+            {#                }); #}
+            {#            </script> #}
+        {% endblock %}

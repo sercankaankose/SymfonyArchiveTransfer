@@ -22,11 +22,12 @@ class Issues
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $year = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $volume = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $volume = null;
 
-    #[ORM\Column]
-    private ?int $number = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $number = null;
+
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fulltext = null;
@@ -42,6 +43,9 @@ class Issues
 
     #[ORM\Column(nullable: true)]
     private ?array $errors = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $special = null;
 
     public function __construct()
     {
@@ -77,29 +81,30 @@ class Issues
         return $this;
     }
 
-    public function getVolume(): ?int
+    public function getVolume(): ?string
     {
         return $this->volume;
     }
 
-    public function setVolume(?int $volume): static
+    public function setVolume(?string $volume): static
     {
         $this->volume = $volume;
 
         return $this;
     }
 
-    public function getNumber(): ?int
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setNumber(int $number): static
+    public function setNumber(string $number): static
     {
         $this->number = $number;
 
         return $this;
     }
+
 
     public function getFulltext(): ?string
     {
@@ -175,6 +180,18 @@ class Issues
     public function setErrors(?array $errors): static
     {
         $this->errors = $errors;
+
+        return $this;
+    }
+
+    public function isSpecial(): ?bool
+    {
+        return $this->special;
+    }
+
+    public function setSpecial(?bool $special): static
+    {
+        $this->special = $special;
 
         return $this;
     }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<journal>
+  <issue>
+    <article article-type="54" dtd-version="1.0">
+      <front>
+        <article-meta>
+          <article-id pub-id-type="doi"/>
+          <title-group>
+            <article-title>al git ver durr</article-title>
+          </title-group>
+          <contrib-group/>
+          <volume>1</volume>
+          <issue>11</issue>
+          <fpage>15</fpage>
+          <lpage>151</lpage>
+          <abstract>
+            <p/>
+          </abstract>
+          <kwd-group xml:lang="English"/>
+        </article-meta>
+      </front>
+      <back>
+        <ref-list/>
+      </back>
+    </article>
+  </issue>
+  <issue>
+    <article article-type="54" dtd-version="1.0">
+      <front>
+        <article-meta>
+          <article-id pub-id-type="doi"/>
+          <title-group>
+            <article-title>Başlık Ekleyinizasdga</article-title>
+          </title-group>
+          <contrib-group/>
+          <volume>1</volume>
+          <issue>111</issue>
+          <fpage>1</fpage>
+          <lpage>41</lpage>
+          <abstract>
+            <p/>
+          </abstract>
+          <kwd-group xml:lang="English"/>
+        </article-meta>
+      </front>
+      <back>
+        <ref-list/>
+      </back>
+    </article>
+  </issue>
+</journal>

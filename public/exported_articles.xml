@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<articles>
+  <article article-type="54" dtd-version="1.0">
+    <front>
+      <article-meta>
+        <article-id pub-id-type="doi"/>
+        <title-group>
+<<<<<<< HEAD
+          <article-title>Using of positive psychology on psychological counseling and guidance contexton character strength and preventive services</article-title>
+          <trans-title-group xml:lang="Türkçe">
+            <trans-title>Pozitif psikolojinin psikolojik danışmanlık ve rehberlik alanında gelişimsel ve önleyici hizmetler bağlamında kullanılması</trans-title>
+          </trans-title-group>
+        </title-group>
+        <contrib-group>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Eryılmaz</surname>
+              <given-names>Ali</given-names>
+            </name>
+            <aff>Eskişehir Osmangazi Üniversitesi Eğitim Fakültesi Psikolojik Danışmanlık ve Rehberlik A.B.D,</aff>
+            <email>erali76@hotmail.com</email>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+        </contrib-group>
+        <history>
+          <date date-type="received" iso-8601-date="2011-12-19">
+            <day>19</day>
+            <month>12</month>
+            <year>2011</year>
+          </date>
+          <date date-type="accepted" iso-8601-date="2011-12-19">
+            <day>19</day>
+            <month>12</month>
+            <year>2011</year>
+          </date>
+        </history>
+        <volume/>
+        <issue>1</issue>
+        <fpage>1</fpage>
+        <lpage>22</lpage>
+        <trans-abstract xml:lang="Türkçe">
+          <p>Pozitif psikoloji, gelişimini sürdürürken pek çok disiplin alanına katkılar sunmaktadır. Psikolojik danışmanlıkve rehberlik (PDR) de bu alanlardan biridir. Bu çalışmada öncelikle pozitif psikolojinin temel kavramları,karakter güçlendirme ve önleyicilik konuları ele alınmıştır. Daha sonra pozitif psikoloji bağlamında eğitim vePDR hizmetleri değerlendirilmiştir. Karakter güçlendirme ve önleyicilik bağlamında pozitif psikolojinin,PDR hizmetlerinde kullanılması konusuna değinilmiştir. Sonuç olarak psikolojik danışmanlar; bireylerinustalaşma ve olumlu duygular yaşamalarında, yeteneklerinin ve güçlü yanlarının geliştirilmesinde,pekiştirilmesinde ve bunların yaşama aktarılmasında önemli birer köşe taşı konumundadırlar. Bu süreçtepozitif psikoloji bilgileri ve bulguları onlar için değerli birer araç olabilir.</p>
+        </trans-abstract>
+        <abstract>
+          <p>While development of positive psychology goes forward, it provides substantial contribution many scientificdisciplines. Psychological counseling is also example of these disciplines. In this study, the constructs ofpositive psychology is mentioned. Then, using of positive psychology at counseling, group based counselingactivities, consultancy are explained. In addition these, positive psychology is investigated with respect topreventive counseling. As a result, counselors are important cornerstones for strengthening of individuals’capabilities and potentialities, and also experiencing positive emotions and mastering. In this process, positivepsychology seems as a powerful means.</p>
+        </abstract>
+        <kwd-group xml:lang="Türkçe">
+          <kwd>Pozitif psikoloji</kwd>
+          <kwd>psikolojik danışmanlık</kwd>
+          <kwd>önleyici psikolojik danışma hizmetleri</kwd>
+        </kwd-group>
+        <kwd-group xml:lang="English">
+          <kwd>Positive psychology</kwd>
+          <kwd>counseling</kwd>
+          <kwd>preventive counseling</kwd>
+        </kwd-group>
+      </article-meta>
+    </front>
+    <back>
+      <ref-list>
+        <ref id="ref1">
+          <label>1</label>
+          <mixed-citation>Akın-Little, K.A., &amp; Little, S.G. (2004). A preventative model of school consultation: Incorporatıngperspectives from positive psychology. Psychology in the Schools, 41(1), 155-162.</mixed-citation>
+        </ref>
+        <ref id="ref2">
+          <label>2</label>
+          <mixed-citation>Alikaşifoglu, M., Ercan, O., Erginöz, E., &amp; Kaymak, D. A. (2004). Violent behavior among Turkish highschool students and correlate of physical fighting. European Journal of Public Health, 14(2), 173-177.</mixed-citation>
+        </ref>
+        <ref id="ref3">
+          <label>3</label>
+          <mixed-citation>Aydın, K. B. (2005). Akış kuramına dayalı stresle başa çıkma grup programının ergenlerin stresle başaçıkma stratejilerine etkisi. Yayınlanmamış doktora tezi, Ankara Üniversitesi Eğitim BilimleriEnstitüsü, Eğitim Bilimleri Anabilim Dalı Ankara: Türkiye.</mixed-citation>
+        </ref>
+        <ref id="ref4">
+          <label>4</label>
+          <mixed-citation>Aydın, A. (2006). Ergenlerde sosyal anksiyete belirtilerini azaltmaya yönelik bilişsel davranışçı birmüdahale programının etkililiğinin değerlendirilmesi. Yayınlanmamış Doktora Tezi, Ege ÜniversitesiSosyal Bilimler enstitüsü Bilimleri Enstitüsü.</mixed-citation>
+        </ref>
+        <ref id="ref5">
+          <label>5</label>
+          <mixed-citation>Bambara, L. M., &amp; Kern, L. (2005). Individualized supports for students with problem behaviors. New York:The Guilford Press.</mixed-citation>
+        </ref>
+        <ref id="ref6">
+          <label>6</label>
+          <mixed-citation>Barton, W.M. (2006). Incorporating the strengths perspective into intensive juvenile aftercare. WesternCriminology Review, 7(2), 48-61.</mixed-citation>
+        </ref>
+        <ref id="ref7">
+          <label>7</label>
+          <mixed-citation>Baumeister, RF, Vohs K.D. (2002). The pursuit of meaningfulness in life. İçinde C.R.Snyder,S.J. Lopez(Eds.), Handbook of positive psychology (syf. 608–618) New York: Oxford University Press.</mixed-citation>
+        </ref>
+        <ref id="ref8">
+          <label>8</label>
+          <mixed-citation>Bennett, D.S., &amp; Gibbons, T.A. (2000). Efficacy of child cognitive-behavioral interventions for antisocialbehavior: A meta-analysis. Child &amp; Family Behavior Therapy, 22(1), 1-15.</mixed-citation>
+        </ref>
+        <ref id="ref9">
+          <label>9</label>
+          <mixed-citation>Benard, B. (2004). Resiliency: What we have learned. San Francisco: West Ed.</mixed-citation>
+        </ref>
+        <ref id="ref10">
+          <label>10</label>
+          <mixed-citation>Benard, B., &amp; Slade, S. (2009). Listening to students: Moving from resilience research to youth developmentpractice and school connectedness. İçinde R. Gilman, E. S. Huebner, &amp; M. J. Furlong (Eds.),Handbook of positive psychology in the schools (syf. 353-370). New York: Routledge.</mixed-citation>
+        </ref>
+        <ref id="ref11">
+          <label>11</label>
+          <mixed-citation>Blackman, G., Ostrander, R., &amp; Herman, K.C. (2005). Children with ADHD and depression: A multi-source,multi-method assessment of clinical, social and academic functioning. Journal of Attention Disorders,8, 195-207.</mixed-citation>
+        </ref>
+        <ref id="ref12">
+          <label>12</label>
+          <mixed-citation>Brickman, P., &amp; Campbell, D.T. (1971). Hedonic relativism and planning good society. In M.H. Appley(Ed.), Adaptation-level theory (pp.287-305). New York: Academic Press.</mixed-citation>
+        </ref>
+        <ref id="ref13">
+          <label>13</label>
+          <mixed-citation>Bugay, A. &amp; Demir, A. (2012). Affetme Arttırılabilinir mi? Affetmeyi Geliştirme Grubu Türk PsikolojikDanışma ve Rehberlik Dergisi, 4(37), 96-106.</mixed-citation>
+        </ref>
+        <ref id="ref14">
+          <label>14</label>
+          <mixed-citation>Caplan, G. (1964). Principles of preventative psychology. New York: Basic Books.</mixed-citation>
+        </ref>
+        <ref id="ref15">
+          <label>15</label>
+          <mixed-citation>Chafouleas, S.M., &amp; Bray, M.A. (2004). Introducing positive psychology: Finding its place within schoolpsychology. Psychology in the Schools, 41, 1-6</mixed-citation>
+        </ref>
+        <ref id="ref16">
+          <label>16</label>
+          <mixed-citation>Corey, G. (2000). Theory &amp; practice of group counseling (5. Baskı.). New York: Wadsworth/ThomsonLearning.</mixed-citation>
+        </ref>
+        <ref id="ref17">
+          <label>17</label>
+          <mixed-citation>Csikszentmihalyi, M. (1990). Flow: The psychology of optimal experience. New York: Harper &amp; Row.</mixed-citation>
+        </ref>
+        <ref id="ref18">
+          <label>18</label>
+          <mixed-citation>Davis, A. S., Kruczek, T., &amp; McIntosh, D. E. (2006). Understanding and treating psychopathology in schools:Introduction to the special issue. Psychology in the Schools, 43(4), 413-417.</mixed-citation>
+        </ref>
+        <ref id="ref19">
+          <label>19</label>
+          <mixed-citation>Deci, E.L., Koestner, R., &amp; Ryan, R.M. (1999). A meta-analytic review of experiments examining the effectsof extrinsic rewards on intrinsic motivation. Psychological Bulletin, 125, 627– 668.</mixed-citation>
+        </ref>
+        <ref id="ref20">
+          <label>20</label>
+          <mixed-citation>Deniz, M. E. &amp; Işık, E. (2010). Positive and negative affect, life satisfaction, and coping with stress byattachment styles in Turkish students. Psychological Reports, 107(2), 480-490.</mixed-citation>
+        </ref>
+        <ref id="ref21">
+          <label>21</label>
+          <mixed-citation>Dilmaç, B. ve Bozgeyikli, H. (2009). Öğretmen adaylarının öznel iyi olma ve karar verme stillerininincelenmesi. Erzincan Eğitim Fakültesi Dergisi, 11(1), 181-197.</mixed-citation>
+        </ref>
+        <ref id="ref22">
+          <label>22</label>
+          <mixed-citation>Doğan, S. (2000). Psikolojik danısman egitiminde akreditasyonun gereği ve bir model önerisi. Türk PsikolojikDanısma ve Rehberlik Dergisi, 2(14), 31-38.</mixed-citation>
+        </ref>
+        <ref id="ref23">
+          <label>23</label>
+          <mixed-citation>Doğan, S. (2001). Psikolojik danışma ve rehberlik lisans programlarının yeniden yapılandırılması için çağrı.VI.Ulusal PDR Kongresi’nde sunulan bildiri, Bildiri Özetleri Kitabı.</mixed-citation>
+        </ref>
+        <ref id="ref24">
+          <label>24</label>
+          <mixed-citation>Duran, Ö., &amp; Eldeleklioğlu, J. (2005). Öfke kontrol programının 15-18 yaş arası ergenler üzerindekietkililiğinin araştırılması. Gazi Üniversitesi Eğitim Fakültesi Dergisi, 25(3), 267-280.</mixed-citation>
+        </ref>
+        <ref id="ref25">
+          <label>25</label>
+          <mixed-citation>Duy, B. (2003). Bilişsel-davranışçıyaklaşıma dayalı grupla psikolojik danışmanın yalnızlık ve fonksiyonelolmayan tutumlar üzerine etkisi. Ankara Üniversitesi, Eğitim Bilimleri Enstitüsü, yayınlanmamışyüksek lisans tezi, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref26">
+          <label>26</label>
+          <mixed-citation>Eccles, J.S., &amp; Gootman, J.A. (2001). Community programs to promote youth development. Washington, DC:National Academy Press.</mixed-citation>
+        </ref>
+        <ref id="ref27">
+          <label>27</label>
+          <mixed-citation>Elliott, E.S., &amp; Dweck, C.S. (1988). Goals: An approach to motivation and achievement. Journal ofPersonality and Social Psychology, 53, 5-12.</mixed-citation>
+        </ref>
+        <ref id="ref28">
+          <label>28</label>
+          <mixed-citation>Erkan, S. (2001). Okul psikolojik danışma ve rehberlik programlarının hazırlanması. Ankara: Nobel Yayın.</mixed-citation>
+        </ref>
+        <ref id="ref29">
+          <label>29</label>
+          <mixed-citation>Emmons, R.A., &amp; McCullough, M.E. (2003). Counting blessings versus burdens: An experimentalınvestigation of gratitude and subjective well-being in daily life. Journal of Personality and SocialPsychology, 84, 377–389.</mixed-citation>
+        </ref>
+        <ref id="ref30">
+          <label>30</label>
+          <mixed-citation>Eryılmaz, A.(2009). Basa çıkma stratejilerinin kişilik özellikleriyle ergen öznel iyi oluşu arasındaki aracırolü. Yayınlanmamış Doktora Tezi. Ankara Üniversitesi Eğitim Bilimleri Enstitüsü. Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref31">
+          <label>31</label>
+          <mixed-citation>Eryılmaz, A. (2010a). Yeniden gözden geçirme: Pozitif Psikoloji ve Pozitif Psikoterapi bağlamında ergenleriçin amaçları genişletme programı. Aile ve Toplum Dergisi, 5(20), 53-66.</mixed-citation>
+        </ref>
+        <ref id="ref32">
+          <label>32</label>
+          <mixed-citation>Eryılmaz, A. (2010b). Ergenlerde öznel iyi oluşu artırma stratejilerini kullanma ile akademik motivasyonarasındaki ilişki. Klinik Psikiyatri. 13,77-84.</mixed-citation>
+        </ref>
+        <ref id="ref33">
+          <label>33</label>
+          <mixed-citation>Eryılmaz, A. (2011). Satisfaction of needs and determining of life goals: a model of subjective well being foradolescents in high school. Educational Sciences: Theory &amp; Practice. 11(4), 1757-1764.</mixed-citation>
+        </ref>
+        <ref id="ref34">
+          <label>34</label>
+          <mixed-citation>Eryılmaz, A. (2011). Yetişkin öznel iyi oluşu ile pozitif psikoterapi bağlamında birincil ve ikincil yeteneklerarasındaki ilişkilerin incelenmesi. Klinik Psikiyatri Dergisi,14, 17-28.</mixed-citation>
+        </ref>
+        <ref id="ref35">
+          <label>35</label>
+          <mixed-citation>Eryılmaz, A. (2012a). Investigating of the effectiveness of the extending the goals group guidance programfor adolescents with respect to positive psychotherapy. Education &amp; Science. 37(164), 3-19.</mixed-citation>
+        </ref>
+        <ref id="ref36">
+          <label>36</label>
+          <mixed-citation>Eryılmaz, A. (2012b). A model of subjective well-being for adolescents in high school. Journal of HappinesStudies. 13(2):275-289.</mixed-citation>
+        </ref>
+        <ref id="ref37">
+          <label>37</label>
+          <mixed-citation>Eryılmaz, A. (2012c). Mental control: how do adolescents protect their subjective well-being?.The Journal ofPsychiatry and Neurological Sciences, 25(1), 27-34.</mixed-citation>
+        </ref>
+        <ref id="ref38">
+          <label>38</label>
+          <mixed-citation>Eryılmaz, A., &amp; Doğan, T. (2012). İş yaşamında öznel iyi oluş: Utrecht işe bağ ölçeğinin psikometriközelliklerinin incelenmesi. Klinik Psikiyatri Dergisi, 15(1): 49-55.</mixed-citation>
+        </ref>
+        <ref id="ref39">
+          <label>39</label>
+          <mixed-citation>Fredrickson, B. L. (2001). The role of positive emotions in positive psychology. American Psychologist, 56,218–226.</mixed-citation>
+        </ref>
+        <ref id="ref40">
+          <label>40</label>
+          <mixed-citation>Gürgan, U. (2006). Grupla psikolojik danışmanın üniversite öğrencilerinin yılmazlık düzeylerine etkisi.Yayınlanmamış doktora tezi, Ankara Üniversitesi Eğitim Bilimleri Enstitüsü, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref41">
+          <label>41</label>
+          <mixed-citation>Gizir, C. A. (2004). Akademik sağlamlılık: Yoksulluk içindeki sekizinci sınıf öğrencilerinin akademikbaşarılarına katkıda bulunan koruyucu faktörlerin incelenmesi. Yayımlanmamış doktora tezi, OrtaDoğu Teknik Üniversitesi Sosyal Bilimler Enstitüsü, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref42">
+          <label>42</label>
+          <mixed-citation>Gysbers, N.C. &amp; Henderson,P. (2001). Compherensive guidance and counseling programs: A rich history anda bright future. Professional School Counseling, 4, 246-257.</mixed-citation>
+        </ref>
+        <ref id="ref43">
+          <label>43</label>
+          <mixed-citation>Hamamcı, Z.(2002). Bilişsel davranışçı yaklaşımla bütünleştirilmiş psikodrama uygulamasının kişilerarasıilişkilerle ilgili bilişsel çarpıtmalar ve temel inançlar üzerine etkisi. Ankara Üniversitesi, SosyalBilimler Enstitüsü, Eğitimde Psikolojik Hizmetler ABD, yayımlanmamış doktora tezi, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref44">
+          <label>44</label>
+          <mixed-citation>Heady, B.; Wearing, A. (1992). Understanding Happiness: A Theory of Subjective Well-Being. Melboune,Vicotira Australia: Longman Cheshire</mixed-citation>
+        </ref>
+        <ref id="ref45">
+          <label>45</label>
+          <mixed-citation>Herbert, T.B. &amp; Cohen, S. (1993). Stress and immunity in humans: A meta-analytic review. PsychosomaticMedicine, 55, 364–379.</mixed-citation>
+        </ref>
+        <ref id="ref46">
+          <label>46</label>
+          <mixed-citation>Hefferon, K.,&amp; Boniwell, I. (2010). Positive Psychology. NewYork:McGraw Hill.</mixed-citation>
+        </ref>
+        <ref id="ref47">
+          <label>47</label>
+          <mixed-citation>Diener, E. (1984). Subjective well-being. Psychological Buletin, 95(3), 542-575.</mixed-citation>
+        </ref>
+        <ref id="ref48">
+          <label>48</label>
+          <mixed-citation>Diener, E. (2000). Subjective well-being: The science of happiness and a proposal for a national index.American Psychologist, 55(1), 34-43.</mixed-citation>
+        </ref>
+        <ref id="ref49">
+          <label>49</label>
+          <mixed-citation>Gürgan, U. (2006). Grupla psikolojik danışmanın üniversite öğrencilerinin yılmazlık düzeylerine etkisi.Yayınlanmamış doktora tezi, Ankara Üniversitesi Eğitim Bilimleri Enstitüsü, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref50">
+          <label>50</label>
+          <mixed-citation>Gizir, C. A. (2004). Akademik sağlamlılık: Yoksulluk içindeki sekizinci sınıf öğrencilerinin akademikbaşarılarına katkıda bulunan koruyucu faktörlerin incelenmesi. Yayımlanmamış doktora tezi, OrtaDoğu Teknik Üniversitesi Sosyal Bilimler Enstitüsü, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref51">
+          <label>51</label>
+          <mixed-citation>İlhan, T. ve Bacanlı, H. (2007). Mizah tarzları, kişilik özellikleri ve öznel iyi oluş: Bir model denemesi.Eğitim Bilimleri Uygulama, 6 (11), 33-50.</mixed-citation>
+        </ref>
+        <ref id="ref52">
+          <label>52</label>
+          <mixed-citation>İlhan, T. ve Özbay, Y. (2010). Her amaç sağlığa iyi gelmez: Yaşam amaçların ve psikolojik ihtiyaçdoyumunun öznel iyi oluş üzerindeki yordayıcı rolü. Türk Psikolojik Danışma ve Rehberlik Dergisi.34 (2), 109-119.</mixed-citation>
+        </ref>
+        <ref id="ref53">
+          <label>53</label>
+          <mixed-citation>Kapcı, E. G. (2004). İlköğretim örgencilerinin zorbalığa maruz kalma türünün ve sıklığının depresyon, kaygıve benlik saygısıyla ilişkisi. Ankara Üniversitesi Eğitim Bilimleri Fakültesi Dergisi, 37(1), 1-13.</mixed-citation>
+        </ref>
+        <ref id="ref54">
+          <label>54</label>
+          <mixed-citation>Keyes, C. L. M. (2005). Mental illness and/or mental health? Investigating axioms of the complete statemodel of mental health. Journal of Consulting and Clinical Psychology, 73, 539–548.</mixed-citation>
+        </ref>
+        <ref id="ref55">
+          <label>55</label>
+          <mixed-citation>Kepçeoğlu, M. (1994). Psikolojik Danışma ve Rehberlik. Ankara: Özerler Matbaası.</mixed-citation>
+        </ref>
+        <ref id="ref56">
+          <label>56</label>
+          <mixed-citation>Kuzucu, Y. (2006). Duyguları fark etmeye ve ifade etmeye yönelik bir psiko-eğitim programının, üniversiteöğrencilerinin duygusal farkındalık düzeylerine, duyguları ifade etme eğilimlerine, psikolojik ve özneliyi oluşlarına etkisi. Yayınlanmamış Doktora Tezi, Ankara: Ankara Üniversitesi Eğitim BilimleriEnstitüsü.</mixed-citation>
+        </ref>
+        <ref id="ref57">
+          <label>57</label>
+          <mixed-citation>Koivumaa-Honkanen H, Kaprio J, Honkanen ve ark. (2005). The stability of life satisfaction in a 15-yearfollow-up adult Finns healthy at baseline. Psychiatr, 59, 794-798.</mixed-citation>
+        </ref>
+        <ref id="ref58">
+          <label>58</label>
+          <mixed-citation>Lewinsohn, P.M., &amp; Clarke, G.N. (1999). Psychosocial treatments for adolescent depression. ClinicalPsychology Review, 19(3), 329–342.</mixed-citation>
+        </ref>
+        <ref id="ref59">
+          <label>59</label>
+          <mixed-citation>Linley, A., Joseph, S., Harrington, S., &amp; Wood, A. M. (2006). Positive psychology: Past, present, and(possible) future. The Journal of Positive Psychology, 1, 3 – 16.</mixed-citation>
+        </ref>
+        <ref id="ref60">
+          <label>60</label>
+          <mixed-citation>Lucas, R.E., Clark, A.E., Georgellis, Y., &amp; Deiner, E. (2003). Reexamining adaptation and set point model ofhappiness: reactions to changes in marital status. Journal of Personality and Social Psychology.</mixed-citation>
+        </ref>
+        <ref id="ref61">
+          <label>61</label>
+          <mixed-citation>Lyubomirsky, S. (2001). Why are some people happier than others? American Psychologist, 56, 239–249.</mixed-citation>
+        </ref>
+        <ref id="ref62">
+          <label>62</label>
+          <mixed-citation>Lyubomirsky, S., King, L., &amp; Diener, E. (2005). The benefits of frequent positive affect: Does happiness leadto success? Psychological Bulletin, 131, 803–855.</mixed-citation>
+        </ref>
+        <ref id="ref63">
+          <label>63</label>
+          <mixed-citation>Masten, A.S., &amp; Coatsworth, J.D. (1995). Competence, resilience, and psychopathology.In D. Cicchetti &amp; D.Cohen (Eds.), Developmental psychopathology: Risk, disorder, and adaptation (Cilt 2, syf. 715–752).New York: Wiley.</mixed-citation>
+        </ref>
+        <ref id="ref64">
+          <label>64</label>
+          <mixed-citation>Maşrabacı, T. S. (1994). Hacettepe üniversitesi birinci sınıf öğrencilerinin benlik saygısı düzeylerinin bazıdeğişkenlere göre incelenmesi. Yayımlanmamış Doktora Tezi, Hacettepe Üniversitesi, SosyalBilimler Enstitüsü, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref65">
+          <label>65</label>
+          <mixed-citation>Meyers, J., &amp; Nastasi, B.K. (1999). Primary prevention in school settings. İçinde T. Gutkin &amp; C. Reynolds(Eds.), The handbook of school psychology (3rd ed.) (syf. 764–799). New York: Wiley.</mixed-citation>
+        </ref>
+        <ref id="ref66">
+          <label>66</label>
+          <mixed-citation>Miller, D.N., Nickerson, A.B., Chafouleas, S.M., &amp; Osborne, K.M. (2008). Authentically happy schoolpsychologists: Applications of positive psychology for enhancing professional satisfaction andfulfillment. Psychology in the Schools, 45(8), 679-692.</mixed-citation>
+        </ref>
+        <ref id="ref67">
+          <label>67</label>
+          <mixed-citation>Myers, D. &amp; Diener, E. (1995). Who is happy. American Psychological Society. 6, 1,1-19</mixed-citation>
+        </ref>
+        <ref id="ref68">
+          <label>68</label>
+          <mixed-citation>Noddings, N. (2003). Happiness and education. New York: Cambridge University Press.</mixed-citation>
+        </ref>
+        <ref id="ref69">
+          <label>69</label>
+          <mixed-citation>Obradović, J., &amp; Masten, A. S. (2007). Developmental antecedents of young adult civic engagement. AppliedDevelopmental Science, 11(1), 2‐19.</mixed-citation>
+        </ref>
+        <ref id="ref70">
+          <label>70</label>
+          <mixed-citation>Onat, G. (2010). Demokratik ve otoriter olarak algılanan ana-baba tutumlarının lise birinci sınıföğrencilerinin yılmazlık düzeyine etkisinin araştırılması. Yayınlanmamış yüksek lisans tezi. MaltepeÜniversitesi, Sosyal Bilimler Enstitüsü, Psikoloji Anabilim Dalı, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref71">
+          <label>71</label>
+          <mixed-citation>Öğülmüş S. (2004). Ben sorun çözebilirim; kişilerarası sorun çözme becerileri ve eğitimi. Ankara: BabilYayıncılık.</mixed-citation>
+        </ref>
+        <ref id="ref72">
+          <label>72</label>
+          <mixed-citation>Önder, A. ve Gülay, H. (2008). İlköğretim 8. sınıf öğrencilerinin psikolojik sağlamlığının çeşitli değişkenleraçısından incelenmesi. Dokuz Eylül Üniversitesi Buca Eğitim Fakültesi Dergisi, 23, 192-197.</mixed-citation>
+        </ref>
+        <ref id="ref73">
+          <label>73</label>
+          <mixed-citation>Özcan, B. (2005). Anne-babaları boşanmış ve anne-babaları birlikte olan lise öğrencilerinin yılmazlıközellikleri ve koruyucu faktörler açısından karşılaştırılması. Yayınlanmamış yüksek lisans tezi,Ankara Üniversitesi, Eğitim Bilimler Enstitüsü, Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref74">
+          <label>74</label>
+          <mixed-citation>Özgüven, İ.E. (1990). Ülkemizde psikolojik danışma ve rehberlik faaliyetlerinin dünü ve Bugünü. PsikolojikDanışma ve Rehberlik Dergisi, 1(1), 4–15.</mixed-citation>
+        </ref>
+        <ref id="ref75">
+          <label>75</label>
+          <mixed-citation>Park, N., &amp; Peterson, C. (2006). Character strengths and happiness among young children: Content analysisof parental descriptions. Journal of Happiness Studies, 7, 323-341.</mixed-citation>
+        </ref>
+        <ref id="ref76">
+          <label>76</label>
+          <mixed-citation>Park, N., &amp; Peterson, C. (2006). Methodological issues in positive psychology and the assessment ofcharacter strengths. In A. D. Ong &amp; M. van Dulmen (Eds.), Handbook of methods in positivepsychology (pp. 292-305. New York: Oxford University Press.</mixed-citation>
+        </ref>
+        <ref id="ref77">
+          <label>77</label>
+          <mixed-citation>Park, N., &amp; Peterson, C. (2006). Moral competence and character strengths among adolescents: Thedevelopment and validation of the Values in Action Inventory of Strengths for Youth. Journal ofAdolescence, 29, 891-905.</mixed-citation>
+        </ref>
+        <ref id="ref78">
+          <label>78</label>
+          <mixed-citation>Park, N., &amp; Peterson, C. (2008). Positive psychology and character strengths: Application to strengths-basedschool counseling. Professional School Counseling, 12, 85-92.Pesseschkian, N.(2002). Günlük Yaşamın Psikoterapisi (Çev. H. Fışıloğlu). İstanbul:Beyaz Yayınları.</mixed-citation>
+        </ref>
+        <ref id="ref79">
+          <label>79</label>
+          <mixed-citation>Peterson, C. (2000). The future of optimism. American Psychologist, 55, 44–55.</mixed-citation>
+        </ref>
+        <ref id="ref80">
+          <label>80</label>
+          <mixed-citation>Pektaş, İ., Bilge, A., &amp; Ersoy, M.A.(2006). Toplum ruh sağlığı hizmetlerinde epidemiyolojik çalışmalar vetoplum ruh sağlığı hemşireliğinin rolü. Anadolu Psikiyatri Dergisi. 7, 43-48.</mixed-citation>
+        </ref>
+        <ref id="ref81">
+          <label>81</label>
+          <mixed-citation>Pittman, K. J. (1992). Defining the fourth R: Promoting youth development. Center for YouthDevelopment.Washington, DC: Academy for Educational Development.</mixed-citation>
+        </ref>
+        <ref id="ref82">
+          <label>82</label>
+          <mixed-citation>Quay, H.C. &amp; Hogan, A.E. (1999). Handbook of disruptive disorders. New York: Plenum.</mixed-citation>
+        </ref>
+        <ref id="ref83">
+          <label>83</label>
+          <mixed-citation>Reschly, D.J., &amp; Ysseldyke, J.E. (1999). Paradigm shift: The past is not the future. In T. Gutkin &amp; C.</mixed-citation>
+        </ref>
+        <ref id="ref84">
+          <label>84</label>
+          <mixed-citation>Reynolds (Eds.), The handbook of school psychology (3. Baskı) (syf. 3–20). New York: Wiley.</mixed-citation>
+        </ref>
+        <ref id="ref85">
+          <label>85</label>
+          <mixed-citation>Roberts, M.C., Brown, K.J., Johnson, R.J., &amp; Reinke, J. (2002). Positive psychology for children:Development, prevention, and promotion. İçinde C.R. Synder &amp; S.J. Lopez (Eds.), Handbook ofpositive psychology (syf. 663– 675). New York: Oxford University Press.</mixed-citation>
+        </ref>
+        <ref id="ref86">
+          <label>86</label>
+          <mixed-citation>Rosenfield, S., &amp; Gravois, T. A. (1999). Working with teams in the school. In C. R.Reynolds &amp; T. B. Gutkin(Eds.), The handbook of school psychology (3. Baskı ed.) (syf. 1025 – 1040). New York: John Wiley&amp; Sons.</mixed-citation>
+        </ref>
+        <ref id="ref87">
+          <label>87</label>
+          <mixed-citation>Ryan, M. R. &amp; Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, socialdevelopment, and well-being. American Psychologist, 55 (1), 68-78.</mixed-citation>
+        </ref>
+        <ref id="ref88">
+          <label>88</label>
+          <mixed-citation>Ryan, R.M., Sheldon, K.M., Kasser, T., &amp; Deci, E.L. (1996). All goals are created equal: An organismicperspective on the nature of goals and their regulation. In P.M., Gollwitzer &amp; J.A., Bargh (Ed.), ThePsychology of Action: Linking Cognition to Behabiour (pp. 7-26). New York: Guilford.</mixed-citation>
+        </ref>
+        <ref id="ref89">
+          <label>89</label>
+          <mixed-citation>Ryff, C.D. (1989). Happiness is everything or is it? Explorations on the meaning of psychological well-being.Journal of Personality and Social Psychology, 57(6), 1069-1081.</mixed-citation>
+        </ref>
+        <ref id="ref90">
+          <label>90</label>
+          <mixed-citation>Rutter, M., &amp; Sroufe, L.A. (2000). Developmental psychopathology: Concepts and challenges.Developmental Psychopathology, 12, 265–296.</mixed-citation>
+        </ref>
+        <ref id="ref91">
+          <label>91</label>
+          <mixed-citation>Segerstrom, S.C. (2005). Optimism and immunity: Do positive thoughts always lead to positive effects?Brain, Behavior, and Immunity, 19, 195–200.</mixed-citation>
+        </ref>
+        <ref id="ref92">
+          <label>92</label>
+          <mixed-citation>Seligman, M. (2002). Authentic happiness: Using the new positive psychology to realize your potential yourpotential for lasting fulfillment. New York, NY: Free Press.</mixed-citation>
+        </ref>
+        <ref id="ref93">
+          <label>93</label>
+          <mixed-citation>Seligman, M.E.P., Reivich, K., Jaycox, L., &amp; Gillham, J. (1995). The optimistic child. New York: HoughtonMifflin.</mixed-citation>
+        </ref>
+        <ref id="ref94">
+          <label>94</label>
+          <mixed-citation>Seligman, M.E. &amp; Csikszentmihalyi, M. (2000). Positive psychology: An introduction. AmericanPsychologist, 55, 5–14.</mixed-citation>
+        </ref>
+        <ref id="ref95">
+          <label>95</label>
+          <mixed-citation>Seligman, M. E. P., Steen, T. A., Park, N., &amp; Peterson, C. (2005). Positive psychology progress: Empiricalvalidation of interventions. American Psychologist, 60, 410-421.</mixed-citation>
+        </ref>
+        <ref id="ref96">
+          <label>96</label>
+          <mixed-citation>Sheldon, K. M. &amp; King, L. (2001). Why positive psychology is necessary. American Psychologist, 56, 216 –217.</mixed-citation>
+        </ref>
+        <ref id="ref97">
+          <label>97</label>
+          <mixed-citation>Sheldon, K. M. &amp; Lyubomirsky, S. (2006). How to increase and sustain positive emotion: The effects ofexpressing gratitude and visualizing best possible selves. Journal of Positive Psychology, 1, 73-82.</mixed-citation>
+        </ref>
+        <ref id="ref98">
+          <label>98</label>
+          <mixed-citation>Staley, W. L. ve Carey, A. L. (1997). The role of school counselor in facilitating a quality twenty-first centuryworkforce. School Counselor, 44(5), 377-383.</mixed-citation>
+        </ref>
+        <ref id="ref99">
+          <label>99</label>
+          <mixed-citation>Sugai, G., &amp; Horner, R. H. (2002). The evolution of discipline practices: School-wide positive behaviorsupports. Child and Family Behavior Therapy, 24, 23 – 50.</mixed-citation>
+        </ref>
+        <ref id="ref100">
+          <label>100</label>
+          <mixed-citation>Şişman, M. (2006). Eğitim bilimine giriş. Ankara: Pegem Yayıncılık.</mixed-citation>
+        </ref>
+        <ref id="ref101">
+          <label>101</label>
+          <mixed-citation>Terzi, Ş. (2008). Üniversite öğrencilerinin kendini toparlama gücünün içsel koruyucu faktörlerle ilişkisi.Hacettepe Üniversitesi Eğitim Fakültesi Dergisi, 35, 297-306.</mixed-citation>
+        </ref>
+        <ref id="ref102">
+          <label>102</label>
+          <mixed-citation>Terzi, Ş. ve Cihangir-Çankaya, Z. (2009). Bağlanma stillerinin öznel iyi olmayı ve stresle başa çıkmatutumlarını yordama gücü. Türk Psikolojik Danışma ve Rehberlik Dergisi, 31, 1-11.</mixed-citation>
+        </ref>
+        <ref id="ref103">
+          <label>103</label>
+          <mixed-citation>Terjesen, M.D., Jacofsky, M., Froh, J., &amp; Digiuseppe, R. (2004). Integrating positive psychology intoschools: Implications for practice. Psychology in the Schools, 41(1), 163-172.</mixed-citation>
+        </ref>
+        <ref id="ref104">
+          <label>104</label>
+          <mixed-citation>Vaillant, G. E. (2002). Aging well. Little Brown, Boston, MA.</mixed-citation>
+        </ref>
+        <ref id="ref105">
+          <label>105</label>
+          <mixed-citation>Vansteenkiste, M., Lens, W., Edward L., &amp; Deci, E. L. (2006). Intrinsic versus extrinsic goal contents in selfdetermination theory: Another look at the quality of academic motivation. Educational Psychologist,41(1), 131.</mixed-citation>
+        </ref>
+        <ref id="ref106">
+          <label>106</label>
+          <mixed-citation>Voltan-Acar, N. (2009). Grupla psikolojik danışma ilke ve teknikleri (Geliştirilmiş 7. Baskı). Ankara: NobelYayın Dağıtım</mixed-citation>
+        </ref>
+        <ref id="ref107">
+          <label>107</label>
+          <mixed-citation>Yalçın, İ. (2006). 21. Yüzyılda psikolojik danışman. Ankara Üniversitesi Eğitim Bilimleri Fakültesi Dergisi,39(1), 117-133.</mixed-citation>
+        </ref>
+        <ref id="ref108">
+          <label>108</label>
+          <mixed-citation>Yerlikaya, İ. (2006). Bilişsel - davranışçı yaklaşıma ve hobi terapiye dayalı “umut eğitimi programları”nınilköğretim öğrencilerinin umutsuzluk düzeyine etkisi. Doktora Tezi, Ankara Üniversitesi, EğitimBilimleri Enstitüsü, Eğitim Bilimleri Anabilim Dalı, Eğitimde Psikolojik Hizmetler Bilim Dalı,(Rehberlik ve Psikolojik Danışmanlık Programı), Ankara.</mixed-citation>
+        </ref>
+        <ref id="ref109">
+          <label>109</label>
+          <mixed-citation>Yeşilyaprak, B. (2006). Eğitimde rehberlik hizmetleri (14. Baskı). Ankara: Nobel Yayınları.</mixed-citation>
+        </ref>
+        <ref id="ref110">
+          <label>110</label>
+          <mixed-citation>Yüksel-Şahin, F. (2008). Ortaöğretimdeki öğrenci görüşlerine göre psikolojik danışma ve rehberlikhizmetlerinin değerlendirilmesi. Uluslararası İnsan Bilimleri Dergisi, 5 (2), 1-26.</mixed-citation>
+        </ref>
+      </ref-list>
+    </back>
+  </article>
+  <article article-type="54" dtd-version="1.0">
+    <front>
+      <article-meta>
+        <article-id pub-id-type="doi"/>
+        <title-group>
+          <article-title>Psychometric properties of Turkish version of the Subjective Happiness Scale</article-title>
+          <trans-title-group xml:lang="Türkçe">
+            <trans-title>Öznel Mutluluk Ölçeği Türkçe Versiyonu’nun psikometrik özellikleri</trans-title>
+          </trans-title-group>
+        </title-group>
+        <contrib-group>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Doğan</surname>
+              <given-names>Tayfun</given-names>
+            </name>
+            <aff>Niğde University Faculty of Education, Department of Counselling and Guidance</aff>
+            <email>tayfun@tayfundogan.net</email>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Totan</surname>
+              <given-names>Tarık</given-names>
+            </name>
+            <aff>Adnan Menderes University Faculty of Education, Department of Counselling and Guidance</aff>
+            <email>tariktotan@gmail.com</email>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+        </contrib-group>
+        <history>
+          <date date-type="received" iso-8601-date="2011-12-19">
+            <day>19</day>
+            <month>12</month>
+            <year>2011</year>
+          </date>
+          <date date-type="accepted" iso-8601-date="2011-12-19">
+            <day>19</day>
+            <month>12</month>
+            <year>2011</year>
+          </date>
+        </history>
+        <volume/>
+        <issue>1</issue>
+        <fpage>23</fpage>
+        <lpage>31</lpage>
+        <trans-abstract xml:lang="Türkçe">
+          <p>Öznel Mutluluk Ölçeği (ÖMÖ) global öznel mutluluğu ölçmek üzere geliştirilmiştir. Bu çalışmanın amacı  ÖMÖ’nün Türkçe versiyonunun psikometrik özelliklerini üniversite öğrencilerinden ve halktan oluşan  örneklemlerde incelemektir. Çalışmaya toplam 696 kişi (348 üniversite öğrencisi/222 halk grubu) katılmıştır.  Çalışmada veri toplama araçları olarak ÖMÖ ile birlikte Oxford Mutluluk Ölçeği, Yaşam Doyumu Ölçeği,  Yaşam Yönelimi Ölçeği ve Pozitif-Negatif Duygu Ölçeği kullanılmıştır. ÖMÖ-TR’nin psikometrik özellikleri  açımlayıcı ve doğrulayıcı faktör analizi, iç tutarlık ve ölçüt bağıntılı geçerlik yöntemleriyle incelenmiştir.  Sonuçlar ölçeğin tek faktörlü olduğunu ve iç tutarlığının yeterli olduğunu ortaya koymuştur. Ayrıca ÖMÖTR’nin öznel iyi oluşu ölçen diğer ölçme araçlarıyla anlamlı düzeyde ilişkili olduğu sonucuna ulaşılmıştır.  Sonuç olarak, ÖMÖ-TR’nin mutluluğu değerlendirmede geçerli ve güvenilir bir ölçme aracı olarak  kullanılabileceği söylenebilir.</p>
+        </trans-abstract>
+        <abstract>
+          <p>The Subjective Happiness Scale (SHS) is a scale developed to evaluate the global subjective happiness. The  objective of this study is to examine the psychometric properties of the Turkish version of SHS in a  community sample and undergraduate students. A total of 696 people (university group N= 348, Community  group N= 222) have participated in the study. SHS, Oxford Happiness Questionnaire, Satisfaction with Life  Scale, Life Orientation Test and Positive-Negative Affect Scale were used as data collection instruments. The  psychometric properties of Turkish SHS have been analyzed using exploratory and confirmatory factor  analysis, internal consistency and criterion-related validity methods. The results have put forth that the  Turkish SHS displays a unidimensional structure and that its internal consistency coefficient is at an  acceptable level. In addition, Turkish SHS has shown good criterion-related validity with other tools used for  measuring subjective well-being. As a result, it can be stated that the Turkish version of SHS is a valid and  reliable measurement tool for evaluating subjective happiness.</p>
+        </abstract>
+        <kwd-group xml:lang="Türkçe">
+          <kwd>Öznel mutluluk ölçeği</kwd>
+          <kwd>mutluluk</kwd>
+          <kwd>geçerlik</kwd>
+          <kwd>güvenirlik</kwd>
+        </kwd-group>
+        <kwd-group xml:lang="English">
+          <kwd>Subjective Happiness Scale</kwd>
+          <kwd>happiness</kwd>
+          <kwd>validity</kwd>
+          <kwd>reliability</kwd>
+        </kwd-group>
+      </article-meta>
+    </front>
+    <back>
+      <ref-list>
+        <ref id="ref1">
+          <label>1</label>
+          <mixed-citation>Andrews, F. M. &amp; Withey, S. B. (1976). Social indicators of well-being: America’s perception of life quality.NewYork: Plenum Press.</mixed-citation>
+        </ref>
+        <ref id="ref2">
+          <label>2</label>
+          <mixed-citation>Argyle, M., Martin, M., &amp; Crossland, J. (1989). Happiness as a function of personality and social encounters.In J. P. Forgas, &amp; J. M. Innes (Eds.), Recent advances in social psychology: An internationalperspective (pp. 189–203). North-Holland: Elsevier.</mixed-citation>
+        </ref>
+        <ref id="ref3">
+          <label>3</label>
+          <mixed-citation>Bradburn, N. M. (1969). The structure of psychological well-being. Chicago: Alpine.</mixed-citation>
+        </ref>
+        <ref id="ref4">
+          <label>4</label>
+          <mixed-citation>Csikszentmihalyi, M. (1990). Flow: The psychology of optimal experience. New York: Harper CollinsPublishers.</mixed-citation>
+        </ref>
+        <ref id="ref5">
+          <label>5</label>
+          <mixed-citation>Civitci, N. &amp; Civitci, A. (2009). Self-esteem as mediator and moderator of the relationship betweenloneliness and life satisfaction in adolescents. Personality and Individual Differences, 47(8), 954-958.</mixed-citation>
+        </ref>
+        <ref id="ref6">
+          <label>6</label>
+          <mixed-citation>Diener, E. (1984). Subjective well-being. Psychological Bulletin, 95, 542-75.</mixed-citation>
+        </ref>
+        <ref id="ref7">
+          <label>7</label>
+          <mixed-citation>Diener, E., Emmons, R. A., Larsen, R. J., &amp; Griffin, S. (1985). The satisfaction with life scale. Journal ofPersonality Assessment, 49, 71-75.</mixed-citation>
+        </ref>
+        <ref id="ref8">
+          <label>8</label>
+          <mixed-citation>Dost, M. (2010). An examination of subjective well-being and life satisfaction of students attending touniversities in South Africa and Turkey. Education and Science, 35(158), 75-89.</mixed-citation>
+        </ref>
+        <ref id="ref9">
+          <label>9</label>
+          <mixed-citation>Eryılmaz, A. (2011). Investigating adolescents’ subjective well-being with respect to using subjective wellbeing increasing strategies and determining life goals. The Journal of Psychiatry and NeurologicalSciences, 24, 44-51.</mixed-citation>
+        </ref>
+        <ref id="ref10">
+          <label>10</label>
+          <mixed-citation>Gençöz, T. (2000). Positive and negative affect schedule: A study of validity and reliability. Turkish Journalof Psychology, 46, 19-26.</mixed-citation>
+        </ref>
+        <ref id="ref11">
+          <label>11</label>
+          <mixed-citation>Hills, P. &amp; Argyle, M. (2002). The Oxford Happiness Questionnaire: a compact scale for the measurement ofpsychological well-being. Personality and Individual Differences, 33, 1073–1082.</mixed-citation>
+        </ref>
+        <ref id="ref12">
+          <label>12</label>
+          <mixed-citation>Lyubomirsky, S., &amp; Lepper, H. S. (1999). A measure of subjective happiness: Preliminary reliability andconstruct validation. Social Indicators Research, 46, 137–155.</mixed-citation>
+        </ref>
+        <ref id="ref13">
+          <label>13</label>
+          <mixed-citation>McGreal, R. &amp; Joseph, S. (1993). The Depression-Happiness Scale. Psychological Reports, 73, 1279–1282.</mixed-citation>
+        </ref>
+        <ref id="ref14">
+          <label>14</label>
+          <mixed-citation>Mattei, D. &amp; Schaefer, C. E. (2004). An investigation of validity of the Subjective Happiness Scale.Psychological Reports, 94, 288-290.</mixed-citation>
+        </ref>
+        <ref id="ref15">
+          <label>15</label>
+          <mixed-citation>Moghnie, L. &amp; Kazarian, S. S. (2011). Subjective happiness of Lebanese college youth in Lebanon: Factorialstructure and ınvariance of the Arabic Subjective Happiness Scale. Social Indicators Research. doi:10.1007/s11205-011-9895-5.</mixed-citation>
+        </ref>
+        <ref id="ref16">
+          <label>16</label>
+          <mixed-citation>Meyers, L. S., Gamst, G., &amp; Guarino, A. J. (2006). Applied multivariate research. design and interpretation.California: Sage Publication Inc.</mixed-citation>
+        </ref>
+        <ref id="ref17">
+          <label>17</label>
+          <mixed-citation>Myers, D. G. &amp; Diener, E. (1995). Who is happy? Psychological Science, 6, 10-19.</mixed-citation>
+        </ref>
+        <ref id="ref18">
+          <label>18</label>
+          <mixed-citation>Raykov, T. &amp; Marcoulides, G. A. (2006). A first course in structural equation modeling (2nd Edition).Mahwah: Lawrence Erlbaum</mixed-citation>
+        </ref>
+        <ref id="ref19">
+          <label>19</label>
+          <mixed-citation>Scheier, M. F. &amp; Carver, C. S. (1985). Optimism, coping and health: Assessments and implications ofgeneralised outcome expectancies. Health Psychology, 4, 219–247.Schumacker, R. E. &amp; Lomax, R. G. (2004). A beginner's guide to structural equation modeling. New Jersey:Lawrence Erlbaum Ass.</mixed-citation>
+        </ref>
+        <ref id="ref20">
+          <label>20</label>
+          <mixed-citation>Seligman, M.E. P. (2002). Authentic happiness. New York: The Free Press.</mixed-citation>
+        </ref>
+        <ref id="ref21">
+          <label>21</label>
+          <mixed-citation>Shimai, S., Otake, K., Utsuki, N., Ikemi, A., &amp; Lyubomirsky, S. (2004). Development of a Japanese versionof the subjective happiness scale (SHS), and examination of its validity and reliability. JapaneseJournal of Public Health, 51, 1-9.</mixed-citation>
+        </ref>
+        <ref id="ref22">
+          <label>22</label>
+          <mixed-citation>Spagnoli, P., Caetano, A., &amp; Silva, A. (2012). Psychometric properties of a Portuguese version of theSubjective Happiness Scale. Social Indicators Research, 105, 137-143.</mixed-citation>
+        </ref>
+        <ref id="ref23">
+          <label>23</label>
+          <mixed-citation>Swami, V. (2008). Translation and validation of the Malay Subjective Happiness Scale. Social IndicatorsResearch, 88, 347-353.</mixed-citation>
+        </ref>
+        <ref id="ref24">
+          <label>24</label>
+          <mixed-citation>Swami, V., Stieger, S., Voracek, M., Dressler, S. G., Eisma, L., &amp; Furnham, A. (2009). Psychometricevaluation of the Tagalog and German Subjective Happiness Scales and a cross-cultural comparison.Social Indicators Research, 93, 393-406.</mixed-citation>
+        </ref>
+        <ref id="ref25">
+          <label>25</label>
+          <mixed-citation>Tabachnick, B. G. &amp; Fidell, L. S. (2007). Using multivariate statistics (5th Edition). Boston: Allyn andBacon.</mixed-citation>
+        </ref>
+        <ref id="ref26">
+          <label>26</label>
+          <mixed-citation>Watson, D., Tellegen, A., &amp; Clark, L. (1988). Development and validation of brief measures of positive andnegative affect: The PANAS scales. Journal of Personality and Social Psychology, 54, 1063–1070.</mixed-citation>
+        </ref>
+        <ref id="ref27">
+          <label>27</label>
+          <mixed-citation>Yetim, Ü. (1993). Kişisel projelerin organizasyonu ve örüntüsü açısından yaşam doyumu. [In Turkish: Thepattern of organization and life satisfaction in terms of personal projects]. Unpublished doctoratedissertation. Ege University, Institute of Social Science, İzmir.</mixed-citation>
+        </ref>
+      </ref-list>
+    </back>
+  </article>
+  <article article-type="54" dtd-version="1.0">
+    <front>
+      <article-meta>
+        <article-id pub-id-type="doi"/>
+        <title-group>
+          <article-title>Turkish version of the Short Depression-Happiness Scale (SDHS): A validity and reliability   study</article-title>
+          <trans-title-group xml:lang="Türkçe">
+            <trans-title>Depresyon ve Mutluluk Ölçeği- Kısa Formu (DMÖ-KF) Türkçe versiyonu:  Geçerlik ve güvenirlik çalışması</trans-title>
+          </trans-title-group>
+        </title-group>
+        <contrib-group>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Sapmaz</surname>
+              <given-names>Fatma</given-names>
+            </name>
+            <aff>Sakarya University Education Faculty, Department of Counselling, Sakarya</aff>
+            <email>sapmazfatma@gmail.com</email>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+          <contrib contrib-type="author">
+            <name>
+              <surname>Temizel</surname>
+              <given-names>Selin</given-names>
+            </name>
+            <aff>Ege University Literature Faculty, Department of Psychology, İzmir</aff>
+            <email/>
+            <contrib-id contrib-id-type="orcid">https://orcid.org/</contrib-id>
+          </contrib>
+        </contrib-group>
+        <history>
+          <date date-type="received" iso-8601-date="2011-12-19">
+            <day>19</day>
+            <month>12</month>
+            <year>2011</year>
+          </date>
+          <date date-type="accepted" iso-8601-date="2011-12-19">
+            <day>19</day>
+            <month>12</month>
+            <year>2011</year>
+          </date>
+        </history>
+        <volume/>
+        <issue>1</issue>
+        <fpage>32</fpage>
+        <lpage>38</lpage>
+        <trans-abstract xml:lang="Türkçe">
+          <p>Bu çalışmada Depresyon ve Mutluluk Ölçeği (DMÖ)’nin Türkçeye uyarlanarak psikometrik özelliklerinin  incelenmesi amaçlanmıştır. Araştırmaya yaş aralığı 16-78 arasında değişen toplam 380 (179 kadın/ 199  erkek) kişi katılmıştır. DMÖ-KF’nun yapı geçerliğini incelemek için doğrulayıcı faktör analizi yönteminden  yararlanılırken, ölçüt bağıntılı geçerlik kapramında ölçeğin OMÖ-K ve YDÖ ile korelasyonlarına bakılmıştır.  DMÖ-KF’nun güvenirliği ise iç tutarlık yöntemiyle incelenmiştir. DMÖ-KF’nun tek faktörlü yapısının  doğrulanıp doğrulanmayacağını belirlemek üzere yapılan DFA sonucunda elde edilen bulgular, ölçeğin tek  faktörlü yapısının Türk örnekleminde de korunduğunu göstermiştir. Ölçüt bağıntılı geçerlik için yapılan  analiz sonucunda da DMÖ-KF ile mutluluğu değerlendiren diğer ölçme araçları arasında anlamlı düzeyde  ilişkiler bulunmuştur. Ölçeğin iç tutarlık katsayısının ise .80 olduğu saptanmıştır. Elde edilen bulgular, DMÖKF’nun Türkçe formunun tek faktörlü bir yapıya sahip olduğunu ve depresyon-mutluluğu değerlendirmede  geçerli ve güvenilir bir ölçme aracı olarak kullanılabileceğini göstermektedir.</p>
+        </trans-abstract>
+        <abstract>
+          <p>The current study aims to adapt the Short Depression-Happiness Scale (SDHS) to Turkish culture and to  investigate the psychometric characteristics of this scale. There were 380 respondents (179 female/199 male)  ranging in age from 16 to 78 years. Confirmatory Factor Analysis (CFA) was used to explore construct  validity of the SDHS and was correlated with OHQ-SF and SWLS as part of criterion-related validity. The  reliability of the SDHS was analyzed by the internal consistency method. According to DFA results, that was  conducted to determine whether the one-factor construct of the SDHS could be verified. Goodness of fit  indices showed that a one-factor construct of the scale was also confirmed. Criterion-related validity analysis  found that there were significant relationships between the SDHS and other measurement tools with regard to  evaluating happiness. The internal consistency coefficient was .80. Findings suggest that the Turkish form of  the SDHS has a one factor construct, which could be used as a valid and reliable measurement tool for  evaluating depression and happiness.</p>
+        </abstract>
+        <kwd-group xml:lang="Türkçe">
+          <kwd>Depresyon ve mutluluk ölçeği</kwd>
+          <kwd>geçerlik</kwd>
+          <kwd>güvenirlik</kwd>
+        </kwd-group>
+        <kwd-group xml:lang="English">
+          <kwd>Depression and Happiness Scale</kwd>
+          <kwd>Validity</kwd>
+          <kwd>Reliability</kwd>
+        </kwd-group>
+      </article-meta>
+    </front>
+    <back>
+      <ref-list>
+        <ref id="ref1">
+          <label>1</label>
+          <mixed-citation>Andrews, F. M., &amp; Withey, S. B. (1976). Social indicators of well-being: America’s perception of life quality.New York, NY: Plenum Press.</mixed-citation>
+        </ref>
+        <ref id="ref2">
+          <label>2</label>
+          <mixed-citation>Argyle, M. (1987). The psychology of happiness. London: Methuen &amp; Co. Ltd.</mixed-citation>
+        </ref>
+        <ref id="ref3">
+          <label>3</label>
+          <mixed-citation>Argyle, M., Martin, M., &amp; Crossland, J. (1989).Happiness as a function of personality and social encounters.In J. P. Forgas, &amp; J. M. Innes (Eds.), Recent advances in social psychology: an internationalperspective (pp.189-203). North-Holland: Elsevier.</mixed-citation>
+        </ref>
+        <ref id="ref4">
+          <label>4</label>
+          <mixed-citation>Bradburn, N. M. (1969). The structure of psychological well-being. Chicago: Aldine.Publishing.</mixed-citation>
+        </ref>
+        <ref id="ref5">
+          <label>5</label>
+          <mixed-citation>Büyüköztürk, Ş., Akgün, E. Ö., Özkahveci, Ö., &amp; Demirel F. (2004). Güdülenme ve öğrenme stratejileriölçeğinin Türkçe formunun geçerlik ve güvenirlik çalışması. Kuram ve Uygulamada Eğitim Bilimleri,4(2), 207-239.</mixed-citation>
+        </ref>
+        <ref id="ref6">
+          <label>6</label>
+          <mixed-citation>DeNeve, K., &amp; Cooper, H. (1998). The happy personality: A meta-analysis of 137 personality traits andsubjectivewell-being. Psychological Bulletin, 124, 197-229.</mixed-citation>
+        </ref>
+        <ref id="ref7">
+          <label>7</label>
+          <mixed-citation>Diener, E. (1984). Subjective well-being. Psychological Bulletin, 95, 542-575.</mixed-citation>
+        </ref>
+        <ref id="ref8">
+          <label>8</label>
+          <mixed-citation>Diener, E., Emmons, R. A., Larsen, R. J., &amp; Griffin, S. (1985). The satisfaction with life scale. Journal ofPersonality Assessment, 49, 71-75.</mixed-citation>
+        </ref>
+        <ref id="ref9">
+          <label>9</label>
+          <mixed-citation>Doğan, T., &amp; Çötok, N. A. (2011). Adaptation of the short form of the Oxford Happiness QuestionnaireintoTurkish: A validity and reliability study. Journal of Turkish Psychological Counselling andGuidance, 4(36), 165-172.</mixed-citation>
+        </ref>
+        <ref id="ref10">
+          <label>10</label>
+          <mixed-citation>Doğan, T., Sapmaz, F., &amp; Akıncı Çötok, N. (2013-in press). Self-criticism and happiness. Journal ofKastamonu Faculty of Education.</mixed-citation>
+        </ref>
+        <ref id="ref11">
+          <label>11</label>
+          <mixed-citation>Hair, F. J., Anderson, E. R., Tatham, L. R., &amp;Black, C. W. (1998). Multivariate data analysis. New Jersey:PrenticeHall.</mixed-citation>
+        </ref>
+        <ref id="ref12">
+          <label>12</label>
+          <mixed-citation>Hills, P., &amp; Argyle, M. (2002). The Oxford HappinessQuestionnaire:Compact scale for the measurement ofpsychological well-being. Personality and Individual Differences, 33, 1073-1082.</mixed-citation>
+        </ref>
+        <ref id="ref13">
+          <label>13</label>
+          <mixed-citation>Hoyle, R. H. (1995). Structural Equation modeling: Concepts, issues and applications. Thousands Oaks, CA:Sage Publications.</mixed-citation>
+        </ref>
+        <ref id="ref14">
+          <label>14</label>
+          <mixed-citation>Hu, L.,&amp; Bentler, P. M. (1999). Cut-of criteriafor fit indexes in covariance structure analysis: conventionalcriteria versus new alternatives. Structural Equation Modeling, 6, 1-55.</mixed-citation>
+        </ref>
+        <ref id="ref15">
+          <label>15</label>
+          <mixed-citation>Joseph, S.,Linley, P. A., Harwood, J., Lewis, C. A., &amp;McCollam, P. (2004). Rapid assessment of well-being:The short depression-happiness scale. Psychology and Psychotherapy: Theory, Research, andPractice, 77, 463-478.</mixed-citation>
+        </ref>
+        <ref id="ref16">
+          <label>16</label>
+          <mixed-citation>Kline, B. R. (2005). Principles and practice of structural equation modeling. New York: The Guilford Press.</mixed-citation>
+        </ref>
+        <ref id="ref17">
+          <label>17</label>
+          <mixed-citation>Lyubomirsky, S., &amp; Lepper, H. S. (1999). A measure of subjective happiness: Preliminary reliability andconstruct validation. Social Indicators Research, 46, 137-155.</mixed-citation>
+        </ref>
+        <ref id="ref18">
+          <label>18</label>
+          <mixed-citation>McGreal, R.,&amp; Joseph, S. (1993). The Depression-Happiness Scale. Psychological Reports, 73, 1279-1282.</mixed-citation>
+        </ref>
+        <ref id="ref19">
+          <label>19</label>
+          <mixed-citation>Schermelleh-Engel, K.,Moosbrugger, H., &amp; Müller, H. (2003). Evaluating the fit of structural equationmodels: Test of significance and descriptive goodness-of-fit measures. Methods of PsychologicalResearch, 8(2), 23-74.</mixed-citation>
+        </ref>
+        <ref id="ref20">
+          <label>20</label>
+          <mixed-citation>Scheier, M. F., &amp; Carver, C. S. (1985). Optimism, coping and health: Assessment and implications ofgeneralized outcome expectancies. Health Psychology, 4, 219-247.</mixed-citation>
+        </ref>
+        <ref id="ref21">
+          <label>21</label>
+          <mixed-citation>Veenhoven, R. (1991). Is happiness relative? Social Indicators Research, 24, 1-34.</mixed-citation>
+        </ref>
+        <ref id="ref22">
+          <label>22</label>
+          <mixed-citation>Watson, D., Tellegen, A., &amp; Clark, L. (1988). Development and validation of brief measures of positive andnegative affect: The PANAS scales. Journal of Personality and Social Psychology, 54, 1063-1070.</mixed-citation>
+        </ref>
+        <ref id="ref23">
+          <label>23</label>
+          <mixed-citation>Yetim, Ü. (1993). Life satisfaction: A study based on the organization of personal projects. Social IndicatorsResearch, 29, 277-289.</mixed-citation>
+        </ref>
+      </ref-list>
+=======
+          <article-title>Başlık Ekleyiniz</article-title>
+        </title-group>
+        <contrib-group/>
+        <volume/>
+        <issue>1</issue>
+        <fpage>5</fpage>
+        <lpage>15</lpage>
+        <abstract>
+          <p/>
+        </abstract>
+        <kwd-group xml:lang="English"/>
+      </article-meta>
+    </front>
+    <back>
+      <ref-list/>
+>>>>>>> 52bc615 (değiş)
+    </back>
+  </article>
+</articles>

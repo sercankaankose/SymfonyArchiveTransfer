@@ -18,7 +18,7 @@ class BreadCrumbService
     public function createAdminDashboardBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
 
         return $menu;
     }
@@ -27,7 +27,7 @@ class BreadCrumbService
     public function createUserManagementBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild('Kullanıcılar', ['route' => 'admin_user_management']);
 
         return $menu;
@@ -37,7 +37,7 @@ class BreadCrumbService
     public function createJournalAssigmentBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild('Kullanıcılar', ['route' => 'admin_user_management']);
         $menu->addChild('Kullanıcı Atama', ['route' => '']);
         return $menu;
@@ -48,7 +48,7 @@ class BreadCrumbService
     public function createJournalManagementBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild('Dergiler', ['route' => 'admin_journal_management']);
 
         return $menu;
@@ -58,7 +58,7 @@ class BreadCrumbService
     public function createUserAddBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild(' Kullanıcılar', ['route' => 'admin_user_management']);
         $menu->addChild('Yeni Kullanıcı', ['route' => 'admin_user_add']);
 
@@ -69,7 +69,7 @@ class BreadCrumbService
     public function createUserAssigned_listBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild('Kullanıcılar', ['route' => 'admin_user_management']);
         $menu->addChild('Kullancının Görev Aldığı Dergiler');
 
@@ -80,7 +80,7 @@ class BreadCrumbService
     public function createUserEditBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild('Kullanıcılar', ['route' => 'admin_user_management']);
         $menu->addChild('Kullanıcı Düzenleme');
 
@@ -91,7 +91,7 @@ class BreadCrumbService
     public function createJournalAddBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild('Dergiler', ['route' => 'admin_journal_management']);
         $menu->addChild('Yeni Dergi', ['route' => 'admin_journal_add']);
 
@@ -102,9 +102,18 @@ class BreadCrumbService
     public function createJournalEditBreadcrumb()
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild('Admin Paneli', ['route' => 'dashboard_admin']);
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
         $menu->addChild('Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild('Düzenle');
+
+        return $menu;
+    }
+    public function createJournalCheckExportBreadcrumb()
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->addChild('Panel', ['route' => 'dashboard_admin']);
+        $menu->addChild('Dergiler ', ['route' => 'admin_journal_management']);
+        $menu->addChild('Dışa Aktarım Kontrol');
 
         return $menu;
     }
@@ -119,12 +128,30 @@ class BreadCrumbService
 
         return $menu;
     }
+    public function createEditorCheckExportBreadcrumb()
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
+        $menu->addChild('Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
+        $menu->addChild('Dışa Aktarım Kontrolü');
+
+        return $menu;
+    }
+    public function createOperatorJournalEditBreadcrumb()
+    {
+        $menu = $this->factory->createItem('root');
+        $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
+        $menu->addChild('Operatörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
+        $menu->addChild('Dışa Aktarım Kontrolü');
+
+        return $menu;
+    }
 
     // dergi Sayıları
     public function createJournalIssueBreadcrumb(FactoryInterface $factory, $journalName)
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Panel ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild($journalName . ' Sayıları');
 
@@ -135,7 +162,7 @@ class BreadCrumbService
     public function createArticleListBreadcrumb(FactoryInterface $factory, $journalName, $number, $id)
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Panel ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild($journalName . ' Sayıları ', ['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
         $menu->addChild(' ' . $number . '. Sayı ' . 'Makaleleri');
@@ -147,7 +174,7 @@ class BreadCrumbService
     public function createArticleEditBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Panel ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild($journalName . ' Sayıları ', ['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
         $menu->addChild($number . '. Sayı ' . 'Makaleleri', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
@@ -186,7 +213,7 @@ class BreadCrumbService
     public function createArticleAddBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId)
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Panel ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild($journalName . ' ' . $number . '. Sayısı', ['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
         $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
@@ -211,7 +238,7 @@ class BreadCrumbService
     public function createArticlePdfUploadBreadcrumb(FactoryInterface $factory, $journalName, $number, $issueId, $journalId, $articleId)
     {
         $menu = $this->factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Panel ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild($journalName . ' ' . $number . '. Sayısı', ['route' => 'journal_issues', 'routeParameters' => ['id' => $journalId]]);
         $menu->addChild('Makaleler', ['route' => 'articles_list', 'routeParameters' => ['id' => $issueId]]);
@@ -221,25 +248,25 @@ class BreadCrumbService
     }
 
 //      yeni sayı
-    public function createIssueAddBreadcrumb(FactoryInterface $factory, $journalName, $id)
+    public function createIssueAddBreadcrumb(FactoryInterface $factory, $journalName, $id, $name)
     {
         $menu = $factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Panel ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild($journalName, ['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
-        $menu->addChild('Sayı Ekle');
+        $menu->addChild($name);
 
         return $menu;
     }
 
     // editör yeni sayı
-    public function createEditorIssueAddBreadcrumb(FactoryInterface $factory, $journalName, $id)
+    public function createEditorIssueAddBreadcrumb(FactoryInterface $factory, $journalName, $id, $name)
     {
         $menu = $factory->createItem('root');
         $menu->addChild('Ana Panel', ['route' => 'app_homepage']);
         $menu->addChild(' Editörlük Yaptığım Dergiler ', ['route' => 'editor_journal_management']);
         $menu->addChild($journalName . ' Sayıları',['route' => 'editor_journal_issues', 'routeParameters' => ['id' => $id]]);
-        $menu->addChild('Sayı Ekle');
+        $menu->addChild($name);
 
         return $menu;
     }
@@ -248,7 +275,7 @@ class BreadCrumbService
     public function createIssueEditBreadcrumb(FactoryInterface $factory, $journalName, $id)
     {
         $menu = $factory->createItem('root');
-        $menu->addChild(' Admin Paneli ', ['route' => 'dashboard_admin']);
+        $menu->addChild(' Panel ', ['route' => 'dashboard_admin']);
         $menu->addChild(' Dergiler ', ['route' => 'admin_journal_management']);
         $menu->addChild($journalName, ['route' => 'journal_issues', 'routeParameters' => ['id' => $id]]);
         $menu->addChild('Sayı Düzenle');

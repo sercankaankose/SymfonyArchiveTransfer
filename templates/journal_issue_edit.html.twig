@@ -13,52 +13,169 @@
             flex: 1;
             margin-right: 10px;
         }
-        .breadcrumb{
+
+        .breadcrumb {
             padding: 10px;
         }
+
+
+        .checkbox-wrapper-33 {
+            --s-xsmall: 0.625em;
+            --s-small: 1.2em;
+            --border-width: 1px;
+            --c-primary: #5F11E8;
+            --c-primary-20-percent-opacity: rgb(95 17 232 / 20%);
+            --c-primary-10-percent-opacity: rgb(95 17 232 / 10%);
+            --t-base: 0.4s;
+            --t-fast: 0.2s;
+            --e-in: ease-in;
+            --e-out: cubic-bezier(.11, .29, .18, .98);
+        }
+
+        .checkbox-wrapper-33 .visuallyhidden {
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        .checkbox-wrapper-33 .checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .checkbox-wrapper-33 .checkbox + .checkbox {
+            margin-top: var(--s-small);
+        }
+
+        .checkbox-wrapper-64 input[type="checkbox"] {
+            visibility: hidden;
+            display: none;
+        }
+
+        .checkbox-wrapper-64 *,
+        .checkbox-wrapper-64 ::after,
+        .checkbox-wrapper-64 ::before {
+            box-sizing: border-box;
+        }
+
+        /* The switch - the box around the slider */
+        .checkbox-wrapper-64 .switch {
+            font-size: 17px;
+            position: relative;
+            display: inline-block;
+            width: 3.5em;
+            height: 2em;
+        }
+
+        /* Hide default HTML checkbox */
+        .checkbox-wrapper-64 .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .checkbox-wrapper-64 .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border: 1px solid #adb5bd;
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .checkbox-wrapper-64 .slider:before {
+            position: absolute;
+            content: "";
+            height: 1.4em;
+            width: 1.4em;
+            border-radius: 20px;
+            left: 0.27em;
+            bottom: 0.25em;
+            background-color: #adb5bd;
+            transition: .4s;
+        }
+
+        .checkbox-wrapper-64 input:checked + .slider {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+        }
+
+        .checkbox-wrapper-64 input:focus + .slider {
+            box-shadow: 0 0 1px #007bff;
+        }
+
+        .checkbox-wrapper-64 input:checked + .slider:before {
+            transform: translateX(1.4em);
+            background-color: #fff;
+        }
+
+        .custom-form-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-form-group .form-label {
+            margin-right: 1rem; /* Label ile widget arasındaki boşluk */
+        }
+
     </style>
     <div class="container">
-    <div class="row justify-content-center">
-        <div style="text-align: right;">
+        <div class="row justify-content-center">
+            <div style="text-align: right;">
 
-            <h1 class="text-center "> {{ name }} </h1>
-        </div>
-        <div class="col-md-6">
+                <h1 class="text-center "> {{ name }} </h1>
+            </div>
+            <div class="col-md-6">
 
-            <div class="card d-flex"
-                 style="background-color: #f2f2f2; max-height: 900px;  width: 100%; ">
+                <div class="card d-flex"
+                     style="background-color: #f2f2f2; max-height: 900px;  width: 100%; ">
 
-                <div class="card-body" style="font-size: 20px">
+                    <div class="card-body" style="font-size: 20px">
 
-                    {{ form_start(form) }}
+                        {{ form_start(form) }}
 
-                    <div class="mb-3">
-                        {{ form_label(form.year, 'Yıl', {'label_attr': {'class': 'form-label'}}) }}*
-                        {{ form_widget(form.year, {'attr': {'class': 'form-control custom-inline-form-element' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.year) }}
+                        <div class="mb-3">
+                            {{ form_label(form.year, 'Yıl', {'label_attr': {'class': 'form-label'}}) }}*
+                            {{ form_widget(form.year, {'attr': {'class': 'form-control custom-inline-form-element' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
+                            {{ form_errors(form.year) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.volume, 'Cilt', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.volume, {'attr': {'class': 'form-control' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
+                            {{ form_errors(form.volume) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.number, 'Sayı', {'label_attr': {'class': 'form-label'}}) }}*
+                            {{ form_widget(form.number, {'attr': {'class': 'form-control' ~ (form_errors(form.number)|length ? ' is-invalid' : '')}}) }}
+                            {{ form_errors(form.number) }}
+                        </div>
+<br>
+                        <div class="mb-3 custom-form-group">
+                            {{ form_label(form.special, 'Özel Sayı', {'label_attr': {'class': 'form-label'}}) }}
+                            <div class="checkbox-wrapper-64">
+                                <label class="switch">
+                                    {{ form_widget(form.special, {'attr': {'class': 'custom-checkbox', 'style': 'display:none;' }}) }}
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            {{ form_errors(form.special) }}
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        {{ form_label(form.volume, 'Cilt', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.volume, {'attr': {'class': 'form-control' ~ (form_errors(form.volume)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.volume) }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form_label(form.number, 'Sayı', {'label_attr': {'class': 'form-label'}}) }}*
-                        {{ form_widget(form.number, {'attr': {'class': 'form-control' ~ (form_errors(form.number)|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(form.number) }}
-                    </div>
-
-
-
-                    {#                    <div class="mb-3">#}
-                    {#                        {{ form_label(form.fulltext, 'Tam Metin', {'label_attr': {'class': 'form-label'}}) }}#}
-                    {#                        {{ form_widget(form.fulltext, {'attr': {'class': 'form-control' ~ (form_errors(form.fulltext)|length ? ' is-invalid' : '')}}) }}#}
-                    {#                        {{ form_errors(form.fulltext) }}#}
-                    {#                    </div>#}
 
                     <div style="text-align: right">
-                        <button type="submit" class="btn btn-primary btn-lg">{{button}}</button>
+                        <button type="submit" class="btn btn-primary btn-lg mb-4 me-4 ms-4">{{ button }}</button>
                     </div>
                 </div>
 

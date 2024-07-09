@@ -6,6 +6,9 @@
     header{
         padding: 10px;
     }
+    .breadcrumb{
+        padding: 10px;
+    }
 </style>
     <div class="container">
 
@@ -38,14 +41,17 @@
                             {{ form_errors(form.issn) }}
                         </div>
                         <br>
-                        <div>
-                            {{ form_errors(form.eIssn) }}
-                        </div>
 
                         <div class="mb-3">
                             {{ form_label(form.eIssn, 'E-issn', {'label_attr': {'class': 'form-label'}}) }}
                             {{ form_widget(form.eIssn, {'attr': {'class': 'form-control'}}) }}
                             {{ form_errors(form.eIssn) }}
+                        </div>
+                        <br>
+                        <div class="mb-3">
+                            {{ form_label(form.archive, 'Arşiv Linki', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.archive, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.archive) }}
                         </div>
                         <br>
 

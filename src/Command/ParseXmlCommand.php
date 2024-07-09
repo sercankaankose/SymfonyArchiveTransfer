@@ -6,9 +6,11 @@ use App\Entity\Articles;
 use App\Entity\Authors;
 use App\Entity\Citations;
 use App\Entity\Issues;
+use App\Entity\Journal;
 use App\Entity\Translations;
 use App\Params\ArticleStatusParam;
 use App\Params\IssueStatusParam;
+use App\Params\JournalStatusParam;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -47,153 +49,257 @@ class ParseXmlCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $lockFile = sys_get_temp_dir() . '/ParseXml.lock';
 
-        $issue = $this->entityManager->getRepository(Issues::class)->findOneBy(['status' => IssueStatusParam::WAITING]);
-
-        if (!$issue) {
-            $output->writeln('Bekleyen bir sayı bulunamadı.');
-            return Command::SUCCESS;
-        }else {
-            $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
-            $this->entityManager->persist($issue);
-            $this->entityManager->flush();
-        }
-        $xmlFile = $issue->getXml();
-//        $xmlFile = '/home/vboxuser/ArchiveTransfer/'.$xmlFile;
-
-        if (!$xmlFile || !file_exists($xmlFile)) {
-            $output->writeln('XML dosyası bulunamadı veya geçersiz');
-            $issue->setErrors(['Xml Hatalı']);
-            $issue->setStatus(ArticleStatusParam::ERROR);
-            $this->entityManager->persist($issue);
-            $this->entityManager->flush();
-            return Command::FAILURE;
-        }
-        $xmlContent = file_get_contents($xmlFile);
-        $xmlContent = str_replace('&', '&amp;', $xmlContent);
-
-
-        $encoder = new XmlEncoder();
-        $data = $encoder->decode($xmlContent, 'xml');
-
-        if ($this->validateXml($data, $issue)) {
-
-            $output->writeln('XML başarılı şekilde veritabanına aktarılmıştır.');
-        } else {
-            $issue->setStatus('XmlValidateFail');
-            $this->entityManager->persist($issue);
-            $this->entityManager->flush();
+        if (file_exists($lockFile)) {
+            $output->writeln('Komut zaten çalışıyor.');
             return Command::FAILURE;
         }
 
+        touch($lockFile);
+        try {
+            $journal = $this->entityManager->getRepository(Journal::class)->findOneBy(['status' => JournalStatusParam::WAITING]);
+            if (!$journal) {
+                $issue = $this->entityManager->getRepository(Issues::class)->findOneBy(['status' => IssueStatusParam::WAITING]);
 
+                if (!$issue) {
+                    $output->writeln('Bekleyen bir sayı bulunamadı.');
+                    return Command::SUCCESS;
+                } else {
+                    $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
+                    $this->entityManager->persist($issue);
+                    $this->entityManager->flush();
+                }
+            }
+            if ($journal) {
+                $xmlFile = $journal->getXml();
+            } else {
+                $xmlFile = $issue->getXml();
+            }
+
+
+            if (!$xmlFile || !file_exists($xmlFile)) {
+                $output->writeln('XML dosyası bulunamadı veya geçersiz');
+                if ($journal) {
+                    $journal->setStatus(JournalStatusParam::ERROR);
+                    $this->entityManager->persist($journal);
+
+                } else {
+                    $issue->setErrors(['Xml Hatalı']);
+                    $issue->setStatus(IssueStatusParam::ERROR);
+                    $this->entityManager->persist($issue);
+                }
+                $this->entityManager->flush();
+                return Command::FAILURE;
+            }
+            $xmlContent = file_get_contents($xmlFile);
+            $xmlContent = str_replace('&', '&amp;', $xmlContent);
+
+
+            $encoder = new XmlEncoder();
+            $data = $encoder->decode($xmlContent, 'xml');
+            if ($journal) {
+
+                if ($this->validateJournalXml($data, $journal)) {
+
+                    $output->writeln('XML başarılı şekilde veritabanına aktarılmıştır.');
+                } else {
+                    $journal->setStatus(JournalStatusParam::ERROR);
+                    $this->entityManager->persist($journal);
+                    $this->entityManager->flush();
+                    return Command::FAILURE;
+                }
+            } else {
+                if ($this->validateXml($data, $issue)) {
+
+                    $output->writeln('XML başarılı şekilde veritabanına aktarılmıştır.');
+                } else {
+                    $issue->setStatus(IssueStatusParam::ERROR);
+                    $this->entityManager->persist($issue);
+                    $this->entityManager->flush();
+                    return Command::FAILURE;
+                }
+            }
+
+        } catch (\Exception $e) {
+            $output->writeln('Beklenmedik bir hata oluştu: ' . $e->getMessage());
+            return Command::FAILURE;
+        } finally {
+            if (file_exists($lockFile)) {
+                unlink($lockFile);
+            }
+        }
         return Command::SUCCESS;
     }
 
+    protected function validateJournalXml($data, $journal)
+    {
+        // Yeni sayı oluşturma işlemi
+        if (isset($data['issue'])) {
+            $journal->setStatus(JournalStatusParam::TRANSFERSTAGE);
+            $this->entityManager->persist($journal);
+            foreach ($data['issue'] as $issueData) {
+                $this->entityManager->flush();
+                $newIssue = new Issues();
+                $newIssue->setJournal($journal);
+
+                // Sayı verilerini ayarla
+                if (isset($issueData['volume'])) {
+                    $newIssue->setVolume($issueData['volume']);
+                }
+                if (isset($issueData['year'])) {
+                    $newIssue->setYear($issueData['year']);
+                }
+                if (isset($issueData['number'])) {
+                    $newIssue->setNumber($issueData['number']);
+                }
+
+                if (isset($issueData['articles'])) {
+                    if (empty($issueData['articles']['article'])) {
+                        // Eğer articles etiketi boşsa
+                        $newIssue->setStatus(IssueStatusParam::ERROR);
+                    } else {
+                        // Articles etiketi doluysa
+                        if ($this->validateXml($issueData['articles'], $newIssue)) {
+                            // Bu alanda başka işlemler yapılabilir.
+                        }
+                    }
+                } else {
+                    $newIssue->setStatus(IssueStatusParam::ERROR);
+                }
+
+                $this->entityManager->persist($newIssue);
+                $this->entityManager->flush();
+            }
+            $journal->setStatus(JournalStatusParam::TRANSFERRED);
+            $this->entityManager->persist($journal);
+            $this->entityManager->flush();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
     protected function validateXml($data, $issue)
     {
-        foreach ($data['article'] as $article) {
-            try {
-                $errors = [];
-                $issueErrors = [];
-                $newarticle = new Articles();
-                $newarticle->setIssue($issue);
-                $newarticle->setJournal($issue->getJournal());
+        /** @var Issues $issue */
+        if (isset($data['article'])) {
+            foreach ($data['article'] as $article) {
+                try {
+                    $errors = [];
+                    $issueErrors = [];
+                    $newarticle = new Articles();
+                    $newarticle->setIssue($issue);
+                    $newarticle->setJournal($issue->getJournal());
 
-                if (isset($article['fulltext-file']) && is_string($article['fulltext-file'])) {
-                    $fulltextFileUrl = $article['fulltext-file'];
-                    $destinationPath = $this->validateClient($fulltextFileUrl, $issue, $issueErrors);
-                    if (empty($fulltextFileUrl) || !$destinationPath) {
-                        array_push($issueErrors, 'Makale eklenemedi: Tam metin dosyası bulunamadı veya geçersiz.');
+
+                    if (isset($article['fulltext-file']) && is_string($article['fulltext-file'])) {
+                        $fulltextFileUrl = $article['fulltext-file'];
+                        $destinationPath = $this->validateClient($fulltextFileUrl, $issue, $issueErrors);
+                        if (empty($fulltextFileUrl) || !$destinationPath) {
+                            array_push($issueErrors, 'Makale eklenemedi: Tam metin dosyası bulunamadı veya geçersiz.');
+                            $newarticle->setStatus(ArticleStatusParam::ERROR);
+                            $issue->setStatus(IssueStatusParam::ERROR);
+
+                            $newarticle->setErrors(['PDF Hatalı.']);
+                        } else {
+                            $newarticle->setFulltext($destinationPath);
+                        }
+                    } else {
+                        array_push($issueErrors, 'fulltext bulunamadı.');
+                        $newarticle->setStatus(ArticleStatusParam::ERROR);
+                        $issue->setStatus(IssueStatusParam::ERROR);
+                        $newarticle->setErrors(['PDF Hatalı.']);
+
+                    }
+
+                    $firstpage = isset($article['firstpage']) ? $article['firstpage'] : '';
+                    if (is_numeric($firstpage) || intval($firstpage) == $firstpage) {
+                        $newarticle->setFirstPage($article['firstpage']);
+                    }
+                    $lastpage = isset($article['lastpage']) ? $article['lastpage'] : '';
+                    if (is_numeric($lastpage) || intval($lastpage) == $lastpage) {
+                        $newarticle->setLastPage($article['lastpage']);
+                    }
+                    $primaryLang = isset($article['primary-language']) ? trim($article['primary-language']) : '';
+
+                    if (!is_string($primaryLang) || empty($primaryLang)) {
+                        $newarticle->setPrimaryLanguage('tr');
+                    } else {
+                        $newarticle->setPrimaryLanguage($primaryLang);
+                    }
+
+                    $doi = isset($article['doi']) ? trim($article['doi']) : '';
+                    if (is_string($doi) || $doi) {
+                        $newarticle->setDoi($doi);
+                    }
+
+                    if (!empty($issueErrors)) {
                         $issue->setErrors($issueErrors);
-                        $this->entityManager->persist($issue);
-                        continue;
                     }
 
-                    $newarticle->setFulltext($destinationPath);
-                } else {
-                    array_push($issueErrors, 'fulltext bulunamadı.');
-                    continue;
-                }
-
-                $firstpage = isset($article['firstpage']) ? $article['firstpage'] : '';
-                if (!is_numeric($firstpage) || intval($firstpage) != $firstpage) {
-                    array_push($issueErrors, "ilk sayfa bilgisi hatalı.");
-                } else {
-                    $newarticle->setFirstPage($article['firstpage']);
-                }
-                $lastpage = isset($article['lastpage']) ? $article['lastpage'] : '';
-                if (!is_numeric($lastpage) || intval($lastpage) != $lastpage) {
-                    array_push($issueErrors, "son sayfa bilgisi hatalı.");
-
-                } else {
-                    $newarticle->setLastPage($article['lastpage']);
-                }
-
-                $primaryLang = isset($article['primary-language']) ? trim($article['primary-language']) : '';
-                if (!is_string($primaryLang) || empty($primaryLang)) {
-                    array_push($issueErrors, "Birincil dil bilgisini gözden geçirin.");
-                }
-                if (empty($primaryLang)) {
-                    array_push($issueErrors, " birincil dil yok. " );
-                    $newarticle->setPrimaryLanguage('001');
-                } else {
-                    $newarticle->setPrimaryLanguage($primaryLang);
-                }
-
-                $doi = isset($article['doi']) ? trim($article['doi']) : '';
-                if (!is_string($doi) || empty($doi)) {
-                    array_push($issueErrors, "doi bilgisi hatalı. ");
-                } else {
-                    $newarticle->setDoi($article['doi']);
-                }
-
-                if (!empty($issueErrors)) {
-                    $issue->setErrors($issueErrors);
-                }
-                //------------------------------------------------------------
-                // Validate translations
-                foreach ($article['translations'] as $translations) {
-                    $this->validateTranslation($translations, $newarticle, $errors);
-                }
-                // Validate authors
-                foreach ($article['authors'] as $authors) {
-                    $this->validateAuthors($authors, $newarticle, $errors);
-                }
-                //validate referance
-                if (isset($article['citations'])) {
-                    foreach ($article['citations'] as $citations) {
-
-                        $this->validateCitations($citations, $newarticle, $errors);
+                    //------------------------------------------------------------
+                    // Validate translations
+                    if (isset($article['translations'])) {
+                        $this->validateTranslation($article['translations'], $newarticle, $errors);
                     }
-                }
+                    // Validate authors
+                    if (isset($article['authors'])) {
+                        $this->validateAuthors($article['authors'], $newarticle, $errors);
+                    }
+                    //validate referance
+                    if (isset($article['citations'])) {
+                        $this->validateCitations($article['citations'], $newarticle, $errors);
+
+                    }
 //                if (!empty($errors)) {
 ////                    $newarticle->setErrors($errors);
 //                }
+                    if (!$issue->getStatus(IssueStatusParam::ERROR)) {
+                        $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
+                    }
+                    if (!$newarticle->getFulltext()) {
+                        $newarticle->setStatus(ArticleStatusParam::ERROR);
+                    } else {
+                        $newarticle->setStatus(ArticleStatusParam::EDIT_REQUIRED);
+                    }
+                    $this->entityManager->persist($newarticle);
+                    $this->entityManager->persist($issue);
+                    $this->entityManager->flush();
 
-                $issue->setStatus(ArticleStatusParam::EDIT_REQUIRED);
-                $newarticle->setStatus(ArticleStatusParam::EDIT_REQUIRED);
-                $this->entityManager->persist($newarticle);
-                $this->entityManager->persist($issue);
-                $this->entityManager->flush();
+                } catch
+                (LogicException $e) {
+                    $issue->setErrors([$e->getMessage()]);
 
-            } catch (LogicException $e) {
-                $issue->setErrors([$e->getMessage()]);
-                error_log('Makale doğrulama hatası: ' . $e->getMessage());
-                continue;
+                    error_log('Makale doğrulama hatası: ' . $e->getMessage());
+                    continue;
+                }
             }
+        } else {
+
+            return false;
         }
+
         $this->entityManager->flush();
         return true;
     }
 
-    private function validateTranslation($translations, $newarticle, &$errors)
+    private
+    function validateTranslation($translations, $newarticle, &$errors)
     {
+        if (isset($translations['translation'])) {
+            if (isset($translations['translation']['locale'])) {
+                $translations = [$translations['translation']];
+            } else {
+                $translations = $translations['translation'];
+            }
+        }
         foreach ($translations as $translation) {
 
             $newtranslation = new Translations();
             $newtranslation->setArticle($newarticle);
-
 
             $locale = isset($translation['locale']) ? trim($translation['locale']) : '';
             if (empty($locale) || !is_string($locale)) {
@@ -226,10 +332,10 @@ class ParseXmlCommand extends Command
 
             $this->entityManager->persist($newtranslation);
         }
-
     }
 
-    private function validateAuthors($authors, $newarticle, &$errors)
+    private
+    function validateAuthors($authors, $newarticle, &$errors)
     {
         foreach ($authors as $author) {
             $newauthor = new Authors();
@@ -281,7 +387,8 @@ class ParseXmlCommand extends Command
         }
     }
 
-    private function validateCitations($citations, $newarticle, &$errors)
+    private
+    function validateCitations($citations, $newarticle, &$errors)
     {
         foreach ($citations as $citation) {
             $newcitation = new Citations();
@@ -306,7 +413,8 @@ class ParseXmlCommand extends Command
         }
     }
 
-    private function validateClient($fulltextFile, $issue, $issueErrors)
+    private
+    function validateClient($fulltextFile, $issue, $issueErrors)
     {
         try {
             sleep(1);
@@ -315,7 +423,7 @@ class ParseXmlCommand extends Command
 
             $statusCode = $response->getStatusCode();
             if ($statusCode !== 200) {
-                error_log('Tam metin URL\'i geçerli değil veya 200 OK durumu alınamadı.');
+//                error_log('Tam metin URL\'i geçerli değil veya 200 OK durumu alınamadı.');
                 return false;
             }
             $pdfContent = $response->getBody()->getContents();
@@ -337,12 +445,12 @@ class ParseXmlCommand extends Command
             $filesystem = new Filesystem();
 
             if (!$filesystem->exists($journalFolder)) {
-                $filesystem->mkdir($journalFolder,0777);
+                $filesystem->mkdir($journalFolder, 0777);
             }
 
             $issueFolder = $journalFolder . '/' . $issueId;
             if (!$filesystem->exists($issueFolder)) {
-                $filesystem->mkdir($issueFolder,0777);
+                $filesystem->mkdir($issueFolder, 0777);
             }
 
             $destinationPath = $issueFolder . '/' . $fileName;
@@ -354,8 +462,8 @@ class ParseXmlCommand extends Command
 
             return $destinationPath;
         } catch (RequestException $e) {
-            array_push($issueErrors, 'HTTP isteği sırasında bir hata oluştu: ' . $e->getMessage());
-            $issue->setErrors($issueErrors);
+//            array_push($issueErrors, 'HTTP isteği sırasında bir hata oluştu: ' . $e->getMessage());
+//            $issue->setErrors($issueErrors);
             $this->entityManager->persist($issue);
             return false;
         }
@@ -364,8 +472,8 @@ class ParseXmlCommand extends Command
     function specialChar($text)
     {
         return str_replace(
-            array("&#13;",'&rdquo;','&ldquo;',"\r\n",'&#13;','&ndash;','','&nbsp;',' ', '&amp;', '\u0026amp;', '&Agrave;', '&Aacute;', '&Acirc;', '&Atilde;', '&Auml;', '&Aring;', '&agrave;', '&aacute;', '&acirc;', '&atilde;', '&auml;', '&aring;', '&AElig;', '&aelig;', '&szlig;', '&Ccedil;', '&ccedil;', '&Egrave;', '&Eacute', '&Ecirc;', '&Euml;', '&egrave;', '&eacute;', '&ecirc;', '&euml;', '&#131;', '&Igrave;', '&Iacute;', '&Icirc;', '&Iuml;', '&igrave;', '&iacute;', '&icirc;', '&iuml;', '&Ntilde;', '&ntilde;', '&Ograve;', '&Oacute;', '&Ocirc;', '&Otilde;', '&Ouml;', '&ograve;', '&oacute;', '&ocirc;', '&otilde;', '&ouml;', '&Oslash;', '&oslash;', '&#140;', '&#156;', '&#138;', '&#154;', '&Ugrave;', '&Uacute;', '&Ucirc;', '&Uuml;', '&ugrave;', '&uacute;', '&ucirc;', '&uuml;', '&#181;', '&#215;', '&Yacute;', '&#159;', '&yacute;', '&yuml;', '&#176;', '&lt;', '&gt;', '&#177;', '&#171;', '&#187;', '&#161;', '&#xD6;', '&#xFC;', '&#xE7;', '&#x131;', '&#x11F;', '&#x130;', '&#x15F;'),
-            array('','”','“'," ",'','-','','','', '&', '&', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'à', 'á', 'â', 'ã', 'ä', 'å', 'Æ', 'æ', 'ß', 'Ç', 'ç', 'È', 'É', 'Ê', 'Ë', 'è', 'é', 'ê', 'ë', 'ƒ', 'Ì', 'Í', 'Î', 'Ï', 'ì', 'í', 'î', 'ï', 'Ñ', 'ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'ò', 'ó', 'ô', 'õ', 'ö', 'Ø', 'ø', 'Œ', 'œ', 'Š', 'š', 'Ù', 'Ú', 'Û', 'Ü', 'ù', 'ú', 'û', 'ü', 'µ', '×', 'Ý', 'Ÿ', 'ý', 'ÿ', '°', '<', '>', '±', '«', '»', 'i', 'Ö', 'ü', 'ç', 'ı', 'ğ', 'İ', 'ş'), $text);
+            array("&#13;", '&rdquo;', '&ldquo;', "\r\n", '&#13;', '&ndash;', '', '&nbsp;', ' ', '&amp;', '\u0026amp;', '&Agrave;', '&Aacute;', '&Acirc;', '&Atilde;', '&Auml;', '&Aring;', '&agrave;', '&aacute;', '&acirc;', '&atilde;', '&auml;', '&aring;', '&AElig;', '&aelig;', '&szlig;', '&Ccedil;', '&ccedil;', '&Egrave;', '&Eacute', '&Ecirc;', '&Euml;', '&egrave;', '&eacute;', '&ecirc;', '&euml;', '&#131;', '&Igrave;', '&Iacute;', '&Icirc;', '&Iuml;', '&igrave;', '&iacute;', '&icirc;', '&iuml;', '&Ntilde;', '&ntilde;', '&Ograve;', '&Oacute;', '&Ocirc;', '&Otilde;', '&Ouml;', '&ograve;', '&oacute;', '&ocirc;', '&otilde;', '&ouml;', '&Oslash;', '&oslash;', '&#140;', '&#156;', '&#138;', '&#154;', '&Ugrave;', '&Uacute;', '&Ucirc;', '&Uuml;', '&ugrave;', '&uacute;', '&ucirc;', '&uuml;', '&#181;', '&#215;', '&Yacute;', '&#159;', '&yacute;', '&yuml;', '&#176;', '&lt;', '&gt;', '&#177;', '&#171;', '&#187;', '&#161;', '&#xD6;', '&#xFC;', '&#xE7;', '&#x131;', '&#x11F;', '&#x130;', '&#x15F;'),
+            array('', '”', '“', " ", '', '-', '', '', '', '&', '&', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'à', 'á', 'â', 'ã', 'ä', 'å', 'Æ', 'æ', 'ß', 'Ç', 'ç', 'È', 'É', 'Ê', 'Ë', 'è', 'é', 'ê', 'ë', 'ƒ', 'Ì', 'Í', 'Î', 'Ï', 'ì', 'í', 'î', 'ï', 'Ñ', 'ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'ò', 'ó', 'ô', 'õ', 'ö', 'Ø', 'ø', 'Œ', 'œ', 'Š', 'š', 'Ù', 'Ú', 'Û', 'Ü', 'ù', 'ú', 'û', 'ü', 'µ', '×', 'Ý', 'Ÿ', 'ý', 'ÿ', '°', '<', '>', '±', '«', '»', 'i', 'Ö', 'ü', 'ç', 'ı', 'ğ', 'İ', 'ş'), $text);
 
     }
 }

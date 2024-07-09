@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'Bu mail halihazırda kullanılmaktadır.')]
 
-
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -62,11 +61,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'editor', targetEntity: Articles::class)]
     private Collection $articles;
 
+    #[ORM\OneToMany(mappedBy: 'exporter', targetEntity: Journal::class)]
+    private Collection $exporter;
+
     public function __construct()
     {
         $this->userRoles = new ArrayCollection();
         $this->journalUsers = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->exporter = new ArrayCollection();
 
     }
 
@@ -272,6 +275,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($article->getEditor() === $this) {
                 $article->setEditor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Journal>
+     */
+    public function getExporter(): Collection
+    {
+        return $this->exporter;
+    }
+
+    public function addExporter(Journal $exporter): static
+    {
+        if (!$this->exporter->contains($exporter)) {
+            $this->exporter->add($exporter);
+            $exporter->setExporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExporter(Journal $exporter): static
+    {
+        if ($this->exporter->removeElement($exporter)) {
+            // set the owning side to null (unless already changed)
+            if ($exporter->getExporter() === $this) {
+                $exporter->setExporter(null);
             }
         }
 

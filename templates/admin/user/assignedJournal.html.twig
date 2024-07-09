@@ -91,17 +91,16 @@
                                 <td style="text-align: center">
                                     {% if editor in journal.role %}
                                         <div class="btn-group" style="text-align: center">
-                                            <a class="btn btn-secondary disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Editör Rolü</a>
-                                            <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px" href="#" onclick="openDeleteModal('{{ journal.id }}', 'ROLE_EDITOR')">x</a>
+                                            <a class="btn btn-secondary disabled" style="border-top-left-radius: 3px; background-color: #343a40; color: #ffffff; border-bottom-left-radius: 3px">Editör Rolü</a>
+                                            <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px; background-color: #dc3545; color: #ffffff;" href="#" onclick="openDeleteModal('{{ journal.id }}', 'ROLE_EDITOR')">x</a>
                                         </div>
-
-
                                     {% endif %}
                                 </td>
+
                                 <td style="text-align: center">
                                     {% if operator in journal.role %}
                                         <div class="btn-group" style="text-align: center">
-                                            <a class="btn btn-secondary disabled" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px">Operatör Rolü</a>
+                                            <a class="btn btn-secondary disabled" style="border-top-left-radius: 3px; background-color: #343a40; color: #ffffff; border-bottom-left-radius: 3px">Operatör Rolü</a>
                                             <a class="btn btn-danger" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px" href="#" onclick="openDeleteModal('{{ journal.id }}', 'ROLE_OPERATOR')">x</a>
                                         </div>
                                     {% endif %}

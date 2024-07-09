@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\JournalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,6 +34,24 @@ class Journal
 
     #[ORM\OneToMany(mappedBy: 'journal', targetEntity: Articles::class)]
     private Collection $articles;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $Export = null;
+
+    #[ORM\ManyToOne(inversedBy: 'exporter')]
+    private ?User $exporter = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $exportDate = null;
+
+    #[ORM\Column(length: 600, nullable: true)]
+    private ?string $archive = null;
+
+    #[ORM\Column(length: 555, nullable: true)]
+    private ?string $xml = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $status = null;
 
 
     public function __construct()
@@ -170,6 +189,78 @@ class Journal
                 $article->setJournal(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isExport(): ?bool
+    {
+        return $this->Export;
+    }
+
+    public function setExport(?bool $Export): static
+    {
+        $this->Export = $Export;
+
+        return $this;
+    }
+
+    public function getExporter(): ?User
+    {
+        return $this->exporter;
+    }
+
+    public function setExporter(?User $exporter): static
+    {
+        $this->exporter = $exporter;
+
+        return $this;
+    }
+
+    public function getExportDate(): ?\DateTimeInterface
+    {
+        return $this->exportDate;
+    }
+
+    public function setExportDate(?\DateTimeInterface $exportDate): static
+    {
+        $this->exportDate = $exportDate;
+
+        return $this;
+    }
+
+    public function getArchive(): ?string
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(?string $archive): static
+    {
+        $this->archive = $archive;
+
+        return $this;
+    }
+
+    public function getXml(): ?string
+    {
+        return $this->xml;
+    }
+
+    public function setXml(?string $xml): static
+    {
+        $this->xml = $xml;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

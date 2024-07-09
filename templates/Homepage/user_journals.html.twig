@@ -50,8 +50,83 @@
             }
 
             .button-42:hover {
-                /*box-shadow: #198754 0 3px 8px;*/
+
                 color: #fff;
+            }
+
+            .custom-badge {
+                color: white;
+                border-radius: 3px;
+                padding: 5px 15px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                height: 30px;
+                min-width: 150px;
+                text-align: center;
+            }
+
+            .badge-primary {
+                background-color: #007bff;
+            }
+
+            .badge-warning {
+                background-color: #ffc107;
+            }
+
+            .badge-success {
+                background-color: #28a745;
+            }
+
+            .badge-info {
+                background-color: #62afac;
+            }
+
+            .badge-danger {
+                background-color: #dc3545;
+            }
+
+            .badge-secondary {
+                background-color: #6c757d;
+            }
+
+            .btn-custom-secondary {
+                background-color: #f0f0f0;
+                color: #333;
+                border: 1px solid #ccc;
+                border-radius: 1px;
+                display: inline-flex;
+                align-items: center;
+                padding: 0.375rem 0.75rem;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            .btn-custom-secondary:hover {
+                background-color: #e0e0e0;
+                color: #111;
+
+            }
+
+            .btn-custom-export {
+                background-color: #6c757d;
+                color: #fff;
+                border: 1px solid #6c757d;
+                display: inline-flex;
+                align-items: center;
+                padding: 0.375rem 0.75rem;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            .btn-custom-export:hover {
+                background-color: #5a6268;
+                color: #fff;
+            }
+
+            .custom-td {
+                white-space: nowrap;
             }
         </style>
         <div class="container">
@@ -66,9 +141,7 @@
                     {% endif %}
                 </h1>
                 <div class="m-3">
-                    {% if user.roles == 'ROLE_MODERATOR' %}
-                        <a href="{{ path('admin_journal_add') }}" class="btn btn-lg btn-dark">Dergi Ekle</a>
-                    {% endif %}
+
                 </div>
 
             </div>
@@ -79,11 +152,13 @@
                             <thead>
                             <tr>
                                 <th>Dergi İsmi</th>
+                                <th style="text-align: center;">Link</th>
                                 <th>Issn</th>
                                 <th>E-issn</th>
+                                <th style="text-align: center;">Arşiv Durum</th>
                                 <th style="text-align: center;">Tüm Sayılar</th>
                                 <th style="text-align: center;">Kontrol Edilmiş Sayılar</th>
-                                <th style="text-align: center;">Hatalı Sayılar</th>
+                                <th style="text-align: center">Dışa Aktarım Onay</th>
                                 <th style="text-align: right; "></th>
                             </tr>
                             </thead>
@@ -110,62 +185,106 @@
                                 {% endfor %}
                                 <tr>
                                     <td>{{ journalUser.journal.name }}</td>
-                                    <td>{{ journalUser.journal.issn }}</td>
-                                    <td>{{ journalUser.journal.eIssn }}</td>
-
+                                    <td class="">
+                                        {% if journalUser.journal.archive %}
+                                            <a href="{{ journalUser.journal.archive }}" class="btn-link" target="_blank"
+                                               rel="noopener noreferrer">Link</a>
+                                        {% else %}
+                                        {% endif %}
+                                    </td>
+                                    <td class="custom-td">{{ journalUser.journal.issn }}</td>
+                                    <td class="custom-td">{{ journalUser.journal.eIssn }}</td>
+                                    {% if journalUser.journal.status == '000' %}
+                                        <td>
+                                            <span class="custom-badge badge-primary">Beklemede</span>
+                                        </td>
+                                    {% elseif journalUser.journal.status == '001' %}
+                                        <td>
+                                            <span class="custom-badge badge-warning">Aktarım Yapılıyor</span>
+                                        </td>
+                                    {% elseif journalUser.journal.status == '002' %}
+                                        <td>
+                                            <span class="custom-badge badge-info">Transfer Edildi</span>
+                                        </td>
+                                    {% elseif journalUser.journal.status == '003' %}
+                                        <td>
+                                            <span class="custom-badge badge-danger">Hatalı</span>
+                                        </td>
+                                    {% elseif journalUser.journal.status == '004' %}
+                                        <td>
+                                            <span class="badge custom-badge badge-success">Kontrol Edildi</span>
+                                        </td>
+                                    {% else %}
+                                        <td style="text-align: center">
+                                            <span class="custom-badge badge-secondary">Arşiv Eklenmemiş</span>
+                                        </td>
+                                    {% endif %}
                                     <td style="text-align: center">{{ status_all_count }}</td>
                                     <td style="text-align: center">{{ status_edited_count }}</td>
-                                    <td style="text-align: center">{{ status_error_count }}</td>
+                                    {#                                    <td style="text-align: center">{{ status_error_count }}</td> #}
+                                    {% if journalUser.journal.export %}
+                                        <td style="text-align: center; white-space: nowrap;">
+    <span class="text-black" tabindex="0" data-bs-toggle="popover"
+          data-bs-placement="left" data-bs-trigger="hover"
+          data-bs-content="{{ journalUser.journal.exportDate|date('d-m-Y H:i') }}"
+          style=" color: white; border-radius: 3px; text-align: center; padding-top: 5px; display:inline-flex;">
+        {{ journalUser.journal.exporter.name }} {{ journalUser.journal.exporter.surname }} &nbsp;
+        <i class="bi bi-info-circle"></i>
+    </span>
+                                        </td>
 
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
 
                                     <td style="text-align: right">
-                                            {% if status_edited_count == status_all_count %}
-                                                {% if role == 'editor' %}
-                                                    {% if status_all_count == 0 %}
-                                                    {% else %}
-                                                        <a class="btn button-42"
-                                                           href="{{ path('journal_export', {'id': journalUser.journal.id}) }}"
-                                                           style="flex: 1; margin-right: 40px; text-align: center">Dışa Aktar<i
-                                                                    class="bi bi-filetype-xml"></i></a>
-                                                    {% endif %}
-                                            {% endif %}
-                                        {% endif %}
-                                        {% set status_all_count = 0 %}
-                                        {% set status_edited_count = 0 %}
-                                        {% set status_error_count = 0 %}
-
                                         <div style="display: inline-flex; justify-content: space-between;">
-                                            {% if role == 'editor' %}
-                                                                                            <a href="{{ path('editor_journal_issues', {'id': journalUser.journal.id}) }}"
-                                                                                                                                   class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
-                                            {% elseif role == 'operator' %}
-                                                <a href="{{ path('operator_journal_issues', {'id': journalUser.journal.id}) }}"
-                                                   class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
+
+                                            {% if  journalUser.journal.status == '002' %}
+                                                <a class="btn btn-warning btn-custom-secondary"
+                                                   href="{{ path('journal_export_confirm', {'id': journalUser.journal.id, 'role': role}) }}"
+                                                   style="flex: 1; margin-right: 40px; white-space: nowrap; text-align: center; border-radius: 2px;">
+                                                    Kontrol Et<i class="bi bi-check2-square"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if status_edited_count and journalUser.journal.status == '004' %}
+                                                {% if status_all_count != 0 %}
+                                                    {% if journalUser.journal.export %}
+                                                        {% if role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles or role == 'editor' %}
+                                                            <a class="btn btn-custom-export"
+                                                               href="{{ path('journal_export', {'id': journalUser.journal.id}) }}"
+                                                               style="flex: 1; margin-right: 40px; border-radius: 3px;  text-align: center">Dışa
+                                                                Aktar<i class="bi bi-filetype-xml"></i></a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
                                             {% endif %}
 
-                                            {% if role == 'editor' %}
-                                                <div class="dropdown" style="border-radius: 3px">
-                                                    <button class="btn btn-secondary dropdown-toggle"
-                                                            style="border-radius: 3px; margin-left: 1px" type="button"
-                                                            id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">
-                                                        <i class="bi bi-three-dots"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item"
-                                                           href="{{ path('admin_journal_edit', {'id': journalUser.journal.id, 'role': role}) }}">Düzenle</a>
-
-{#                                                        <a class="dropdown-item" type="button" href="#"#}
-{#                                                           data-bs-toggle="modal"#}
-{#                                                           onclick="openDeleteModal({{ journalUser.journal.id }})"#}
-{#                                                           data-bs-target="#deleteJournalModal"#}
-{#                                                           data-target="#deleteJournalModal"#}
-{#                                                           data-id="{{ journalUser.journal.id }}">Sil</a>#}
-                                                    </div>
-                                                </div>
+                                            {% if journalUser.journal.status == null %}
+                                                {% if status_edited_count > 0 %}
+                                                    {% if role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles or role == 'editor' %}
+                                                        <a class="btn btn-custom-export"
+                                                           href="{{ path('journal_export', {'id': journalUser.journal.id}) }}"
+                                                           style="flex: 1; margin-right: 40px; border-radius: 3px; text-align: center">Dışa
+                                                            Aktar<i class="bi bi-filetype-xml"></i></a>
+                                                    {% endif %}
+                                                {% endif %}
                                             {% endif %}
+                                            {% set status_all_count = 0 %}
+                                            {% set status_edited_count = 0 %}
+                                            {% set status_error_count = 0 %}
+
+                                            <div style="display: inline-flex; justify-content: space-between;">
+                                                {% if role == 'editor' %}
+                                                    <a href="{{ path('editor_journal_issues', {'id': journalUser.journal.id}) }}"
+                                                       class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
+                                                {% elseif role == 'operator' %}
+                                                    <a href="{{ path('operator_journal_issues', {'id': journalUser.journal.id}) }}"
+                                                       class="btn btn-primary" style="border-radius: 3px">Sayılar</a>
+                                                {% endif %}
 
 
+                                            </div>
                                         </div>
                                     </td>
 
@@ -173,6 +292,8 @@
                             {% else %}
                                 <tr>
                                     <td colspan="3">Dergi Bulunamadı...</td>
+                                    <td colspan="3"></td>
+                                    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
@@ -228,6 +349,23 @@
                     window.location.href = deleteUrl;
                 });
             }
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                    var popover = new bootstrap.Popover(popoverTriggerEl);
+
+                    // Popover dışına tıklanıldığında popover'ı kapat
+                    document.addEventListener('click', function (event) {
+                        if (!popoverTriggerEl.contains(event.target)) {
+                            popover.hide();
+                        }
+                    });
+
+                    return popover;
+                });
+            });
         </script>
         <script>
             function closeModal() {

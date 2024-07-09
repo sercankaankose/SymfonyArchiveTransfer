@@ -123,7 +123,6 @@
                                 <th style="text-align: center">Dil</th>
                                 <th>Sayfalar</th>
                                 <th style="text-align: center">Durum</th>
-                                <th style="text-align: center">Düzenleme Tarihi</th>
                                 <th style="text-align: center">Düzenleyen</th>
                                 <th style="text-align: right; "></th>
                             </tr>
@@ -182,14 +181,28 @@
                                         <td>--</td>
                                     {% endif %}
 
-                                    {% if article.modificationDate %}
-                                        <td>{{ article.modificationDate|date(' d-m-Y H:i') }}</td>
-                                    {% else %}
-                                        <td>-</td>
-                                    {% endif %}
+{#                                    {% if article.modificationDate %}#}
+{#                                        <td>{{ article.modificationDate|date(' d-m-Y H:i') }}</td>#}
+{#                                    {% else %}#}
+{#                                        <td>-</td>#}
+{#                                    {% endif %}#}
 
-                                    {% if article.editor %}
-                                        <td>{{ article.editor.name }} {{ article.editor.surname }}</td>
+{#                                    {% if article.editor %}#}
+{#                                        <td>{{ article.editor.name }} {{ article.editor.surname }}</td>#}
+{#                                    {% else %}#}
+{#                                        <td>-</td>#}
+{#                                    {% endif %}#}
+                                    {% if article.editor and article.modificationDate %}
+                                        <td style="text-align: center">
+    <span class="text-black" tabindex="0" data-bs-toggle="popover"
+          data-bs-placement="left" data-bs-trigger="hover"
+          data-bs-content="{{ article.modificationDate|date(' d-m-Y H:i') }}"
+          style=" color: white; border-radius: 3px; text-align: center;  display:inline-flex;">
+        {{ article.editor.name }} {{ article.editor.surname }} &nbsp;
+        <i class="bi bi-info-circle"></i>
+    </span>
+                                        </td>
+
                                     {% else %}
                                         <td>-</td>
                                     {% endif %}
@@ -241,7 +254,6 @@
                             {% else %}
                                 <tr>
                                     <td colspan="3">Makale Bulunamadı...</td>
-                                    <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
                                     <td colspan="3"></td>
@@ -307,7 +319,6 @@
                 });
             });
         </script>
-
         <script>
             function closeModal() {
                 $('#deleteArticleModal').modal('hide');
@@ -374,7 +385,7 @@
                 columnDefs: [
                     {type: 'yesy', targets: [0]},
                     {type: 'sayi', targets: [2]},
-                    {orderable: false, targets: [6]},
+                    {orderable: false, targets: []},
                 ],
             });
 

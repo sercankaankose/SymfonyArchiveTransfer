@@ -1,10 +1,36 @@
-{% extends 'base.html.twig' %}
 
 {% block stylesheets %}
     <link type="text/css" href="{{ asset('css/breadcrumb.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css"
           rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link href="{{ asset('img/logo.png') }}" rel="icon">
+    {#    <link href="{{ asset('img/img.png') }}" rel="apple-touch-icon"> #}
+
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+
+    <link href="{{ asset ("vendor/bootstrap-icons/bootstrap-icons.css") }}" rel="stylesheet">
+    <link href="{{ asset ("vendor/swiper/swiper-bundle.min.css") }}" rel="stylesheet">
+    <link href="{{ asset ("vendor/glightbox/css/glightbox.min.css") }}" rel="stylesheet">
 
     <style>
         .nav-pills {
@@ -141,41 +167,7 @@
             height: 47px;
         }
 
-        .button-35 {
-            backface-visibility: hidden;
-            background-color: #405cf5;
-            border-radius: 6px;
-            border-width: 0;
-            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-            box-sizing: border-box;
-            color: #fff;
-            cursor: pointer;
-            font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
-            font-size: 100%;
-            height: 44px;
-            line-height: 1.15;
-            margin: 12px 0 0;
-            outline: none;
-            overflow: hidden;
-            padding: 0 25px;
-            position: relative;
-            text-align: center;
-            text-transform: none;
-            transform: translateZ(0);
-            transition: all .2s, box-shadow .08s ease-in;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            width: 100%;
-        }
 
-        .button-35:disabled {
-            cursor: default;
-        }
-
-        .button-35:focus {
-            box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
-        }
 
         .form-container .row {
             display: flex;
@@ -377,31 +369,41 @@
 {% block body %}
     <div class="container-fluid">
         <div class="form-container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="breadcrumb-container" style="border: 3px; background-color: #fff ">
+                    <nav aria-label="breadcrumb" style="border: 3px; background-color: #fff ">
+                        <div class="container">
+                            <ol class="breadcrumb" style="border-bottom: 1px  #676c75 solid ; padding-left: 4px; background-color: #fff ">
+                                <li style="text-align: center"
+                                    class="breadcrumb-item" aria-current="page">
+                                    <a href="{{ path('journal_issues_export_check',{'id': article.journal.id, 'role': role}) }}">Sayılar</a>
+                                </li>
+                                <span class="breadcrumb-separator" style="font-size: 18px"> &nbsp;&raquo;&nbsp; </span>
+                                <li style="text-align: center"
+                                    class="breadcrumb-item" aria-current="page">
+                                    <a href="{{ path('export_control_articles_list',{'id': article.issue.id}) }}">Makaleler</a>
+                                </li>
+                                <span class="breadcrumb-separator" style="font-size: 18px"> &nbsp;&raquo;&nbsp; </span>
+                                <li style="text-align: center"
+                                    class="breadcrumb-item" aria-current="page">
+                                    <a href="">Makale Kontrol</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </nav>
+                </div>
+                </div>
+
             <input type="hidden" name="_token" value="{{ csrf_token('form_token') }}"/>
 
             {{ form_start(form, {'attr': {'id': 'myForm', 'novalidate' : 'novalidate'}}) }}
             {% if article.status == '003' %}
-{#            {% if role == 'admin' %}#}
-                <a class=" btn btn-danger button-34 mb-3 pt-2" type="button"
-                   href="{{ path('article_pdf_error_delete', {'id': article.id, 'role': role}) }}"><h5>PDF HATASI KALDIR</h5></a>
 
             {% else %}
             {% endif %}
             <div class="btn-group-lg mt-2 d-flex justify-content-between" style="width: 100%;">
-                <a class="btn btn-danger btn-lg flex-grow-1 m-1" onclick="openDeleteModal()" data-toggle="modal" data-target="#pdfErrorModal">
-                    <i class="bi bi-exclamation-triangle-fill"></i> PDF Hatası Bildir
-                </a>
-                {% if role == 'editor' or (role == 'admin' and 'ROLE_SYSTEM_OPERATOR' not in user.roles) %}
-                    <a class="btn btn-warning btn-lg flex-grow-1 m-1" style="color: #f3f3f3" href="{{ path('article_Pdf_Change', {'id': article.id, 'role': role}) }}">
-                        <i class="bi bi-box-arrow-in-down"></i> Pdf Güncelle
-                    </a>
-                {% endif %}
-                <button type="submit" name="save_and_return" class="btn btn-success btn-lg flex-grow-1 m-1">
-                    <i class="bi bi-file-earmark-check"></i> Kaydet
-                </button>
-                <button type="submit" name="save_and_skip" class="btn btn-success btn-lg flex-grow-1 m-1">
-                    <i class="bi bi-file-earmark-check"></i> Kaydet ve Sonraki Makaleye Geç
-                </button>
+
             </div>
 
             <div class="card mt-3 mb-3">
@@ -411,14 +413,14 @@
                     </div>
 
                     <div class="col prange">
-                        {{ form_row(form.pageRange) }}
+                        {{ form_row(form.pageRange, {'label': 'Sayfa' }) }}
                     </div>
                     <div class="col doi">
                         <div class="form-label">{{ form_label(form.doi) }}</div>
                         <div class="input-group">
                             {{ form_widget(form.doi, {'attr': {'class': 'form-control', 'aria-describedby':'basic-addon2'}}) }}
                             <div class="input-group-append">
-                                <button style="padding: 11px; border-radius: 3px; z-index: 999;" type="button"
+                                <button style="padding: 11px; border-radius: 3px; z-index: 1000;" type="button"
                                         class="btn btn-secondary" id="doiButton">Veri Çek
                                 </button>
                             </div>
@@ -433,10 +435,10 @@
                         </div>
                         <div class="col date">
                             {{ form_row(form.receivedDate) }}
-{#                            <input type="hidden" id="formattedDate" name="formattedDate">#}
+                            <input type="hidden" id="formattedDate" name="formattedDate">
 
                         </div>
-                        <div class="col date" style="z-index: 999;">
+                        <div class="col date">
                             {{ form_row(form.acceptedDate) }}
                         </div>
                     </div>
@@ -530,7 +532,6 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <button type="button" class="button-35" id="addTranslationsButton">Yeni Veri Ekle</button>
                 </div>
                 <!-- End translations -->
                 <!-- authors -->
@@ -574,7 +575,6 @@
 
                         {% endfor %}
                     </div>
-                    <button type="button" class="button-35" id="addAuthorButton">Yeni Yazar Ekle</button>
                 </div>
                 <!-- End authors -->
 
@@ -616,7 +616,6 @@
                             {% endfor %}
                         {% endif %}
                     </div>
-                    <button type="button" class="button-35" id="addTranslatorButton">Yeni Çevirmen Ekle</button>
                 </div>
                 <!-- End translator -->
 
@@ -632,78 +631,21 @@
 
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success btn-lg mt-3" style=" margin-top: -10px;"><i
-                            class="bi bi-file-earmark-check"></i>Makaleyi Kaydet
-                </button>
 
             </div>
         </div>
         {{ form_end(form) }}
 
-        <div class="iframe-container" style="margin-right: -14px">
-            {# Assuming $article is available in your template #}
-            {#            <iframe src="{{ path('article_pdf', { 'filename': article.fulltext|url_encode }) }}"></iframe> #}
+{#        <div class="iframe-container" style="margin-right: -14px">#}
+{#            #}{# Assuming $article is available in your template #}
+{#            #}{#            <iframe src="{{ path('article_pdf', { 'filename': article.fulltext|url_encode }) }}"></iframe> #}
 
-            {#   <iframe src="{{ path('article_pdf', { 'filename': article.fulltext }) }}"></iframe> #}
+{#            #}{#   <iframe src="{{ path('article_pdf', { 'filename': article.fulltext }) }}"></iframe> #}
+{#            <iframe src="{{ asset(pdfFile) }}"></iframe>#}
 
-            {% if pdfFile %}
-             <iframe src="{{ asset(pdfFile) }}"></iframe>
-                {% else %}
-                <h4 style="text-align: center">PDF Dosyası Bulunamadı</h4>
-            {% endif %}
-
-        </div>
+{#        </div>#}
     </div>
-    <div class="modal fade" id="deleteJournalModal" tabindex="-1" role="dialog"
-         aria-labelledby="deleteJournalModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="deleteJournalModalLabel">Pdf Hatası</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '0', 'role': role}) }}"
-                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
-                                <span>Dosya Görüntülenmiyor</span>
-                                <i class="bi bi-file-earmark-excel"></i>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '1', 'role': role}) }}"
-                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
-                                <span>Makale Değil</span>
-                                <i class="bi bi-file-earmark-pdf"></i>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '2', 'role': role}) }}"
-                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
-                                <span>Yazı Bozuk Kopyalanıyor</span>
-                                <i class="bi bi-file-earmark-break"></i>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '3', 'role': role}) }}"
-                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
-                                <span>Yazı Seçilemiyor</span>
-                                <i class="bi bi-file-earmark-check"></i>
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="{{ path('article_pdf_error', {'id': article.id, 'status': '4', 'role': role}) }}"
-                               class="btn btn-danger d-flex align-items-center justify-content-between w-100">
-                                <span>Diğer</span>
-                                <i class="bi bi-file-earmark-check"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+
 {% endblock %}
 {% block javascripts %}
 
@@ -830,7 +772,7 @@
             }
         });
     </script>
-        <script>
+    <script>
 
         //bu sondan bir önceki
 
@@ -1325,5 +1267,4 @@
     </script>
 
 {% endblock %}
-{% block title %}Makale Düzenle{% endblock %}
 

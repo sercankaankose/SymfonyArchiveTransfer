@@ -11,6 +11,7 @@ use App\Form\ChangePasswordFormType;
 use App\Form\IssuesXmlFormType;
 use App\Form\JournalFormType;
 use App\Params\ArticleLanguageParam;
+use App\Params\JournalStatusParam;
 use App\Repository\JournalUserRepository;
 use App\Util\TypeModifier;
 
@@ -58,7 +59,7 @@ class IssueArticleEditController extends AbstractController
     }
 
 
-    //    Dergi Düzenleme
+    //    dergi düzenleme
     #[Route('/{role}/journal/edit/{id}', name: 'admin_journal_edit')]
     public function journalEdit($id, Request $request, $role, Security $security,): Response
     {
@@ -213,7 +214,8 @@ class IssueArticleEditController extends AbstractController
                     $nameNode->appendChild($givenNameNode);
                     $contribNode->appendChild($nameNode);
 //institute
-                    $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+                    $institute = htmlspecialchars($author->getInstitute(), ENT_XML1, 'UTF-8');
+                    $affNode = $xmlDoc->createElement('aff', $institute);
 
                     $contribNode->appendChild($affNode);
 
@@ -307,6 +309,10 @@ class IssueArticleEditController extends AbstractController
 //sayı
                 $numberNode = $xmlDoc->createElement('issue', $issue->getNumber());
                 $articleMetaNode->appendChild($numberNode);
+                if ($issue->isSpecial()) {
+                    $numberTitleNode = $xmlDoc->createElement('issue-title', $issue->getNumber());
+                    $articleMetaNode->appendChild($numberTitleNode);
+                }
 //birinci sayfa
                 $fpageNode = $xmlDoc->createElement('fpage', $fPage);
                 $articleMetaNode->appendChild($fpageNode);
@@ -370,7 +376,10 @@ class IssueArticleEditController extends AbstractController
 // XML içeriğini bir değişkene atayın
         $xmlContent = $xmlDoc->saveXML();
         $fileName = 'exported_issues.xml';
+//  chmod($fileName, 0644);
+
         $file = fopen($fileName, 'w');
+
         fwrite($file, $xmlContent);
         fclose($file);
 
@@ -424,24 +433,22 @@ class IssueArticleEditController extends AbstractController
         $journal = $this->entityManager->getRepository(Journal::class)->find($id);
         $journalname = $journal->getName();
         if ($role == 'admin') {
-            $breadcrumb = $this->breadcrumbService->createIssueAddBreadcrumb($factory, $journalname, $id);
+            $breadcrumb = $this->breadcrumbService->createIssueAddBreadcrumb($factory, $journalname, $id, 'Yeni Sayı');
         } else {
-            $breadcrumb = $this->breadcrumbService->createEditorIssueAddBreadcrumb($factory, $journalname, $id);
+            $breadcrumb = $this->breadcrumbService->createEditorIssueAddBreadcrumb($factory, $journalname, $id, 'Yeni Sayı');
         }
         $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
 
         if ($hasEditorRole == false && !$user->isIsAdmin()) {
             throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
-
         $newissue = new Issues();
         $newissue->setJournal($journal);
-        $this->entityManager->persist($newissue);
+
         $form = $this->createForm(IssuesFormType::class, $newissue);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($newissue);
 
             $journalId = $journal->getId();
             $issueId = $newissue->getId();
@@ -449,7 +456,6 @@ class IssueArticleEditController extends AbstractController
             $xmlFile = $form->get('xml')->getData();
 
             if ($xmlFile) {
-//                $baseDirectory = $this->getParameter('kernel.project_dir') . '/var/journal/' . $journal->getId();
                 $baseDirectory = '/usr/share/nginx/data/journal/' . $journal->getId();
 
 
@@ -477,9 +483,9 @@ class IssueArticleEditController extends AbstractController
                 'success',
                 'Yeni Sayı Oluşturulmuştur.'
             );
-            if ($role == 'admin'){
+            if ($role == 'admin') {
                 return $this->redirectToRoute('journal_issues', ['id' => $id]);
-            }else{
+            } else {
                 return $this->redirectToRoute('editor_journal_issues', ['id' => $id]);
 
             }
@@ -493,6 +499,92 @@ class IssueArticleEditController extends AbstractController
 
         ]);
     }
+
+
+    // arşiv ekleme
+    #[Route('/{role}/journal/{id}/archive/add', name: 'journal_archive_add')]
+    public function archiveAdd($id, Request $request, FactoryInterface $factory, $role): Response
+    {
+        $user = $this->security->getUser();
+
+        $journal = $this->entityManager->getRepository(Journal::class)->find($id);
+        $journalname = $journal->getName();
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createIssueAddBreadcrumb($factory, $journalname, $id, 'Arşiv Ekle');
+        } else {
+            $breadcrumb = $this->breadcrumbService->createEditorIssueAddBreadcrumb($factory, $journalname, $id, 'Arşiv Ekle');
+        }
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
+
+        $form = $this->createForm(IssuesXmlFormType::class);
+        $form->handleRequest($request);
+//        $name = $journal->getName() . ' Arşiv Yükleme' ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $xmlFile = $form->get('xml')->getData();
+
+            if ($journal->getStatus() === JournalStatusParam::TRANSFERSTAGE && $journal->getStatus() === JournalStatusParam::TRANSFERRED) {
+                $this->addFlash('danger', 'Bu sayının aktarımı gerçekleşmiş ya da gerçekleşiyor.');
+                return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+            }
+            $existingXmlPath = $journal->getXml();
+//            if ($existingXmlPath && file_exists($existingXmlPath)) {
+//                unlink($existingXmlPath);
+//            }
+            if ($xmlFile) {
+                $baseDirectory = '/usr/share/nginx/data/journal/' . $journal->getId();
+
+                if (!file_exists($baseDirectory)) {
+                    mkdir($baseDirectory, 0777, true);
+                }
+
+                $xmlFileName = $this->generateHashedFileName($xmlFile, $journal->getId(), 'ArchiveFile');
+
+                try {
+                    $xmlFile->move($baseDirectory, $xmlFileName);
+                    $journal->setXml('/usr/share/nginx/data/journal/' . $journal->getId() . '/' . $xmlFileName);
+
+                } catch (FileException $e) {
+                    return new Response($e->getMessage());
+                }
+            } else {
+                $this->addFlash('danger', 'Lütfen bir XML dosyası seçin.');
+                return $this->redirectToRoute('journal_issue_xml_edit', ['id' => $id]);
+            }
+
+            $journal->setStatus(JournalStatusParam::WAITING);
+            $journal->setExport(false);
+            $journal->setExportDate(null);
+            $journal->setExporter(null);
+            $this->entityManager->persist($journal);
+            $this->entityManager->flush();
+            $this->addFlash(
+                'success',
+                'XML Dosyası Yenilenmiştir.'
+            );
+
+            if ($role == 'admin') {
+                return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+            } else {
+                return $this->redirectToRoute('editor_journal_issues', ['id' => $journal->getId()]);
+
+            }
+        }
+        return $this->render('journal_issue_xml_edit.html.twig', [
+            'form' => $form->createView(),
+            'breadcrumb' => $breadcrumb,
+            'journal' => $journal,
+            'name' => $journalname . ' Arşiv Aktarımı',
+            'button' => 'Arşiv Aktar
+            ',
+
+        ]);
+    }
+
 
 //sayı düzenleme
     #[Route('/{role}/journal/{id}/issue/edit', name: 'journal_issue_edit')]
@@ -530,7 +622,7 @@ class IssueArticleEditController extends AbstractController
             );
             if ($role == 'admin') {
                 return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
-            }else{
+            } else {
                 return $this->redirectToRoute('editor_journal_issues', ['id' => $journalId]);
 
             }
@@ -568,7 +660,7 @@ class IssueArticleEditController extends AbstractController
         }
         $form = $this->createForm(IssuesXmlFormType::class);
         $form->handleRequest($request);
-        $name = $journal->getName() . ' ' . $issue->getNumber() . '. Sayısı Xml Düzenleme';
+        $name = $journal->getName() . ' ' . $issue->getNumber() . '. Sayısı XML Düzenleme';
 
         if ($form->isSubmitted() && $form->isValid()) {
             $xmlFile = $form->get('xml')->getData();
@@ -609,12 +701,12 @@ class IssueArticleEditController extends AbstractController
             $this->entityManager->flush();
             $this->addFlash(
                 'success',
-                'Xml Dosyası Yenilenmiştir.'
+                'XML Dosyası Yenilenmiştir.'
             );
 
             if ($role == 'admin') {
                 return $this->redirectToRoute('journal_issues', ['id' => $journalId]);
-            }else{
+            } else {
                 return $this->redirectToRoute('editor_journal_issues', ['id' => $journalId]);
 
             }
@@ -635,7 +727,7 @@ class IssueArticleEditController extends AbstractController
         $issue = $this->entityManager->getRepository(Issues::class)->find($id);
         $journal = $issue->getJournal();
 
-    $user = $this->security->getUser();
+        $user = $this->security->getUser();
 
         $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
 
@@ -794,10 +886,9 @@ class IssueArticleEditController extends AbstractController
 
             $hasTranslations = $translations->count() > 1;
 
-// Ana dil ile aynı olmayan çevirileri <trans-title-group> içine ekleyin
             if ($hasTranslations) {
                 foreach ($translations as $translation) {
-                    if ($primaryLang != $translation->getLocale()) { // Ana dil ile aynı olmayan çeviriler
+                    if ($primaryLang != $translation->getLocale()) {
 
                         $articleTransTitleGroupNode = $xmlDoc->createElement('trans-title-group');
                         $articleTransTitleGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
@@ -826,7 +917,8 @@ class IssueArticleEditController extends AbstractController
                 $nameNode->appendChild($givenNameNode);
                 $contribNode->appendChild($nameNode);
 //institute
-                $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+                $institute = htmlspecialchars($author->getInstitute(), ENT_XML1, 'UTF-8');
+                $affNode = $xmlDoc->createElement('aff', $institute);
 
                 $contribNode->appendChild($affNode);
 
@@ -920,6 +1012,11 @@ class IssueArticleEditController extends AbstractController
 //sayı
             $numberNode = $xmlDoc->createElement('issue', $issue->getNumber());
             $articleMetaNode->appendChild($numberNode);
+
+            if ($issue->isSpecial()) {
+                $numberTitleNode = $xmlDoc->createElement('issue-title', $issue->getNumber());
+                $articleMetaNode->appendChild($numberTitleNode);
+            }
 //birinci sayfa
             $fpageNode = $xmlDoc->createElement('fpage', $fPage);
             $articleMetaNode->appendChild($fpageNode);
@@ -982,6 +1079,8 @@ class IssueArticleEditController extends AbstractController
 // XML içeriğini bir değişkene atayın
         $xmlContent = $xmlDoc->saveXML();
         $fileName = 'exported_articles.xml';
+// chmod($fileName, 0644);
+
         $file = fopen($fileName, 'w');
         fwrite($file, $xmlContent);
         fclose($file);
@@ -1027,6 +1126,7 @@ class IssueArticleEditController extends AbstractController
 
         ]);
     }
+
 
     //makale export
     #[Route('/article/{id}/export', name: 'article_export')]
@@ -1135,7 +1235,10 @@ class IssueArticleEditController extends AbstractController
             $nameNode->appendChild($givenNameNode);
             $contribNode->appendChild($nameNode);
 //institute
-            $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+
+            //$affNode = $xmlDoc->createElement('aff', $author->getInstitute());
+            $institute = htmlspecialchars($author->getInstitute(), ENT_XML1, 'UTF-8');
+            $affNode = $xmlDoc->createElement('aff', $institute);
 
             $contribNode->appendChild($affNode);
 
@@ -1231,6 +1334,11 @@ class IssueArticleEditController extends AbstractController
 //sayı
         $numberNode = $xmlDoc->createElement('issue', $issue->getNumber());
         $articleMetaNode->appendChild($numberNode);
+
+        if ($issue->isSpecial()) {
+            $numberTitleNode = $xmlDoc->createElement('issue-title', $issue->getNumber());
+            $articleMetaNode->appendChild($numberTitleNode);
+        }
 //birinci sayfa
         $fpageNode = $xmlDoc->createElement('fpage', $fPage);
         $articleMetaNode->appendChild($fpageNode);
@@ -1294,6 +1402,8 @@ class IssueArticleEditController extends AbstractController
 //        $journalSlug = $this->convertToSlug($journal->getName());
 //        $articleSlug = $this->convertToSlug($article->getTranslations()->findFirst());
         $fileName = 'exported_article.xml';
+// chmod($fileName, 0644);
+
         $file = fopen($fileName, 'w');
         fwrite($file, $xmlContent);
         fclose($file);
@@ -1463,7 +1573,7 @@ class IssueArticleEditController extends AbstractController
 //                } else {
 //                    return $this->redirectToRoute('operator_journal_issues', ['id' => $journal->getId()]);
 //                }
-            }else{
+            } else {
                 $this->addFlash('success', 'Makale bilgileri güncellendi.');
 
             }
@@ -1539,7 +1649,7 @@ class IssueArticleEditController extends AbstractController
 
         $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
 
-        if ($hasEditorRole == false  && !$user->isIsAdmin()) {
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
             throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
 
@@ -1640,7 +1750,7 @@ class IssueArticleEditController extends AbstractController
 
         $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
 
-        if ($hasEditorRole == false  && !$user->isIsAdmin()) {
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
             throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
         $form = $this->createForm(ArticleFulltextAddFormType::class);
@@ -1752,7 +1862,7 @@ class IssueArticleEditController extends AbstractController
 //    }
 
 
-// article pdf hata bildirme
+// makale hata pdf hata bildirme
     #[Route('/{role}/article/{id}/{status}', name: 'article_pdf_error')]
     public function articlePdfError($id, $status, $role): Response
     {
@@ -1779,13 +1889,14 @@ class IssueArticleEditController extends AbstractController
 
         $article->setErrors([$errorText]);
         $issue = $article->getIssue();
-        $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
+        $issue->setStatus(IssueStatusParam::ERROR);
         $user = $this->security->getUser();
         $article->setEditor($user);
         $utc_now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $now = $utc_now->setTimezone(new \DateTimeZone('Europe/Istanbul'));
         $article->setModificationDate($now);
+
         $this->entityManager->persist($issue);
         $this->entityManager->persist($article);
         $this->entityManager->flush();
@@ -1810,7 +1921,15 @@ class IssueArticleEditController extends AbstractController
         $article->setErrors([]);
         $article->setModificationDate(null);
         $article->setEditor(null);
-
+        $issue = $article->getIssue();
+        foreach ($issue->getArticles() as $articleList) {
+            if ($articleList->getStatus() == ArticleStatusParam::ERROR) {
+                break;
+            } else {
+                $issue->setStatus(IssueStatusParam::EDIT_REQUIRED);
+            }
+        }
+        $this->entityManager->persist($issue);
         $this->entityManager->persist($article);
         $this->entityManager->flush();
         $this->addFlash('success', 'Makale Hatası Geri Alınmıştır.');
@@ -1833,7 +1952,7 @@ class IssueArticleEditController extends AbstractController
 
         $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
 
-        if ($hasEditorRole == false  && !$user->isIsAdmin()) {
+        if ($hasEditorRole == false && !$user->isIsAdmin()) {
             throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
         }
         foreach ($translations as $translation) {
@@ -1886,12 +2005,26 @@ class IssueArticleEditController extends AbstractController
         $articleCount = $this->entityManager->getRepository(Articles::class)->findBy([
             'issue' => $issue,
         ]);
+        $articleError = $this->entityManager->getRepository(Articles::class)->findBy([
+            'issue' => $issue,
+            'status' => ArticleStatusParam::ERROR,
+        ]);
+        if ($issue->getStatus() == IssueStatusParam::ERROR && $articleError) {
+
+            $issue->setStatus(IssueStatusParam::ERROR);
+            $this->entityManager->persist($issue);
+            $this->entityManager->flush();
+        }
+
         if (count($articleCount) > 0 && count($articleCount) === count($articleEdited)) {
             $issue->setStatus(IssueStatusParam::EDITED);
             $this->entityManager->persist($issue);
             $this->entityManager->flush();
             $this->addFlash('success', 'Sayı Dışa Aktarıma Hazır.');
         }
+        //en son burda kaldım bu kısımda eğer hatalıysa makale
+
+
         if ($role == 'admin') {
             return $this->redirectToRoute('articles_list', ['id' => $issue->getId()]);
         } else {
@@ -1920,6 +2053,177 @@ class IssueArticleEditController extends AbstractController
         );
 
         return $response;
+    }
+
+    // dergi export durumu
+    #[Route('/{role}/journal/{id}/export/confirm', name: 'journal_export_confirm')]
+    public function journalExportConfirm($id, $role, Request $request, Security $security,): Response
+    {
+        if ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createJournalCheckExportBreadcrumb();
+        } elseif ($role == 'editor') {
+            $breadcrumb = $this->breadcrumbService->createEditorCheckExportBreadcrumb();
+        } else {
+            $breadcrumb = $this->breadcrumbService->createOperatorJournalEditBreadcrumb();
+
+        }
+        $journal = $this->entityManager->getRepository(Journal::class)->find($id);
+
+        return $this->render('journal_export_confirm.html.twig', [
+            'breadcrumb' => $breadcrumb,
+            'journal' => $journal,
+            'role' => $role,
+
+        ]);
+    }
+
+    // dergi export onay
+    #[Route('/{role}/journal/{id}/export/accept', name: 'journal_export_accept')]
+    public function journalExportAccept($id, $role, Security $security,): Response
+    {
+
+        $user = $this->security->getUser();
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+        $journal = $this->entityManager->getRepository(Journal::class)->find($id);
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+        $hasOperatorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_OPERATOR);
+
+        if ($hasEditorRole == false && $hasOperatorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
+        $journal->setExport(true);
+        $journal->setExporter($user);
+        $utc_now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $now = $utc_now->setTimezone(new \DateTimeZone('Europe/Istanbul'));
+        $journal->setExportDate($now);
+        $journal->setStatus(JournalStatusParam::ARCHIVECHECKED);
+        $this->entityManager->persist($journal);
+        $this->entityManager->flush();
+        if ($role == 'admin') {
+
+            return $this->redirectToRoute('admin_journal_management');
+        } elseif ($role == 'editor') {
+
+            return $this->redirectToRoute('editor_journal_management');
+        } else {
+            return $this->redirectToRoute('operator_journal_management');
+        }
+    }
+
+
+    //sayılar export kontrol
+    #[Route('/{role}/journal/{id}/issues/check', name: 'journal_issues_export_check')]
+    public function journalIssuesCheckExport($id, $role, FactoryInterface $factory, Security $security,): Response
+    {
+        $journal = $this->entityManager->getRepository(Journal::class)->find($id);
+        $user = $this->security->getUser();
+
+        if (!$journal) {
+            $this->addFlash('danger', 'Dergi Bulunamadı.');
+            if (in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_ADMIN)) {
+                return $this->redirectToRoute('admin_journal_management');
+            }
+        }
+
+        $breadcrumb = $this->breadcrumbService->createJournalIssueBreadcrumb($factory, $journal->getName());
+        $issues = $this->entityManager->getRepository(Issues::class)->findBy([
+            'journal' => $journal
+        ]);
+
+        return $this->render('journal_export_issue_check.html.twig', [
+            'breadcrumb' => $breadcrumb,
+            'journal' => $journal,
+            'issues' => $issues,
+            'user' => $user,
+            'role' => $role
+
+        ]);
+    }
+
+    // makaleler export kontrol
+    #[Route('/journal/issue/{id}/articles/check', name: 'export_control_articles_list')]
+    public function articleExportCheckList($id, FactoryInterface $factory, Security $security): Response
+    {
+        $user = $this->security->getUser();
+        $issue = $this->entityManager->getRepository(Issues::class)->find($id);
+        $journal = $issue->getJournal();
+        if (!$journal && !$issue) {
+            $this->addFlash('danger', 'Dergi ya da sayı Bulunamadı.');
+            if (in_array($this->getUser()->getRoles(), (array)RoleParam::ROLE_ADMIN)) {
+                return $this->redirectToRoute('journal_issues', ['id' => $journal->getId()]);
+            } else {
+                return $this->redirectToRoute('app_homepage');
+            }
+        }
+        $articles = $this->entityManager->getRepository(Articles::class)->findBy([
+            'issue' => $issue
+        ]);
+
+        return $this->render('journal_export_check_articles.html.twig', [
+            'articles' => $articles,
+            'issues' => $issue,
+            'journal' => $journal,
+            'user' => $user,
+            'role' => 'admin'
+
+        ]);
+    }
+
+    //makale kontrol
+    #[Route('/{role}/article/edit/{id}/export/control', name: 'article_export_check')]
+    public function articleExportConfirm($id, $role, Request $request, FactoryInterface $factory, Security $security): Response
+    {
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $article = $this->entityManager->getRepository(Articles::class)->find($id);
+        $issue = $article->getIssue();
+        $journal = $article->getJournal();
+        if (!$article) {
+            throw $this->createNotFoundException('Makale bulunamadı: ');
+        }
+        if (!$journal && !$issue && !$article) {
+            $this->addFlash('danger', 'Dergi, sayı veya makale hatalı.');
+            return $this->redirectToRoute('admin_journal_management');
+        }
+        if ($role == 'operator') {
+            $breadcrumb = $this->breadcrumbService->createOperatorArticleEditBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
+        } elseif ($role == 'editor') {
+            $breadcrumb = $this->breadcrumbService->createEditorArticleEditBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
+        } elseif ($role == 'admin') {
+            $breadcrumb = $this->breadcrumbService->createArticleEditBreadcrumb($factory, $journal->getName(), $issue->getNumber(), $issue->getId(), $journal->getId());
+        } else {
+            throw $this->createNotFoundException('rol bulunamadı');
+        }
+        $user = $this->security->getUser();
+
+        $hasEditorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_EDITOR);
+        $hasOperatorRole = $this->journalUserRepository->userRoleInJournal($user, $journal, RoleParam::ROLE_OPERATOR);
+
+        if ($hasEditorRole == false && $hasOperatorRole == false && !$user->isIsAdmin()) {
+            throw $this->createNotFoundException('Giriş Yetkiniz Yok.');
+        }
+
+        $path = 'var' . '/' . 'journal' . '/' . $journal->getId() . '/' . $issue->getId();
+        $pdfFileName = trim($article->getFulltext(), $path);
+        $pdfFileName = $article->getFulltext();
+
+        $filePath = '/usr/share/nginx/data/';
+        $pdfFileName = str_replace($filePath, '', $pdfFileName);
+
+        $form = $this->createForm(ArticleFormType::class, $article);
+        $form->handleRequest($request);
+        /** @var Articles $data */
+        $data = $form->getData();
+
+        return $this->render('article_export_check.html.twig', [
+            'form' => $form->createView(),
+            'breadcrumb' => $breadcrumb,
+            'pdfFile' => $pdfFileName,
+            'article' => $article,
+            'role' => $role,
+            'user' => $user,
+        ]);
     }
 
     //şifre değiştirme
@@ -1993,257 +2297,5 @@ class IssueArticleEditController extends AbstractController
 
         return $text;
     }
-//    private function generateArticleXMLContent($article, $issue): DOMElement
-//    {
-//        $xmlDoc = new DOMDocument('1.0', 'UTF-8');
-//        $xmlDoc->formatOutput = true;
-//
-//        $articlesNode = $xmlDoc->createElement('article');
-//
-//// Her bir makale için döngü oluştur
-//        $articleType = $article->getType();
-//        $doi = $article->getDoi();
-//        $fPage = $article->getFirstPage();
-//        $lPage = $article->getLastPage();
-//        $primaryLang = $article->getPrimaryLanguage();
-//        $journal = $issue->getJournal();
-//        $journalName = $journal->getName();
-//
-//        $typeModifier = new TypeModifier();
-//
-//        // <article> öğesini oluştur
-//        $articleNode = $xmlDoc->createElement('article');
-//
-//        $articlesNode->setAttribute('article-type', $articleType);
-//        $articlesNode->setAttribute('dtd-version', '1.0');
-//
-//        $frontNode = $xmlDoc->createElement('front');
-//        $journalMetaNode = $xmlDoc->createElement('journal-meta');
-//
-//        $journalTitleGroupNode = $xmlDoc->createElement('journal-title-group');
-//        $journalMetaNode->appendChild($journalTitleGroupNode);
-//
-////issn
-//        $journalIssnNode = $xmlDoc->createElement('issn', $journal->getIssn());
-//        $journalIssnNode->setAttribute('pub-type', 'ppub');
-//        $journalMetaNode->appendChild($journalIssnNode);
-//
-//// eissn
-//        $journalEissnNode = $xmlDoc->createElement('issn', $journal->getEIssn());
-//        $journalEissnNode->setAttribute('pub-type', 'epub');
-//        $journalMetaNode->appendChild($journalEissnNode);
-//
-////dergi adı
-//        $journalTitleNode = $xmlDoc->createElement('journal-title', $journalName);
-//        $journalTitleGroupNode->appendChild($journalTitleNode);
-//
-////journal meta buraya kadar
-//
-//        $articleMetaNode = $xmlDoc->createElement('article-meta');
-//        $articleIdNode = $xmlDoc->createElement('article-id', $doi);
-//        $articleIdNode->setAttribute('pub-id-type', 'doi');
-//        $articleMetaNode->appendChild($articleIdNode);
-//
-//        $articleTitleGroupNode = $xmlDoc->createElement('title-group');
-//
-//        $translations = $article->getTranslations();
-//
-//        foreach ($translations as $translation) {
-//            // Ana dil ile aynı olan çeviriyi doğrudan <article-title> içine ekleyin
-//            if ($primaryLang == $translation->getLocale()) {
-//                $articleTitleNode = $xmlDoc->createElement('article-title', $translation->getTitle());
-//                $articleTitleGroupNode->appendChild($articleTitleNode);
-//            }
-//        }
-//
-//        $hasTranslations = $translations->count() > 1;
-//
-//// Ana dil ile aynı olmayan çevirileri <trans-title-group> içine ekleyin
-//        if ($hasTranslations) {
-//            foreach ($translations as $translation) {
-//                if ($primaryLang != $translation->getLocale()) { // Ana dil ile aynı olmayan çeviriler
-//
-//                    $articleTransTitleGroupNode = $xmlDoc->createElement('trans-title-group');
-//                    $articleTransTitleGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
-//                    $articleTransTitleNode = $xmlDoc->createElement('trans-title', $translation->getTitle());
-//                    $articleTransTitleGroupNode->appendChild($articleTransTitleNode);
-//                }
-//            }
-//
-//            $articleTitleGroupNode->appendChild($articleTransTitleGroupNode);
-//        }
-//
-//        $articleMetaNode->appendChild($articleTitleGroupNode);
-//
-//
-//        //yazar sekmesi
-//        $contribGroupNode = $xmlDoc->createElement('contrib-group');
-//        $authors = $article->getAuthors();
-//        foreach ($authors as $author) {
-//            $contribNode = $xmlDoc->createElement('contrib');
-//            $contribNode->setAttribute('contrib-type', 'author');
-////isim soyad
-//            $nameNode = $xmlDoc->createElement('name');
-//            $surnameNode = $xmlDoc->createElement('surname', $author->getLastname());
-//            $nameNode->appendChild($surnameNode);
-//            $givenNameNode = $xmlDoc->createElement('given-names', $author->getFirstname());
-//            $nameNode->appendChild($givenNameNode);
-//            $contribNode->appendChild($nameNode);
-////institute
-//            $affNode = $xmlDoc->createElement('aff', $author->getInstitute());
-//
-//            $contribNode->appendChild($affNode);
-//
-//            $emailNode = $xmlDoc->createElement('email', $author->getEmail());
-//            $contribNode->appendChild($emailNode);
-////orcid
-//            if ($author->getOrcId()) {
-//                $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $author->getOrcId());
-//                $contribIdNode->setAttribute('contrib-id-type', 'orcid');
-//                $contribNode->appendChild($contribIdNode);
-//            }
-//            $contribGroupNode->appendChild($contribNode);
-//        }
-//        //çevirmen sekmesi
-//        $translators = $article->getTranslators();
-//        foreach ($translators as $translator) {
-//            $contribNode = $xmlDoc->createElement('contrib');
-//            $contribNode->setAttribute('contrib-type', 'translator');
-////isim soyad
-//            $nameNode = $xmlDoc->createElement('name');
-//            $surnameNode = $xmlDoc->createElement('surname', $translator->getLastname());
-//            $nameNode->appendChild($surnameNode);
-//            $givenNameNode = $xmlDoc->createElement('given-names', $translator->getFirstname());
-//            $nameNode->appendChild($givenNameNode);
-//            $contribNode->appendChild($nameNode);
-//
-////institute
-//            $affNode = $xmlDoc->createElement('aff', $translator->getInstitute());
-//            $contribNode->appendChild($affNode);
-////orcid
-//            if ($translator->getOrcId()) {
-//                $contribIdNode = $xmlDoc->createElement('contrib-id', 'https://orcid.org/' . $translator->getOrcId());
-//                $contribIdNode->setAttribute('contrib-id-type', 'orcid');
-//                $contribNode->appendChild($contribIdNode);
-//            }
-//            $contribGroupNode->appendChild($contribNode);
-//        }
-//        $articleMetaNode->appendChild($contribGroupNode);
-////pubdate
-//        if ($article->getReceivedDate() && $article->getAcceptedDate()) {
-//            $receivedDate = $article->getReceivedDate()->format('Ymd');
-//            $historyNode = $xmlDoc->createElement('history');
-//
-//            // Received Date Node
-//            $dateReceivedNode = $xmlDoc->createElement('date');
-//            $dateReceivedNode->setAttribute('date-type', 'received');
-//            $dateReceivedNode->setAttribute('iso-8601-date', $receivedDate);
-//
-//            // Day Node
-//            $dayReceivedNode = $xmlDoc->createElement('day', $article->getReceivedDate()->format('d'));
-//            $dateReceivedNode->appendChild($dayReceivedNode);
-//
-//            // Month Node
-//            $monthReceivedNode = $xmlDoc->createElement('month', $article->getReceivedDate()->format('m'));
-//            $dateReceivedNode->appendChild($monthReceivedNode);
-//
-//            // Year Node
-//            $yearReceivedNode = $xmlDoc->createElement('year', $article->getReceivedDate()->format('Y'));
-//            $dateReceivedNode->appendChild($yearReceivedNode);
-//
-//            // Append Received Date Node to history node
-//            $historyNode->appendChild($dateReceivedNode);
-//
-//            // Accepted Date Node
-//            $acceptedDate = $article->getAcceptedDate()->format('Ymd');
-//            $dateAcceptedNode = $xmlDoc->createElement('date');
-//            $dateAcceptedNode->setAttribute('date-type', 'accepted');
-//            $dateAcceptedNode->setAttribute('iso-8601-date', $acceptedDate);
-//
-//            // Day Node
-//            $dayAcceptedNode = $xmlDoc->createElement('day', $article->getAcceptedDate()->format('d'));
-//            $dateAcceptedNode->appendChild($dayAcceptedNode);
-//
-//            // Month Node
-//            $monthAcceptedNode = $xmlDoc->createElement('month', $article->getAcceptedDate()->format('m'));
-//            $dateAcceptedNode->appendChild($monthAcceptedNode);
-//
-//            // Year Node
-//            $yearAcceptedNode = $xmlDoc->createElement('year', $article->getAcceptedDate()->format('Y'));
-//            $dateAcceptedNode->appendChild($yearAcceptedNode);
-//
-//            // Append Accepted Date Node to history node
-//            $historyNode->appendChild($dateAcceptedNode);
-//
-//            // Append history node to appropriate parent node (like $articleMetaNode)
-//            $articleMetaNode->appendChild($historyNode);
-//        }
-//
-//
-//        //volume
-//        $volumeNode = $xmlDoc->createElement('volume', $issue->getVolume());
-//        $articleMetaNode->appendChild($volumeNode);
-////sayı
-//        $numberNode = $xmlDoc->createElement('issue', $issue->getNumber());
-//        $articleMetaNode->appendChild($numberNode);
-////birinci sayfa
-//        $fpageNode = $xmlDoc->createElement('fpage', $fPage);
-//        $articleMetaNode->appendChild($fpageNode);
-////ikinci sayfa
-//        $lpageNode = $xmlDoc->createElement('lpage', $lPage);
-//        $articleMetaNode->appendChild($lpageNode);
-//
-////abstract
-//        foreach ($translations as $translation) {
-//            if ($article->getPrimaryLanguage() == $translation->getLocale()) {
-//                $abstractNode = $xmlDoc->createElement('abstract');
-//                $pNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
-//                $abstractNode->appendChild($pNode);
-//                $articleMetaNode->appendChild($abstractNode);
-//            } else {
-//                $transAbstractNode = $xmlDoc->createElement('trans-abstract');
-//                $transAbstractNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
-//                $pTransNode = $xmlDoc->createElement('p', htmlspecialchars($translation->getAbstract(), ENT_XML1 | ENT_COMPAT, 'UTF-8'));
-//
-////                    $pTransNode = $xmlDoc->createElement('p', $translation->getAbstract());
-//                $transAbstractNode->appendChild($pTransNode);
-//                $articleMetaNode->appendChild($transAbstractNode);
-//            }
-//        }
-//        foreach ($translations as $translation) {
-//            $kwdGroupNode = $xmlDoc->createElement('kwd-group');
-//            $kwdGroupNode->setAttribute('xml:lang', $typeModifier->convertLanguageCode($translation->getLocale()));
-//            foreach ($translation->getKeywords() as $keyword) {
-//                $kwdNode = $xmlDoc->createElement('kwd', $keyword);
-//                $kwdGroupNode->appendChild($kwdNode);
-//            }
-//            $articleMetaNode->appendChild($kwdGroupNode);
-//        }
-//
-//        $frontNode->appendChild($articleMetaNode);
-//
-//        $articlesNode->appendChild($frontNode);
-//
-//        $back = $xmlDoc->createElement('back');
-//        $refListNode = $xmlDoc->createElement('ref-list');
-//        foreach ($article->getCitations() as $citation) {
-//            $refNode = $xmlDoc->createElement('ref');
-//            $refNode->setAttribute('id', 'ref' . $citation->getRow());
-//
-//            $label = $xmlDoc->createElement('label', $citation->getRow());
-//            $refNode->appendChild($label);
-//            $mixedCitationNode = $xmlDoc->createElement('mixed-citation', htmlspecialchars($citation->getReferance(), ENT_XML1));
-//            $refNode->appendChild($mixedCitationNode);
-//
-//            $refListNode->appendChild($refNode);
-//
-//        }
-//        $back->appendChild($refListNode);
-//        $articlesNode->appendChild($back);
-//
-//// <articles> kök öğesini XML dokümanına ekle
-//        $xmlDoc->appendChild($articlesNode);
-//
-//        return $articlesNode;
-//    }
+
 }
